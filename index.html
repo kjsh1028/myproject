@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="My Project">
+<title>My Project</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0e0e12;
+  --surface: #16161c;
+  --surface2: #1e1e26;
+  --surface3: #26262f;
+  --border: #2e2e3a;
+  --accent: #c8a96e;
+  --accent2: #e8c98e;
+  --text: #f0efe8;
+  --text2: #a0a0b0;
+  --text3: #606070;
+  --red: #e05c5c;
+  --green: #5cb87a;
+  --blue: #5c8fe0;
+  --tab-h: 64px;
+  --header-h: 56px;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; overflow: hidden; }
+
+/* ── LAYOUT ── */
+#app { display: flex; flex-direction: column; height: 100vh; height: 100dvh; }
+#header {
+  height: var(--header-h); min-height: var(--header-h);
+  background: var(--surface); border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; padding: 0 16px;
+  padding-top: env(safe-area-inset-top, 0px);
+  justify-content: space-between; flex-shrink: 0; z-index: 100;
+}
+#header h1 { font-family: 'DM Serif Display', serif; font-size: 20px; color: var(--accent); letter-spacing: 0.02em; }
+#header-right { display: flex; gap: 8px; align-items: center; }
+#content { flex: 1; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; }
+#tabbar {
+  height: calc(var(--tab-h) + var(--safe-bottom));
+  padding-bottom: var(--safe-bottom);
+  background: var(--surface); border-top: 1px solid var(--border);
+  display: flex; flex-shrink: 0;
+}
+.tab-btn {
+  flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 3px; background: none; border: none; color: var(--text3); cursor: pointer;
+  font-family: 'DM Sans', sans-serif; font-size: 10px; font-weight: 500; transition: color 0.2s;
+}
+.tab-btn svg { width: 22px; height: 22px; }
+.tab-btn.active { color: var(--accent); }
+
+/* ── PAGES ── */
+.page { display: none; padding: 16px; padding-bottom: 24px; }
+.page.active { display: block; }
+
+/* ── COMMON ── */
+.section-title {
+  font-family: 'DM Serif Display', serif; font-size: 13px; color: var(--text3);
+  letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 12px; padding-left: 2px;
+}
+.card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  padding: 14px 16px; margin-bottom: 10px; cursor: pointer; transition: border-color 0.2s;
+}
+.card:active { border-color: var(--accent); }
+.badge {
+  display: inline-block; font-size: 10px; font-weight: 600; padding: 2px 8px;
+  border-radius: 20px; letter-spacing: 0.04em;
+}
+.btn {
+  background: var(--accent); color: #0e0e12; border: none; border-radius: 10px;
+  padding: 12px 20px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600;
+  cursor: pointer; transition: background 0.2s;
+}
+.btn:active { background: var(--accent2); }
+.btn-ghost {
+  background: var(--surface2); color: var(--text2); border: 1px solid var(--border);
+  border-radius: 10px; padding: 10px 16px; font-family: 'DM Sans', sans-serif;
+  font-size: 13px; font-weight: 500; cursor: pointer;
+}
+.btn-sm {
+  font-size: 12px; padding: 7px 14px; border-radius: 8px;
+}
+input, textarea, select {
+  background: var(--surface2); border: 1px solid var(--border); border-radius: 10px;
+  color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px;
+  padding: 11px 14px; width: 100%; outline: none; transition: border-color 0.2s;
+}
+input:focus, textarea:focus, select:focus { border-color: var(--accent); }
+select option { background: var(--surface2); }
+textarea { resize: none; }
+label { font-size: 12px; color: var(--text2); display: block; margin-bottom: 6px; margin-top: 14px; font-weight: 500; }
+label:first-child { margin-top: 0; }
+
+/* ── STAGE COLORS ── */
+.stage-발굴 { background: rgba(90,90,160,0.2); color: #9090e0; border-color: #9090e0; }
+.stage-검토 { background: rgba(90,140,200,0.2); color: #6aacf0; border-color: #6aacf0; }
+.stage-협의 { background: rgba(200,160,50,0.2); color: #d4a840; border-color: #d4a840; }
+.stage-구조화 { background: rgba(180,100,200,0.2); color: #c070e0; border-color: #c070e0; }
+.stage-실행 { background: rgba(80,180,140,0.2); color: #50c090; border-color: #50c090; }
+.stage-클로징 { background: rgba(200,169,110,0.2); color: var(--accent); border-color: var(--accent); }
+.stage-완료 { background: rgba(90,180,120,0.2); color: #5cb87a; border-color: #5cb87a; }
+.stage-중단 { background: rgba(180,80,80,0.2); color: var(--red); border-color: var(--red); }
+
+/* ── TYPE COLORS ── */
+.type-badge { border: 1px solid; }
+.type-MA { background: rgba(92,143,224,0.15); color: #7aabf0; border-color: #7aabf0; }
+.type-자금조달 { background: rgba(200,169,110,0.15); color: var(--accent); border-color: var(--accent); }
+.type-부동산 { background: rgba(90,180,120,0.15); color: #5cb87a; border-color: #5cb87a; }
+.type-IPO { background: rgba(180,100,200,0.15); color: #c070e0; border-color: #c070e0; }
+.type-무역 { background: rgba(80,190,200,0.15); color: #50c8d0; border-color: #50c8d0; }
+.type-엔터 { background: rgba(230,100,120,0.15); color: #e06080; border-color: #e06080; }
+.type-기타 { background: rgba(120,120,140,0.15); color: #9090a8; border-color: #9090a8; }
+
+/* ── DEAL CARD ── */
+.deal-card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+.deal-card-name { font-size: 15px; font-weight: 600; color: var(--text); flex: 1; margin-right: 8px; }
+.deal-card-meta { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+.deal-card-footer { display: flex; justify-content: space-between; align-items: center; }
+.deal-card-fee { font-size: 13px; color: var(--accent); font-weight: 600; }
+.deal-card-date { font-size: 11px; color: var(--text3); }
+.deal-card-action { font-size: 12px; color: var(--text2); margin-top: 6px; display: flex; align-items: center; gap: 5px; }
+.deal-card-action::before { content: '→'; color: var(--accent); font-size: 12px; }
+
+/* ── PIPELINE VIEW ── */
+.pipeline-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 8px; }
+.pipeline-row { display: flex; gap: 10px; padding: 4px 0; }
+.pipeline-col { min-width: 200px; }
+.pipeline-col-header {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--text3); padding: 6px 10px; margin-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+.pipeline-col-header span { font-size: 13px; color: var(--text2); font-weight: 400; margin-left: 6px; }
+.pipeline-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+  padding: 10px 12px; margin-bottom: 8px; cursor: pointer;
+}
+.pipeline-card:active { border-color: var(--accent); }
+.pipeline-card-name { font-size: 13px; font-weight: 600; margin-bottom: 5px; }
+.pipeline-card-fee { font-size: 11px; color: var(--accent); font-weight: 600; }
+
+/* ── DETAIL LAYER ── */
+#detail-layer {
+  position: fixed; inset: 0; background: var(--bg); z-index: 200;
+  transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+  display: flex; flex-direction: column;
+}
+#detail-layer.open { transform: translateX(0); }
+#detail-header {
+  height: var(--header-h); min-height: var(--header-h);
+  padding-top: env(safe-area-inset-top, 0px);
+  background: var(--surface); border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; padding-left: 8px; padding-right: 16px; gap: 8px; flex-shrink: 0;
+}
+#detail-header h2 { font-size: 16px; font-weight: 600; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#detail-content { flex: 1; overflow-y: auto; padding: 16px; padding-bottom: 32px; }
+
+/* ── MODAL ── */
+#modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 300;
+  display: none; align-items: flex-end;
+}
+#modal-overlay.open { display: flex; }
+#modal-box {
+  background: var(--surface); border-radius: 20px 20px 0 0; width: 100%;
+  padding: 20px 20px calc(20px + var(--safe-bottom));
+  max-height: 90vh; overflow-y: auto;
+}
+.modal-title { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--text); margin-bottom: 18px; }
+.modal-actions { display: flex; gap: 10px; margin-top: 20px; }
+.modal-actions .btn { flex: 1; }
+
+/* ── DETAIL SECTIONS ── */
+.detail-section { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; margin-bottom: 12px; }
+.detail-section-title { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; margin-bottom: 12px; }
+.detail-field { margin-bottom: 10px; }
+.detail-field-label { font-size: 11px; color: var(--text3); margin-bottom: 3px; }
+.detail-field-value { font-size: 14px; color: var(--text); }
+.detail-row { display: flex; gap: 12px; }
+.detail-row .detail-field { flex: 1; }
+
+/* ── LOG ITEMS ── */
+.log-item { border-left: 2px solid var(--border); padding: 8px 0 8px 14px; margin-bottom: 8px; }
+.log-item-date { font-size: 11px; color: var(--text3); margin-bottom: 3px; }
+.log-item-content { font-size: 13px; color: var(--text); line-height: 1.5; }
+.log-item-who { font-size: 11px; color: var(--accent); margin-top: 3px; }
+
+/* ── ACTION ITEMS ── */
+.action-item {
+  display: flex; align-items: flex-start; gap: 10px; padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+.action-item:last-child { border-bottom: none; }
+.action-check {
+  width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--border);
+  flex-shrink: 0; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  margin-top: 1px; transition: all 0.2s;
+}
+.action-check.done { border-color: var(--green); background: var(--green); }
+.action-check.done::after { content: '✓'; font-size: 11px; color: #0e0e12; font-weight: 700; }
+.action-text { flex: 1; }
+.action-title { font-size: 13px; color: var(--text); }
+.action-title.done { text-decoration: line-through; color: var(--text3); }
+.action-due { font-size: 11px; color: var(--text3); margin-top: 2px; }
+.action-due.overdue { color: var(--red); }
+
+/* ── PEOPLE ── */
+.person-card { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); cursor: pointer; }
+.person-card:last-child { border-bottom: none; }
+.person-avatar {
+  width: 40px; height: 40px; border-radius: 50%; background: var(--surface3);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; font-weight: 700; color: var(--accent); flex-shrink: 0;
+}
+.person-info { flex: 1; }
+.person-name { font-size: 14px; font-weight: 600; color: var(--text); }
+.person-meta { font-size: 12px; color: var(--text2); margin-top: 2px; }
+.person-deals { font-size: 11px; color: var(--accent); margin-top: 3px; }
+
+/* ── DASHBOARD STATS ── */
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+.stat-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  padding: 14px; text-align: center;
+}
+.stat-num { font-family: 'DM Serif Display', serif; font-size: 28px; color: var(--accent); }
+.stat-label { font-size: 11px; color: var(--text3); margin-top: 3px; text-transform: uppercase; letter-spacing: 0.06em; }
+.stage-bar { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 10px; }
+.stage-bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.stage-bar-row:last-child { margin-bottom: 0; }
+.stage-bar-label { font-size: 12px; color: var(--text2); width: 48px; flex-shrink: 0; }
+.stage-bar-track { flex: 1; background: var(--surface3); border-radius: 4px; height: 6px; }
+.stage-bar-fill { height: 100%; border-radius: 4px; background: var(--accent); transition: width 0.5s; }
+.stage-bar-count { font-size: 12px; color: var(--text3); width: 16px; text-align: right; flex-shrink: 0; }
+
+/* ── DRIVE LINKS ── */
+.drive-item { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+.drive-item:last-child { border-bottom: none; }
+.drive-icon { width: 32px; height: 32px; border-radius: 8px; background: rgba(92,143,224,0.15); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.drive-info { flex: 1; overflow: hidden; }
+.drive-name { font-size: 13px; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.drive-type { font-size: 11px; color: var(--text3); margin-top: 2px; }
+.drive-link-btn { color: var(--blue); font-size: 12px; padding: 4px 10px; background: rgba(92,143,224,0.1); border-radius: 6px; border: none; cursor: pointer; white-space: nowrap; font-family: 'DM Sans', sans-serif; }
+
+/* ── FAB ── */
+#fab {
+  position: fixed; bottom: calc(var(--tab-h) + var(--safe-bottom) + 16px); right: 20px;
+  width: 52px; height: 52px; border-radius: 50%; background: var(--accent);
+  color: #0e0e12; border: none; cursor: pointer; font-size: 24px; font-weight: 300;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 20px rgba(200,169,110,0.4); z-index: 50; transition: transform 0.2s;
+}
+#fab:active { transform: scale(0.92); }
+
+/* ── VIEW TOGGLE ── */
+.view-toggle { display: flex; gap: 0; background: var(--surface2); border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }
+.view-toggle-btn { padding: 7px 14px; font-size: 12px; font-weight: 500; background: none; border: none; color: var(--text3); cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.2s; }
+.view-toggle-btn.active { background: var(--surface3); color: var(--text); }
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+/* ── EMPTY STATE ── */
+.empty-state { text-align: center; padding: 48px 24px; color: var(--text3); }
+.empty-state-icon { font-size: 40px; margin-bottom: 12px; }
+.empty-state p { font-size: 14px; line-height: 1.6; }
+
+/* ── SWIPE BACK ── */
+.swipe-hint { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text3); padding: 8px 16px; border-bottom: 1px solid var(--border); }
+.delete-btn { background: rgba(224,92,92,0.1); color: var(--red); border: 1px solid rgba(224,92,92,0.3); border-radius: 8px; padding: 7px 14px; font-size: 12px; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+.icon-btn { background: none; border: none; color: var(--text2); cursor: pointer; padding: 8px; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+.icon-btn:active { background: var(--surface3); }
+
+/* ── TABS IN DETAIL ── */
+.inner-tabs { display: flex; gap: 0; border-bottom: 1px solid var(--border); margin-bottom: 16px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.inner-tab { padding: 10px 16px; font-size: 13px; font-weight: 500; color: var(--text3); background: none; border: none; cursor: pointer; white-space: nowrap; border-bottom: 2px solid transparent; font-family: 'DM Sans', sans-serif; transition: all 0.2s; }
+.inner-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+/* ── PERSON DETAIL ── */
+.contact-row { display: flex; align-items: center; gap: 8px; padding: 8px 0; border-bottom: 1px solid var(--border); }
+.contact-row:last-child { border-bottom: none; }
+.contact-icon { width: 28px; color: var(--text3); flex-shrink: 0; font-size: 14px; }
+.contact-val { font-size: 13px; color: var(--text); flex: 1; }
+.contact-copy { background: none; border: none; color: var(--text3); font-size: 12px; cursor: pointer; padding: 4px 8px; font-family: 'DM Sans', sans-serif; }
+
+/* ── RATING STARS ── */
+.stars { display: flex; gap: 3px; }
+.star { font-size: 16px; cursor: pointer; color: var(--text3); transition: color 0.15s; }
+.star.active { color: var(--accent); }
+
+/* ── FILTER BAR ── */
+.filter-bar { display: flex; gap: 8px; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 8px; margin-bottom: 12px; }
+.filter-chip { padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 500; background: var(--surface2); border: 1px solid var(--border); color: var(--text3); cursor: pointer; white-space: nowrap; transition: all 0.2s; }
+.filter-chip.active { background: rgba(200,169,110,0.15); border-color: var(--accent); color: var(--accent); }
+
+/* ── PROGRESS BAR ── */
+.progress-bar { height: 4px; background: var(--surface3); border-radius: 4px; overflow: hidden; margin-top: 8px; }
+.progress-fill { height: 100%; background: var(--accent); border-radius: 4px; transition: width 0.4s; }
+
+/* ── SEARCH BAR ── */
+.search-bar { position: relative; margin-bottom: 14px; }
+.search-bar input { padding-left: 36px; }
+.search-bar-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text3); font-size: 14px; }
+
+/* ── PEOPLE ADD LOG FORM ── */
+.inline-form { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 12px; margin-top: 10px; display: none; }
+.inline-form.open { display: block; }
+.inline-form-row { display: flex; gap: 8px; margin-top: 10px; }
+.inline-form-row .btn { flex: none; padding: 10px 16px; }
+</style>
+</head>
+<body>
+<div id="app">
+  <!-- HEADER -->
+  <div id="header">
+    <h1>My Project</h1>
+    <div id="header-right">
+      <div class="view-toggle" id="view-toggle" style="display:none">
+        <button class="view-toggle-btn active" onclick="setView('list')">목록</button>
+        <button class="view-toggle-btn" onclick="setView('pipeline')">파이프라인</button>
+      </div>
+      <button class="icon-btn" id="header-search-btn" onclick="toggleSearch()" style="display:none">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div id="content">
+    <!-- DASHBOARD -->
+    <div class="page active" id="page-dashboard">
+      <div style="margin-bottom:6px">
+        <p style="font-size:12px;color:var(--text3);margin-bottom:4px">총 예상 성공보수</p>
+        <p id="dash-total-fee" style="font-family:'DM Serif Display',serif;font-size:32px;color:var(--accent)">—</p>
+      </div>
+      <div class="stats-grid" style="margin-top:16px">
+        <div class="stat-card"><div class="stat-num" id="dash-total">0</div><div class="stat-label">전체 딜</div></div>
+        <div class="stat-card"><div class="stat-num" id="dash-active">0</div><div class="stat-label">진행중</div></div>
+        <div class="stat-card"><div class="stat-num" id="dash-closing">0</div><div class="stat-label">클로징</div></div>
+        <div class="stat-card"><div class="stat-num" id="dash-done">0</div><div class="stat-label">완료</div></div>
+      </div>
+
+      <div class="section-title">단계별 현황</div>
+      <div class="stage-bar" id="dash-stage-bar"></div>
+
+      <div class="section-title" style="margin-top:16px">이번 주 액션</div>
+      <div id="dash-actions"></div>
+
+      <div class="section-title" style="margin-top:16px">최근 업데이트</div>
+      <div id="dash-recent"></div>
+    </div>
+
+    <!-- DEALS -->
+    <div class="page" id="page-deals">
+      <div class="search-bar" id="deals-search-bar" style="display:none">
+        <span class="search-bar-icon">🔍</span>
+        <input type="text" placeholder="딜 검색..." id="deals-search-input" oninput="renderDeals()">
+      </div>
+      <div class="filter-bar" id="deals-filter-bar"></div>
+      <div id="deals-list-view">
+        <div id="deals-cards"></div>
+      </div>
+      <div id="deals-pipeline-view" style="display:none">
+        <div class="pipeline-scroll"><div class="pipeline-row" id="pipeline-row"></div></div>
+      </div>
+    </div>
+
+    <!-- PEOPLE -->
+    <div class="page" id="page-people">
+      <div class="search-bar">
+        <span class="search-bar-icon">🔍</span>
+        <input type="text" placeholder="이름, 회사, 역할 검색..." id="people-search-input" oninput="renderPeople()">
+      </div>
+      <div id="people-list"></div>
+    </div>
+
+    <!-- SETTINGS / MORE -->
+    <div class="page" id="page-more">
+      <div class="section-title">데이터</div>
+      <div class="detail-section">
+        <label>GitHub Token</label>
+        <input type="password" id="gh-token" placeholder="ghp_xxxx..." oninput="saveSettings()">
+        <label style="margin-top:12px">Repository (owner/repo)</label>
+        <input type="text" id="gh-repo" placeholder="kjsh1028/myproject" oninput="saveSettings()">
+        <label style="margin-top:12px">파일명</label>
+        <input type="text" id="gh-filename" placeholder="myproject-data.json" oninput="saveSettings()">
+        <div style="margin-top:14px;display:flex;gap:8px">
+          <button class="btn btn-sm" onclick="syncToGitHub()">GitHub 동기화</button>
+          <button class="btn-ghost btn-sm" onclick="exportJSON()">JSON 내보내기</button>
+        </div>
+        <div id="sync-status" style="font-size:12px;color:var(--text3);margin-top:8px"></div>
+      </div>
+
+      <div class="section-title" style="margin-top:16px">앱 정보</div>
+      <div class="detail-section">
+        <div class="detail-field">
+          <div class="detail-field-label">버전</div>
+          <div class="detail-field-value">My Project v1.0</div>
+        </div>
+        <div class="detail-field">
+          <div class="detail-field-label">총 딜</div>
+          <div class="detail-field-value" id="more-total-deals">—</div>
+        </div>
+        <div class="detail-field">
+          <div class="detail-field-label">총 관련자</div>
+          <div class="detail-field-value" id="more-total-people">—</div>
+        </div>
+      </div>
+
+      <div class="section-title" style="margin-top:16px">데이터 초기화</div>
+      <div class="detail-section">
+        <button class="delete-btn" onclick="confirmClearAll()">모든 데이터 삭제</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABBAR -->
+  <div id="tabbar">
+    <button class="tab-btn active" onclick="switchTab('dashboard')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      대시보드
+    </button>
+    <button class="tab-btn" onclick="switchTab('deals')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      딜
+    </button>
+    <button class="tab-btn" onclick="switchTab('people')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      관련자
+    </button>
+    <button class="tab-btn" onclick="switchTab('more')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+      설정
+    </button>
+  </div>
+</div>
+
+<!-- FAB -->
+<button id="fab" onclick="openAddModal()">＋</button>
+
+<!-- DETAIL LAYER -->
+<div id="detail-layer">
+  <div id="detail-header">
+    <button class="icon-btn" onclick="closeDetail()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    </button>
+    <h2 id="detail-title">딜 상세</h2>
+    <button class="icon-btn" onclick="openEditDeal()" id="detail-edit-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+    </button>
+  </div>
+  <div id="detail-content"></div>
+</div>
+
+<!-- PERSON DETAIL LAYER -->
+<div id="person-layer" style="position:fixed;inset:0;background:var(--bg);z-index:250;transform:translateX(100%);transition:transform 0.3s cubic-bezier(0.4,0,0.2,1);display:flex;flex-direction:column;">
+  <div id="person-header" style="height:var(--header-h);min-height:var(--header-h);padding-top:env(safe-area-inset-top,0px);background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;padding-left:8px;padding-right:16px;gap:8px;flex-shrink:0;">
+    <button class="icon-btn" onclick="closePerson()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    </button>
+    <h2 id="person-title" style="font-size:16px;font-weight:600;flex:1"></h2>
+    <button class="icon-btn" onclick="openEditPerson()" id="person-edit-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+    </button>
+  </div>
+  <div id="person-content" style="flex:1;overflow-y:auto;padding:16px;padding-bottom:32px;"></div>
+</div>
+
+<!-- MODAL -->
+<div id="modal-overlay" onclick="handleModalOverlayClick(event)">
+  <div id="modal-box">
+    <div class="modal-title" id="modal-title">새 딜 추가</div>
+    <div id="modal-body"></div>
+    <div class="modal-actions" id="modal-actions"></div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════
+const STAGES = ['발굴','검토','협의','구조화','실행','클로징','완료','중단'];
+const TYPES = ['M&A','자금조달','부동산','IPO·상장','무역','엔터테인먼트','기타'];
+const ROLES = ['매수인','매도인','투자자','투자대상','FA','법무','회계','주관사','파트너','기타'];
+const DOC_TYPES = ['NDA','IM','Term Sheet','계약서','보고서','법인등기','재무제표','기타'];
+
+let DB = { deals: [], people: [], settings: {} };
+let curTab = 'dashboard';
+let curView = 'list';
+let curDealId = null;
+let curPersonId = null;
+let curDetailTab = 'overview';
+let curPersonTab = 'info';
+let dealFilter = 'all';
+let modalMode = null; // 'add-deal' | 'edit-deal' | 'add-person' | 'edit-person' | 'add-log' | 'add-action' | 'add-drive' | 'add-action-to-deal' | 'stage-update'
+
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
+function today() { return new Date().toISOString().slice(0,10); }
+function formatDate(s) {
+  if (!s) return '';
+  const d = new Date(s + 'T00:00:00');
+  return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
+}
+function getDaysDiff(s) {
+  if (!s) return null;
+  const diff = new Date(s + 'T00:00:00') - new Date(today() + 'T00:00:00');
+  return Math.ceil(diff / 86400000);
+}
+function formatFee(n) {
+  if (!n) return '—';
+  if (n >= 100000000) return (n/100000000).toFixed(1).replace(/\.0$/,'') + '억';
+  if (n >= 10000) return (n/10000).toFixed(0) + '만';
+  return n.toLocaleString();
+}
+function typeClass(t) {
+  const map = {'M&A':'MA','자금조달':'자금조달','부동산':'부동산','IPO·상장':'IPO','무역':'무역','엔터테인먼트':'엔터','기타':'기타'};
+  return 'type-' + (map[t] || '기타');
+}
+
+// ══════════════════════════════════════════
+// STORAGE
+// ══════════════════════════════════════════
+function loadLocal() {
+  try { const d = localStorage.getItem('myproject_db'); if (d) DB = JSON.parse(d); } catch(e){}
+  try { const s = localStorage.getItem('myproject_settings'); if (s) DB.settings = JSON.parse(s); } catch(e){}
+  if (!DB.deals) DB.deals = [];
+  if (!DB.people) DB.people = [];
+  if (!DB.settings) DB.settings = {};
+}
+function saveLocal() {
+  localStorage.setItem('myproject_db', JSON.stringify({deals: DB.deals, people: DB.people}));
+  localStorage.setItem('myproject_settings', JSON.stringify(DB.settings));
+}
+function saveSettings() {
+  DB.settings.ghToken = document.getElementById('gh-token').value;
+  DB.settings.ghRepo = document.getElementById('gh-repo').value;
+  DB.settings.ghFile = document.getElementById('gh-filename').value;
+  saveLocal();
+}
+async function syncToGitHub() {
+  const {ghToken, ghRepo, ghFile} = DB.settings;
+  if (!ghToken || !ghRepo || !ghFile) { setSyncStatus('❌ GitHub 설정을 입력하세요'); return; }
+  setSyncStatus('⏳ 동기화 중...');
+  try {
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify({deals:DB.deals, people:DB.people}, null, 2))));
+    // get sha
+    let sha = '';
+    const r1 = await fetch(`https://api.github.com/repos/${ghRepo}/contents/${ghFile}`, {headers:{'Authorization':'token '+ghToken}});
+    if (r1.ok) { const j = await r1.json(); sha = j.sha; }
+    const body = {message:`update ${new Date().toISOString()}`, content};
+    if (sha) body.sha = sha;
+    const r2 = await fetch(`https://api.github.com/repos/${ghRepo}/contents/${ghFile}`, {method:'PUT', headers:{'Authorization':'token '+ghToken,'Content-Type':'application/json'}, body: JSON.stringify(body)});
+    if (r2.ok) setSyncStatus('✅ 동기화 완료 ' + new Date().toLocaleTimeString());
+    else setSyncStatus('❌ 실패: ' + r2.status);
+  } catch(e) { setSyncStatus('❌ 오류: ' + e.message); }
+}
+async function loadFromGitHub() {
+  const {ghToken, ghRepo, ghFile} = DB.settings;
+  if (!ghToken || !ghRepo || !ghFile) return;
+  try {
+    const r = await fetch(`https://api.github.com/repos/${ghRepo}/contents/${ghFile}`, {headers:{'Authorization':'token '+ghToken}});
+    if (r.ok) {
+      const j = await r.json();
+      const data = JSON.parse(decodeURIComponent(escape(atob(j.content))));
+      DB.deals = data.deals || DB.deals;
+      DB.people = data.people || DB.people;
+      saveLocal();
+      renderAll();
+      setSyncStatus('✅ 불러오기 완료 ' + new Date().toLocaleTimeString());
+    }
+  } catch(e) {}
+}
+function setSyncStatus(msg) { const el = document.getElementById('sync-status'); if(el) el.textContent = msg; }
+function exportJSON() {
+  const blob = new Blob([JSON.stringify({deals:DB.deals,people:DB.people}, null, 2)], {type:'application/json'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'myproject-data.json'; a.click();
+}
+function confirmClearAll() {
+  if (confirm('모든 데이터를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.')) {
+    DB.deals = []; DB.people = []; saveLocal(); renderAll();
+  }
+}
+
+// ══════════════════════════════════════════
+// NAV
+// ══════════════════════════════════════════
+function switchTab(tab) {
+  curTab = tab;
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + tab).classList.add('active');
+  document.querySelectorAll('.tab-btn')[['dashboard','deals','people','more'].indexOf(tab)].classList.add('active');
+  const vt = document.getElementById('view-toggle');
+  const sb = document.getElementById('header-search-btn');
+  if (tab === 'deals') { vt.style.display = ''; sb.style.display = ''; }
+  else { vt.style.display = 'none'; sb.style.display = 'none'; }
+  document.getElementById('fab').style.display = (tab === 'more') ? 'none' : '';
+  if (tab === 'dashboard') renderDashboard();
+  if (tab === 'deals') renderDeals();
+  if (tab === 'people') renderPeople();
+  if (tab === 'more') renderMore();
+}
+function setView(v) {
+  curView = v;
+  document.querySelectorAll('.view-toggle-btn').forEach((b,i) => b.classList.toggle('active', ['list','pipeline'][i] === v));
+  document.getElementById('deals-list-view').style.display = v === 'list' ? '' : 'none';
+  document.getElementById('deals-pipeline-view').style.display = v === 'pipeline' ? '' : 'none';
+  renderDeals();
+}
+function toggleSearch() {
+  const bar = document.getElementById('deals-search-bar');
+  bar.style.display = bar.style.display === 'none' ? '' : 'none';
+  if (bar.style.display !== 'none') bar.querySelector('input').focus();
+}
+
+// ══════════════════════════════════════════
+// RENDER DASHBOARD
+// ══════════════════════════════════════════
+function renderDashboard() {
+  const active = DB.deals.filter(d => !['완료','중단'].includes(d.stage));
+  const closing = DB.deals.filter(d => d.stage === '클로징');
+  const done = DB.deals.filter(d => d.stage === '완료');
+  document.getElementById('dash-total').textContent = DB.deals.length;
+  document.getElementById('dash-active').textContent = active.length;
+  document.getElementById('dash-closing').textContent = closing.length;
+  document.getElementById('dash-done').textContent = done.length;
+  const totalFee = DB.deals.filter(d=>d.stage==='완료').reduce((a,d)=>a+(parseInt(d.fee)||0),0);
+  const expectedFee = active.reduce((a,d)=>a+(parseInt(d.fee)||0),0);
+  document.getElementById('dash-total-fee').textContent = expectedFee ? formatFee(expectedFee) + ' (예상)' : '—';
+
+  // Stage bar
+  const stageCounts = {};
+  STAGES.forEach(s => stageCounts[s] = DB.deals.filter(d=>d.stage===s).length);
+  const maxCount = Math.max(...Object.values(stageCounts), 1);
+  const activeStages = STAGES.filter(s => stageCounts[s] > 0 || ['발굴','검토','협의','실행','클로징'].includes(s));
+  document.getElementById('dash-stage-bar').innerHTML = activeStages.map(s => `
+    <div class="stage-bar-row">
+      <div class="stage-bar-label">${s}</div>
+      <div class="stage-bar-track"><div class="stage-bar-fill" style="width:${stageCounts[s]/maxCount*100}%"></div></div>
+      <div class="stage-bar-count">${stageCounts[s]}</div>
+    </div>`).join('');
+
+  // This week actions
+  const allActions = [];
+  DB.deals.forEach(d => (d.actions||[]).filter(a=>!a.done&&a.due).forEach(a => allActions.push({...a, dealName:d.name, dealId:d.id})));
+  allActions.sort((a,b) => a.due < b.due ? -1 : 1);
+  const weekActions = allActions.slice(0,5);
+  document.getElementById('dash-actions').innerHTML = weekActions.length ? weekActions.map(a => {
+    const diff = getDaysDiff(a.due);
+    const dueTxt = diff < 0 ? `<span style="color:var(--red)">${Math.abs(diff)}일 초과</span>` : diff === 0 ? '<span style="color:var(--accent)">오늘</span>' : `D-${diff}`;
+    return `<div class="action-item" onclick="openDeal('${a.dealId}')">
+      <div class="action-check ${a.done?'done':''}"></div>
+      <div class="action-text">
+        <div class="action-title">${a.title}</div>
+        <div class="action-due">${a.dealName} · ${dueTxt}</div>
+      </div></div>`;
+  }).join('') : '<div class="empty-state" style="padding:20px"><p style="color:var(--text3);font-size:13px">예정된 액션이 없습니다</p></div>';
+
+  // Recent deals
+  const recent = [...DB.deals].sort((a,b) => (b.updatedAt||'') > (a.updatedAt||'') ? 1 : -1).slice(0,3);
+  document.getElementById('dash-recent').innerHTML = recent.map(d => dealCardHTML(d)).join('') ||
+    '<div class="empty-state" style="padding:20px"><p style="color:var(--text3);font-size:13px">딜이 없습니다</p></div>';
+}
+
+// ══════════════════════════════════════════
+// RENDER DEALS
+// ══════════════════════════════════════════
+function renderFilterBar() {
+  const counts = {all: DB.deals.length};
+  TYPES.forEach(t => { counts[t] = DB.deals.filter(d=>d.type===t).length; });
+  const items = [['all','전체'], ...TYPES.map(t=>[t,t])];
+  document.getElementById('deals-filter-bar').innerHTML = items.map(([val,label]) =>
+    `<div class="filter-chip ${dealFilter===val?'active':''}" onclick="setDealFilter('${val}')">${label}${val!=='all'&&counts[val]?' ('+counts[val]+')':val==='all'?' ('+counts.all+')':''}</div>`
+  ).join('');
+}
+function setDealFilter(f) { dealFilter = f; renderDeals(); }
+
+function renderDeals() {
+  renderFilterBar();
+  const q = (document.getElementById('deals-search-input')?.value||'').toLowerCase();
+  let deals = DB.deals;
+  if (dealFilter !== 'all') deals = deals.filter(d => d.type === dealFilter);
+  if (q) deals = deals.filter(d => d.name.toLowerCase().includes(q) || (d.desc||'').toLowerCase().includes(q));
+  deals = [...deals].sort((a,b) => (b.updatedAt||'') > (a.updatedAt||'') ? 1 : -1);
+
+  if (curView === 'list') {
+    document.getElementById('deals-cards').innerHTML = deals.length ? deals.map(dealCardHTML).join('') :
+      `<div class="empty-state"><div class="empty-state-icon">📋</div><p>딜이 없습니다<br>+ 버튼으로 추가하세요</p></div>`;
+  } else {
+    const row = document.getElementById('pipeline-row');
+    row.innerHTML = STAGES.filter(s=>s!=='완료'&&s!=='중단').concat(['완료','중단']).map(stage => {
+      const stageDls = deals.filter(d => d.stage === stage);
+      return `<div class="pipeline-col">
+        <div class="pipeline-col-header">${stage}<span>${stageDls.length}</span></div>
+        ${stageDls.map(d => `<div class="pipeline-card" onclick="openDeal('${d.id}')">
+          <div class="pipeline-card-name">${d.name}</div>
+          <span class="badge type-badge ${typeClass(d.type)}">${d.type}</span>
+          ${d.fee ? `<div class="pipeline-card-fee" style="margin-top:5px">${formatFee(parseInt(d.fee))} 예상</div>` : ''}
+        </div>`).join('')}
+      </div>`;
+    }).join('');
+  }
+}
+
+function dealCardHTML(d) {
+  const people = (d.personIds||[]).map(pid => DB.people.find(p=>p.id===pid)).filter(Boolean);
+  const nextAction = (d.actions||[]).find(a=>!a.done);
+  return `<div class="card" onclick="openDeal('${d.id}')">
+    <div class="deal-card-top">
+      <div class="deal-card-name">${d.name}</div>
+      <span class="badge stage-${d.stage}">${d.stage}</span>
+    </div>
+    <div class="deal-card-meta">
+      <span class="badge type-badge ${typeClass(d.type)}">${d.type}</span>
+      ${people.slice(0,2).map(p=>`<span class="badge" style="background:var(--surface3);color:var(--text2)">${p.name}</span>`).join('')}
+    </div>
+    <div class="deal-card-footer">
+      <span class="deal-card-fee">${d.fee ? formatFee(parseInt(d.fee)) + ' 예상' : '미정'}</span>
+      <span class="deal-card-date">${d.updatedAt ? formatDate(d.updatedAt) : ''}</span>
+    </div>
+    ${nextAction ? `<div class="deal-card-action">${nextAction.title}</div>` : ''}
+  </div>`;
+}
+
+// ══════════════════════════════════════════
+// DEAL DETAIL
+// ══════════════════════════════════════════
+function openDeal(id) {
+  curDealId = id; curDetailTab = 'overview';
+  const layer = document.getElementById('detail-layer');
+  const d = DB.deals.find(d=>d.id===id);
+  if (!d) return;
+  document.getElementById('detail-title').textContent = d.name;
+  layer.classList.add('open');
+  renderDetailContent();
+}
+function closeDetail() {
+  document.getElementById('detail-layer').classList.remove('open');
+  renderAll();
+}
+function renderDetailContent() {
+  const d = DB.deals.find(d=>d.id===curDealId); if (!d) return;
+  const tabs = ['overview','people','actions','logs','drive'];
+  const tabNames = ['개요','관련자','액션','로그','Drive'];
+  document.getElementById('detail-content').innerHTML = `
+    <div class="inner-tabs">
+      ${tabs.map((t,i)=>`<button class="inner-tab ${curDetailTab===t?'active':''}" onclick="switchDetailTab('${t}')">${tabNames[i]}</button>`).join('')}
+    </div>
+    <div id="detail-tab-content"></div>`;
+  renderDetailTab();
+}
+function switchDetailTab(t) { curDetailTab = t; renderDetailContent(); }
+function renderDetailTab() {
+  const d = DB.deals.find(d=>d.id===curDealId); if (!d) return;
+  const el = document.getElementById('detail-tab-content');
+  if (curDetailTab === 'overview') el.innerHTML = renderOverviewTab(d);
+  else if (curDetailTab === 'people') el.innerHTML = renderDealPeopleTab(d);
+  else if (curDetailTab === 'actions') el.innerHTML = renderActionsTab(d);
+  else if (curDetailTab === 'logs') el.innerHTML = renderLogsTab(d);
+  else if (curDetailTab === 'drive') el.innerHTML = renderDriveTab(d);
+}
+
+function renderOverviewTab(d) {
+  const stageIdx = STAGES.indexOf(d.stage);
+  const activeStages = STAGES.filter(s=>!['완료','중단'].includes(s));
+  const progress = stageIdx >= 0 && stageIdx < activeStages.length ? Math.round((stageIdx / (activeStages.length-1)) * 100) : (d.stage==='완료'?100:0);
+  return `<div class="detail-section">
+    <div class="detail-section-title">딜 정보</div>
+    <div class="detail-row">
+      <div class="detail-field"><div class="detail-field-label">타입</div><div class="detail-field-value"><span class="badge type-badge ${typeClass(d.type)}">${d.type}</span></div></div>
+      <div class="detail-field"><div class="detail-field-label">단계</div><div class="detail-field-value"><span class="badge stage-${d.stage}">${d.stage}</span></div></div>
+    </div>
+    <div class="detail-field" style="margin-top:10px"><div class="detail-field-label">진행률</div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${progress}%"></div></div>
+      <div style="font-size:11px;color:var(--text3);margin-top:4px">${STAGES.filter(s=>!['완료','중단'].includes(s)).join(' → ')}</div>
+    </div>
+    ${d.fee ? `<div class="detail-field" style="margin-top:10px"><div class="detail-field-label">예상 성공보수</div><div class="detail-field-value" style="color:var(--accent);font-size:18px;font-family:'DM Serif Display',serif">${formatFee(parseInt(d.fee))}</div></div>` : ''}
+    ${d.desc ? `<div class="detail-field" style="margin-top:10px"><div class="detail-field-label">설명</div><div class="detail-field-value" style="line-height:1.6;color:var(--text2)">${d.desc.replace(/\n/g,'<br>')}</div></div>` : ''}
+    ${d.country ? `<div class="detail-field" style="margin-top:10px"><div class="detail-field-label">국가/지역</div><div class="detail-field-value">${d.country}</div></div>` : ''}
+    ${d.startDate ? `<div class="detail-field" style="margin-top:10px"><div class="detail-field-label">시작일</div><div class="detail-field-value">${formatDate(d.startDate)}</div></div>` : ''}
+  </div>
+  <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap">
+    <button class="btn btn-sm" onclick="openStageModal()">단계 변경</button>
+    <button class="btn-ghost btn-sm delete-btn" onclick="deleteDeal('${d.id}')">딜 삭제</button>
+  </div>
+  ${d.stageHistory && d.stageHistory.length ? `
+  <div class="detail-section">
+    <div class="detail-section-title">단계 히스토리</div>
+    ${d.stageHistory.map(h=>`<div class="log-item"><div class="log-item-date">${formatDate(h.date)}</div><div class="log-item-content"><span class="badge stage-${h.from}" style="font-size:10px">${h.from}</span> → <span class="badge stage-${h.to}" style="font-size:10px">${h.to}</span></div>${h.note?`<div class="log-item-who">${h.note}</div>`:''}</div>`).join('')}
+  </div>` : ''}`;
+}
+
+function renderDealPeopleTab(d) {
+  const people = (d.personIds||[]).map(pid=>DB.people.find(p=>p.id===pid)).filter(Boolean);
+  const others = DB.people.filter(p=>!(d.personIds||[]).includes(p.id));
+  return `<button class="btn btn-sm" onclick="openLinkPersonModal()" style="margin-bottom:12px">+ 관련자 연결</button>
+  ${people.length ? people.map(p => `
+    <div class="person-card" onclick="openPerson('${p.id}')">
+      <div class="person-avatar">${p.name.slice(-1)}</div>
+      <div class="person-info">
+        <div class="person-name">${p.name}</div>
+        <div class="person-meta">${[p.org,p.title].filter(Boolean).join(' · ')}</div>
+        ${p.role ? `<div class="person-deals" style="color:var(--text2)">${p.role}</div>` : ''}
+      </div>
+      <button class="icon-btn" onclick="unlinkPerson(event,'${d.id}','${p.id}')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>`).join('') : '<div class="empty-state" style="padding:20px"><p>연결된 관련자가 없습니다</p></div>'}`;
+}
+
+function renderActionsTab(d) {
+  const actions = d.actions || [];
+  const open = actions.filter(a=>!a.done);
+  const done = actions.filter(a=>a.done);
+  return `<button class="btn btn-sm" onclick="openAddActionModal()" style="margin-bottom:12px">+ 액션 추가</button>
+  ${open.length ? open.map((a,i) => actionItemHTML(a, actions.indexOf(a))).join('') : '<p style="font-size:13px;color:var(--text3);margin-bottom:12px">진행중인 액션이 없습니다</p>'}
+  ${done.length ? `<div style="margin-top:16px;font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px">완료됨</div>
+  ${done.map((a,i) => actionItemHTML(a, actions.indexOf(a))).join('')}` : ''}`;
+}
+
+function actionItemHTML(a, idx) {
+  const diff = a.due ? getDaysDiff(a.due) : null;
+  const overdue = diff !== null && diff < 0 && !a.done;
+  return `<div class="action-item">
+    <div class="action-check ${a.done?'done':''}" onclick="toggleAction(${idx})"></div>
+    <div class="action-text">
+      <div class="action-title ${a.done?'done':''}">${a.title}</div>
+      ${a.due ? `<div class="action-due ${overdue?'overdue':''}">${formatDate(a.due)}${!a.done&&diff!==null?' (D'+(diff>=0?'-'+diff:'+'+Math.abs(diff))+')':''}</div>` : ''}
+      ${a.note ? `<div style="font-size:11px;color:var(--text3);margin-top:2px">${a.note}</div>` : ''}
+    </div>
+    <button class="icon-btn" onclick="deleteAction(${idx})">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>`;
+}
+
+function renderLogsTab(d) {
+  const logs = [...(d.logs||[])].reverse();
+  return `<button class="btn btn-sm" onclick="openAddLogModal()" style="margin-bottom:12px">+ 로그 추가</button>
+  ${logs.length ? logs.map((l,i)=>`<div class="log-item">
+    <div class="log-item-date">${formatDate(l.date)} ${l.time||''}</div>
+    <div class="log-item-content">${l.content.replace(/\n/g,'<br>')}</div>
+    ${l.who ? `<div class="log-item-who">참석: ${l.who}</div>` : ''}
+    <button style="background:none;border:none;color:var(--text3);font-size:11px;cursor:pointer;margin-top:4px;font-family:'DM Sans',sans-serif" onclick="deleteLog(${(d.logs||[]).length-1-i})">삭제</button>
+  </div>`).join('') : '<div class="empty-state" style="padding:20px"><p>로그가 없습니다</p></div>'}`;
+}
+
+function renderDriveTab(d) {
+  const links = d.driveLinks || [];
+  return `<button class="btn btn-sm" onclick="openAddDriveModal()" style="margin-bottom:12px">+ Drive 링크 추가</button>
+  ${links.length ? links.map((l,i)=>`<div class="drive-item">
+    <div class="drive-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="16" height="16"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+    </div>
+    <div class="drive-info">
+      <div class="drive-name">${l.name}</div>
+      <div class="drive-type">${l.docType||''}</div>
+    </div>
+    <button class="drive-link-btn" onclick="window.open('${l.url}','_blank')">열기</button>
+    <button class="icon-btn" onclick="deleteDriveLink(${i})" style="margin-left:4px">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>`).join('') : '<div class="empty-state" style="padding:20px"><p>Drive 링크가 없습니다</p></div>'}`;
+}
+
+// ══════════════════════════════════════════
+// DEAL CRUD
+// ══════════════════════════════════════════
+function openAddModal() {
+  if (curTab === 'people') { openAddPersonModal(); return; }
+  openAddDealModal();
+}
+function openAddDealModal() {
+  modalMode = 'add-deal';
+  showModal('새 딜 추가', dealFormHTML(), [
+    {label:'추가', fn:'saveDeal()'},
+    {label:'취소', fn:'closeModal()', ghost:true}
+  ]);
+}
+function openEditDeal() {
+  const d = DB.deals.find(d=>d.id===curDealId); if (!d) return;
+  modalMode = 'edit-deal';
+  showModal('딜 수정', dealFormHTML(d), [
+    {label:'저장', fn:'saveDeal()'},
+    {label:'취소', fn:'closeModal()', ghost:true}
+  ]);
+}
+function dealFormHTML(d) {
+  return `
+    <label>딜명 *</label><input id="f-name" value="${d?d.name:''}" placeholder="딜 이름을 입력하세요">
+    <label>타입</label>
+    <select id="f-type">${TYPES.map(t=>`<option value="${t}" ${d&&d.type===t?'selected':''}>${t}</option>`).join('')}</select>
+    <label>단계</label>
+    <select id="f-stage">${STAGES.map(s=>`<option value="${s}" ${d&&d.stage===s?'selected':''}>${s}</option>`).join('')}</select>
+    <label>예상 성공보수 (원)</label><input id="f-fee" type="number" value="${d?d.fee:''}" placeholder="예: 100000000 (1억)">
+    <label>국가/지역</label><input id="f-country" value="${d?d.country||'':''}" placeholder="예: 한국, 중국, 미국">
+    <label>시작일</label><input id="f-startDate" type="date" value="${d?d.startDate||'':today()}">
+    <label>설명</label><textarea id="f-desc" rows="3" placeholder="딜 개요, 배경 등...">${d?d.desc||'':''}</textarea>`;
+}
+function saveDeal() {
+  const name = document.getElementById('f-name').value.trim();
+  if (!name) { alert('딜명을 입력하세요'); return; }
+  if (modalMode === 'add-deal') {
+    const deal = {
+      id: uid(), name, type: document.getElementById('f-type').value,
+      stage: document.getElementById('f-stage').value, fee: document.getElementById('f-fee').value,
+      country: document.getElementById('f-country').value, startDate: document.getElementById('f-startDate').value,
+      desc: document.getElementById('f-desc').value, personIds: [], actions: [], logs: [], driveLinks: [],
+      stageHistory: [], createdAt: today(), updatedAt: today()
+    };
+    DB.deals.push(deal);
+  } else {
+    const d = DB.deals.find(d=>d.id===curDealId);
+    if (d) {
+      const oldStage = d.stage;
+      const newStage = document.getElementById('f-stage').value;
+      d.name = name; d.type = document.getElementById('f-type').value;
+      d.stage = newStage; d.fee = document.getElementById('f-fee').value;
+      d.country = document.getElementById('f-country').value;
+      d.startDate = document.getElementById('f-startDate').value;
+      d.desc = document.getElementById('f-desc').value; d.updatedAt = today();
+      if (oldStage !== newStage) { if (!d.stageHistory) d.stageHistory = []; d.stageHistory.push({from:oldStage,to:newStage,date:today()}); }
+    }
+  }
+  saveLocal(); closeModal();
+  if (curDealId) { renderDetailContent(); } else renderDeals();
+}
+function deleteDeal(id) {
+  if (!confirm('이 딜을 삭제하시겠습니까?')) return;
+  DB.deals = DB.deals.filter(d=>d.id!==id); saveLocal(); closeDetail();
+}
+function openStageModal() {
+  const d = DB.deals.find(d=>d.id===curDealId); if (!d) return;
+  modalMode = 'stage-update';
+  showModal('단계 변경', `
+    <label>현재 단계</label>
+    <select id="f-stage">${STAGES.map(s=>`<option value="${s}" ${d.stage===s?'selected':''}>${s}</option>`).join('')}</select>
+    <label>메모 (선택)</label><input id="f-stage-note" placeholder="단계 변경 사유 등...">
+  `, [{label:'변경', fn:'saveStageChange()'},{label:'취소', fn:'closeModal()', ghost:true}]);
+}
+function saveStageChange() {
+  const d = DB.deals.find(d=>d.id===curDealId); if (!d) return;
+  const oldStage = d.stage;
+  const newStage = document.getElementById('f-stage').value;
+  const note = document.getElementById('f-stage-note').value;
+  if (oldStage !== newStage) {
+    if (!d.stageHistory) d.stageHistory = [];
+    d.stageHistory.push({from:oldStage, to:newStage, date:today(), note});
+    d.stage = newStage; d.updatedAt = today();
+    saveLocal(); closeModal(); renderDetailContent();
+  } else closeModal();
+}
+
+// ══════════════════════════════════════════
+// ACTIONS & LOGS & DRIVE
+// ══════════════════════════════════════════
+function openAddActionModal() {
+  modalMode = 'add-action';
+  showModal('액션 추가', `
+    <label>액션 내용 *</label><input id="f-action-title" placeholder="할 일을 입력하세요">
+    <label>기한</label><input id="f-action-due" type="date" value="${today()}">
+    <label>메모</label><input id="f-action-note" placeholder="추가 메모...">
+  `, [{label:'추가', fn:'saveAction()'},{label:'취소', fn:'closeModal()', ghost:true}]);
+}
+function saveAction() {
+  const title = document.getElementById('f-action-title').value.trim();
+  if (!title) { alert('내용을 입력하세요'); return; }
+  const d = DB.deals.find(d=>d.id===curDealId); if (!d) return;
+  if (!d.actions) d.actions = [];
+  d.actions.push({id:uid(), title, due:document.getElementById('f-action-due').value, note:document.getElementById('f-action-note').value, done:false});
+  d.updatedAt = today(); saveLocal(); closeModal(); renderDetailContent();
+}
+function toggleAction(idx) {
+  const d = DB.deals.find(d=>d.id===curDealId); if (!d||!d.actions) return;
+  d.actions[idx].done = !d.actions[idx].done; d.updatedAt = today(); saveLocal(); renderDetailContent();
+}
+function deleteAction(idx) {
+  const d = DB.deals.find(d=>d.id===curDealId); if (!d||!d.actions) return;
+  d.actions.splice(idx,1); saveLocal(); renderDetailContent();
+}
+function openAddLogModal() {
+  modalMode = 'add-log';
+  showModal('로그 추가', `
+    <label>날짜</label><input id="f-log-date" type="date" value="${today()}">
+    <label>내용 *</label><textarea id="f-log-content" rows="4" placeholder="미팅 내용, 논의 사항, 특이사항..."></textarea>
+    <label>참석자</label><input id="f-log-who" placeholder="홍길동, 김철수...">
+  `, [{label:'추가', fn:'saveLog()'},{label:'취소', fn:'closeModal()', ghost:true}]);
+}
+function saveLog() {
+  const content = document.getElementById('f-log-content').value.trim();
+  if (!content) { alert('내용을 입력하세요'); return; }
+  const d = DB.deals.find(d=>d.id===curDealId); if (!d) return;
+  if (!d.logs) d.logs = [];
+  d.logs.push({id:uid(), date:document.getElementById('f-log-date').value, content, who:document.getElementById('f-log-who').value, time:new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'})});
+  d.updatedAt = today(); saveLocal(); closeModal(); renderDetailContent();
+}
+function deleteLog(idx) {
+  const d = DB.deals.find(d=>d.id===curDealId); if (!d||!d.logs) return;
+  d.logs.splice(idx,1); saveLocal(); renderDetailContent();
+}
+function openAddDriveModal() {
+  modalMode = 'add-drive';
+  showModal('Drive 링크 추가', `
+    <label>문서명 *</label><input id="f-drive-name" placeholder="NDA_홍콩코스메틱_2024">
+    <label>문서 타입</label>
+    <select id="f-drive-type">${DOC_TYPES.map(t=>`<option value="${t}">${t}</option>`).join('')}</select>
+    <label>Google Drive URL *</label><input id="f-drive-url" type="url" placeholder="https://drive.google.com/...">
+  `, [{label:'추가', fn:'saveDriveLink()'},{label:'취소', fn:'closeModal()', ghost:true}]);
+}
+function saveDriveLink() {
+  const name = document.getElementById('f-drive-name').value.trim();
+  const url = document.getElementById('f-drive-url').value.trim();
+  if (!name || !url) { alert('문서명과 URL을 입력하세요'); return; }
+  const d = DB.deals.find(d=>d.id===curDealId); if (!d) return;
+  if (!d.driveLinks) d.driveLinks = [];
+  d.driveLinks.push({id:uid(), name, url, docType:document.getElementById('f-drive-type').value});
+  d.updatedAt = today(); saveLocal(); closeModal(); renderDetailContent();
+}
+function deleteDriveLink(idx) {
+  const d = DB.deals.find(d=>d.id===curDealId); if (!d||!d.driveLinks) return;
+  d.driveLinks.splice(idx,1); saveLocal(); renderDetailContent();
+}
+
+// ══════════════════════════════════════════
+// PEOPLE
+// ══════════════════════════════════════════
+function renderPeople() {
+  const q = (document.getElementById('people-search-input')?.value||'').toLowerCase();
+  let people = DB.people;
+  if (q) people = people.filter(p => p.name.toLowerCase().includes(q)||(p.org||'').toLowerCase().includes(q)||(p.role||'').toLowerCase().includes(q));
+  people = [...people].sort((a,b) => a.name < b.name ? -1 : 1);
+  document.getElementById('people-list').innerHTML = people.length ? `<div class="detail-section" style="padding:4px 12px">${people.map(p=>{
+    const dealCount = DB.deals.filter(d=>(d.personIds||[]).includes(p.id)).length;
+    return `<div class="person-card" onclick="openPerson('${p.id}')">
+      <div class="person-avatar">${p.name.slice(-1)}</div>
+      <div class="person-info">
+        <div class="person-name">${p.name}</div>
+        <div class="person-meta">${[p.org,p.title].filter(Boolean).join(' · ')}</div>
+        ${dealCount ? `<div class="person-deals">${dealCount}개 딜 참여</div>` : ''}
+      </div>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" style="color:var(--text3)"><path d="M9 18l6-6-6-6"/></svg>
+    </div>`;
+  }).join('')}</div>` :
+  `<div class="empty-state"><div class="empty-state-icon">👤</div><p>관련자가 없습니다<br>+ 버튼으로 추가하세요</p></div>`;
+}
+
+function openAddPersonModal() {
+  modalMode = 'add-person';
+  showModal('새 관련자 추가', personFormHTML(), [
+    {label:'추가', fn:'savePerson()'},
+    {label:'취소', fn:'closeModal()', ghost:true}
+  ]);
+}
+function openEditPerson() {
+  const p = DB.people.find(p=>p.id===curPersonId); if (!p) return;
+  modalMode = 'edit-person';
+  showModal('관련자 수정', personFormHTML(p), [
+    {label:'저장', fn:'savePerson()'},
+    {label:'취소', fn:'closeModal()', ghost:true}
+  ]);
+}
+function personFormHTML(p) {
+  return `
+    <label>이름 *</label><input id="fp-name" value="${p?p.name:''}" placeholder="홍길동">
+    <label>소속/회사</label><input id="fp-org" value="${p?p.org||'':''}" placeholder="ABC 코리아">
+    <label>직함/직위</label><input id="fp-title" value="${p?p.title||'':''}" placeholder="대표이사">
+    <label>역할</label>
+    <select id="fp-role">${ROLES.map(r=>`<option value="${r}" ${p&&p.role===r?'selected':''}>${r}</option>`).join('')}</select>
+    <label>전화번호</label><input id="fp-phone" value="${p?p.phone||'':''}" placeholder="+82-10-1234-5678">
+    <label>이메일</label><input id="fp-email" type="email" value="${p?p.email||'':''}" placeholder="name@company.com">
+    <label>WeChat ID</label><input id="fp-wechat" value="${p?p.wechat||'':''}" placeholder="WeChat ID">
+    <label>국적/국가</label><input id="fp-country" value="${p?p.country||'':''}" placeholder="중국, 한국, 미국...">
+    <label>언어</label><input id="fp-lang" value="${p?p.lang||'':''}" placeholder="한국어, 중국어, 영어">
+    <label>중요도</label>
+    <div class="stars" id="fp-stars" style="margin-top:6px">
+      ${[1,2,3,4,5].map(i=>`<span class="star ${p&&(p.rating||0)>=i?'active':''}" onclick="setRating(${i})">★</span>`).join('')}
+    </div>
+    <input type="hidden" id="fp-rating" value="${p?p.rating||0:0}">
+    <label>메모</label><textarea id="fp-memo" rows="3" placeholder="특이사항, 성향, 관계 등...">${p?p.memo||'':''}</textarea>`;
+}
+function setRating(n) {
+  document.getElementById('fp-rating').value = n;
+  document.querySelectorAll('.star').forEach((s,i) => s.classList.toggle('active', i<n));
+}
+function savePerson() {
+  const name = document.getElementById('fp-name').value.trim();
+  if (!name) { alert('이름을 입력하세요'); return; }
+  const data = {
+    name, org:document.getElementById('fp-org').value, title:document.getElementById('fp-title').value,
+    role:document.getElementById('fp-role').value, phone:document.getElementById('fp-phone').value,
+    email:document.getElementById('fp-email').value, wechat:document.getElementById('fp-wechat').value,
+    country:document.getElementById('fp-country').value, lang:document.getElementById('fp-lang').value,
+    rating:parseInt(document.getElementById('fp-rating').value)||0,
+    memo:document.getElementById('fp-memo').value
+  };
+  if (modalMode === 'add-person') { DB.people.push({id:uid(), ...data, logs:[], createdAt:today()}); }
+  else { const p = DB.people.find(p=>p.id===curPersonId); if(p) Object.assign(p, data); }
+  saveLocal(); closeModal();
+  if (curPersonId) renderPersonContent();
+  renderPeople();
+}
+
+function openPerson(id) {
+  curPersonId = id; curPersonTab = 'info';
+  const p = DB.people.find(p=>p.id===id); if (!p) return;
+  document.getElementById('person-title').textContent = p.name;
+  document.getElementById('person-layer').style.transform = 'translateX(0)';
+  renderPersonContent();
+}
+function closePerson() {
+  document.getElementById('person-layer').style.transform = 'translateX(100%)';
+}
+function renderPersonContent() {
+  const p = DB.people.find(p=>p.id===curPersonId); if (!p) return;
+  const tabs = ['info','deals','logs'];
+  const tabNames = ['정보','딜','대화로그'];
+  document.getElementById('person-content').innerHTML = `
+    <div class="inner-tabs">
+      ${tabs.map((t,i)=>`<button class="inner-tab ${curPersonTab===t?'active':''}" onclick="switchPersonTab('${t}')">${tabNames[i]}</button>`).join('')}
+    </div>
+    <div id="person-tab-content"></div>`;
+  renderPersonTab();
+}
+function switchPersonTab(t) { curPersonTab = t; renderPersonContent(); }
+function renderPersonTab() {
+  const p = DB.people.find(p=>p.id===curPersonId); if (!p) return;
+  const el = document.getElementById('person-tab-content');
+  if (curPersonTab === 'info') {
+    const stars = [1,2,3,4,5].map(i=>`<span style="color:${(p.rating||0)>=i?'var(--accent)':'var(--text3)';font-size:16px}">★</span>`).join('');
+    el.innerHTML = `
+      <div style="text-align:center;padding:16px 0 20px">
+        <div style="width:64px;height:64px;border-radius:50%;background:var(--surface2);border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;color:var(--accent);margin:0 auto 10px">${p.name.slice(-1)}</div>
+        <div style="font-size:18px;font-weight:700;color:var(--text)">${p.name}</div>
+        <div style="font-size:13px;color:var(--text2);margin-top:4px">${[p.org,p.title].filter(Boolean).join(' · ')}</div>
+        <div style="margin-top:6px">${[1,2,3,4,5].map(i=>`<span style="color:${(p.rating||0)>=i?'var(--accent)':'var(--text3)';font-size:16px}">★</span>`).join('')}</div>
+        ${p.role?`<div style="margin-top:8px"><span class="badge" style="background:var(--surface3);color:var(--text2)">${p.role}</span></div>`:''}
+      </div>
+      <div class="detail-section">
+        <div class="detail-section-title">연락처</div>
+        ${p.phone?`<div class="contact-row"><span class="contact-icon">📞</span><span class="contact-val">${p.phone}</span><button class="contact-copy" onclick="navigator.clipboard&&navigator.clipboard.writeText('${p.phone}')">복사</button></div>`:''}
+        ${p.email?`<div class="contact-row"><span class="contact-icon">✉️</span><span class="contact-val">${p.email}</span><button class="contact-copy" onclick="navigator.clipboard&&navigator.clipboard.writeText('${p.email}')">복사</button></div>`:''}
+        ${p.wechat?`<div class="contact-row"><span class="contact-icon">💬</span><span class="contact-val">${p.wechat}</span><button class="contact-copy" onclick="navigator.clipboard&&navigator.clipboard.writeText('${p.wechat}')">복사</button></div>`:''}
+        ${p.country?`<div class="contact-row"><span class="contact-icon">🌏</span><span class="contact-val">${p.country}</span></div>`:''}
+        ${p.lang?`<div class="contact-row"><span class="contact-icon">🗣</span><span class="contact-val">${p.lang}</span></div>`:''}
+      </div>
+      ${p.memo?`<div class="detail-section"><div class="detail-section-title">메모</div><div style="font-size:13px;color:var(--text2);line-height:1.7">${p.memo.replace(/\n/g,'<br>')}</div></div>`:''}
+      <div style="display:flex;gap:8px;margin-top:4px">
+        <button class="delete-btn" onclick="deletePerson('${p.id}')">삭제</button>
+      </div>`;
+  } else if (curPersonTab === 'deals') {
+    const deals = DB.deals.filter(d=>(d.personIds||[]).includes(p.id));
+    el.innerHTML = deals.length ? deals.map(d=>`<div class="card" onclick="openDeal('${d.id}')">
+      <div class="deal-card-top"><div class="deal-card-name">${d.name}</div><span class="badge stage-${d.stage}">${d.stage}</span></div>
+      <div class="deal-card-meta"><span class="badge type-badge ${typeClass(d.type)}">${d.type}</span></div>
+    </div>`).join('') : '<div class="empty-state" style="padding:20px"><p>연결된 딜이 없습니다</p></div>';
+  } else {
+    const logs = [...(p.logs||[])].reverse();
+    el.innerHTML = `<button class="btn btn-sm" onclick="openAddPersonLogModal()" style="margin-bottom:12px">+ 대화 로그</button>
+    ${logs.length ? logs.map((l,i)=>`<div class="log-item">
+      <div class="log-item-date">${formatDate(l.date)}</div>
+      <div class="log-item-content">${l.content.replace(/\n/g,'<br>')}</div>
+      ${l.channel?`<div class="log-item-who">${l.channel}</div>`:''}
+      <button style="background:none;border:none;color:var(--text3);font-size:11px;cursor:pointer;margin-top:4px;font-family:'DM Sans',sans-serif" onclick="deletePersonLog(${(p.logs||[]).length-1-i})">삭제</button>
+    </div>`).join('') : '<div class="empty-state" style="padding:20px"><p>대화 로그가 없습니다</p></div>'}`;
+  }
+}
+function openAddPersonLogModal() {
+  modalMode = 'add-person-log';
+  showModal('대화 로그 추가', `
+    <label>날짜</label><input id="f-plog-date" type="date" value="${today()}">
+    <label>채널</label><input id="f-plog-channel" placeholder="전화, 미팅, 이메일, WeChat...">
+    <label>내용 *</label><textarea id="f-plog-content" rows="4" placeholder="대화 내용, 논의 사항..."></textarea>
+  `, [{label:'추가', fn:'savePersonLog()'},{label:'취소', fn:'closeModal()', ghost:true}]);
+}
+function savePersonLog() {
+  const content = document.getElementById('f-plog-content').value.trim();
+  if (!content) { alert('내용을 입력하세요'); return; }
+  const p = DB.people.find(p=>p.id===curPersonId); if (!p) return;
+  if (!p.logs) p.logs = [];
+  p.logs.push({id:uid(), date:document.getElementById('f-plog-date').value, content, channel:document.getElementById('f-plog-channel').value});
+  saveLocal(); closeModal(); renderPersonContent();
+}
+function deletePersonLog(idx) {
+  const p = DB.people.find(p=>p.id===curPersonId); if (!p||!p.logs) return;
+  p.logs.splice(idx,1); saveLocal(); renderPersonContent();
+}
+function deletePerson(id) {
+  if (!confirm('이 관련자를 삭제하시겠습니까?')) return;
+  DB.people = DB.people.filter(p=>p.id!==id);
+  DB.deals.forEach(d => { if(d.personIds) d.personIds = d.personIds.filter(pid=>pid!==id); });
+  saveLocal(); closePerson(); renderPeople();
+}
+
+// ══════════════════════════════════════════
+// LINK PERSON TO DEAL
+// ══════════════════════════════════════════
+function openLinkPersonModal() {
+  const d = DB.deals.find(d=>d.id===curDealId); if (!d) return;
+  const available = DB.people.filter(p=>!(d.personIds||[]).includes(p.id));
+  modalMode = 'link-person';
+  showModal('관련자 연결', `
+    <p style="font-size:13px;color:var(--text2);margin-bottom:12px">연결할 관련자를 선택하세요</p>
+    ${available.length ? available.map(p=>`<div class="person-card" onclick="linkPerson('${p.id}')">
+      <div class="person-avatar">${p.name.slice(-1)}</div>
+      <div class="person-info"><div class="person-name">${p.name}</div><div class="person-meta">${[p.org,p.title].filter(Boolean).join(' · ')}</div></div>
+    </div>`).join('') : '<p style="font-size:13px;color:var(--text3)">연결 가능한 관련자가 없습니다. 먼저 관련자를 추가하세요.</p>'}
+    <button class="btn-ghost btn-sm" onclick="closeModal();openAddPersonModal()" style="margin-top:12px;width:100%">+ 새 관련자 추가</button>
+  `, [{label:'닫기', fn:'closeModal()', ghost:true}]);
+}
+function linkPerson(pid) {
+  const d = DB.deals.find(d=>d.id===curDealId); if (!d) return;
+  if (!d.personIds) d.personIds = [];
+  if (!d.personIds.includes(pid)) { d.personIds.push(pid); d.updatedAt = today(); saveLocal(); }
+  closeModal(); renderDetailContent();
+}
+function unlinkPerson(e, dealId, pid) {
+  e.stopPropagation();
+  const d = DB.deals.find(d=>d.id===dealId); if (!d) return;
+  d.personIds = (d.personIds||[]).filter(id=>id!==pid);
+  saveLocal(); renderDetailContent();
+}
+
+// ══════════════════════════════════════════
+// MORE
+// ══════════════════════════════════════════
+function renderMore() {
+  document.getElementById('gh-token').value = DB.settings.ghToken || '';
+  document.getElementById('gh-repo').value = DB.settings.ghRepo || '';
+  document.getElementById('gh-filename').value = DB.settings.ghFile || 'myproject-data.json';
+  document.getElementById('more-total-deals').textContent = DB.deals.length + '개';
+  document.getElementById('more-total-people').textContent = DB.people.length + '명';
+}
+
+// ══════════════════════════════════════════
+// MODAL ENGINE
+// ══════════════════════════════════════════
+function showModal(title, body, actions) {
+  document.getElementById('modal-title').textContent = title;
+  document.getElementById('modal-body').innerHTML = body;
+  document.getElementById('modal-actions').innerHTML = actions.map(a =>
+    `<button class="${a.ghost?'btn-ghost':'btn'}" onclick="${a.fn}">${a.label}</button>`
+  ).join('');
+  document.getElementById('modal-overlay').classList.add('open');
+}
+function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); }
+function handleModalOverlayClick(e) { if (e.target === document.getElementById('modal-overlay')) closeModal(); }
+
+// ══════════════════════════════════════════
+// SWIPE BACK GESTURE
+// ══════════════════════════════════════════
+function initSwipe(el, closeFn) {
+  let startX = 0, dragging = false;
+  el.addEventListener('touchstart', e => { startX = e.touches[0].clientX; dragging = startX < 40; }, {passive:true});
+  el.addEventListener('touchmove', e => {
+    if (!dragging) return;
+    const dx = e.touches[0].clientX - startX;
+    if (dx > 0) el.style.transform = `translateX(${dx}px)`;
+  }, {passive:true});
+  el.addEventListener('touchend', e => {
+    if (!dragging) return;
+    const dx = e.changedTouches[0].clientX - startX;
+    if (dx > 80) { el.style.transform = ''; closeFn(); }
+    else { el.style.transform = ''; }
+    dragging = false;
+  }, {passive:true});
+}
+
+// ══════════════════════════════════════════
+// RENDER ALL
+// ══════════════════════════════════════════
+function renderAll() {
+  if (curTab === 'dashboard') renderDashboard();
+  if (curTab === 'deals') renderDeals();
+  if (curTab === 'people') renderPeople();
+  if (curTab === 'more') renderMore();
+}
+
+// ══════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════
+function init() {
+  loadLocal();
+  initSwipe(document.getElementById('detail-layer'), closeDetail);
+  initSwipe(document.getElementById('person-layer'), closePerson);
+  renderDashboard();
+  // GitHub auto-load
+  if (DB.settings.ghToken && DB.settings.ghRepo && DB.settings.ghFile) loadFromGitHub();
+}
+init();
+</script>
+</body>
+</html>
