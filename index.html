@@ -5,355 +5,157 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="My Project">
 <title>My Project</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg: #0c0c0f;
-  --s1: #131318;
-  --s2: #1a1a22;
-  --s3: #22222c;
-  --border: #2a2a36;
-  --border2: #333340;
-  --gold: #c8a96e;
-  --gold2: #e8c98e;
-  --gold-dim: rgba(200,169,110,0.12);
-  --text: #ededea;
-  --t2: #9898a8;
-  --t3: #555568;
-  --red: #e05555;
-  --green: #55b875;
-  --blue: #5588e0;
-  --SAT: env(safe-area-inset-top,0px);
-  --SAB: env(safe-area-inset-bottom,0px);
-}
+:root{--bg:#0c0c0f;--s1:#131318;--s2:#1a1a22;--s3:#22222c;--bd:#2a2a36;--bd2:#333340;--gold:#c8a96e;--gold2:#e8c98e;--gdim:rgba(200,169,110,0.12);--tx:#ededea;--t2:#9898a8;--t3:#555568;--red:#e05555;--green:#55b875;--blue:#5588e0;--SAT:env(safe-area-inset-top,0px);--SAB:env(safe-area-inset-bottom,0px)}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overflow:hidden}
-
-/* ── STACK LAYERS ── */
+html,body{height:100%;background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;overflow:hidden}
 #stack{position:relative;width:100%;height:100dvh;overflow:hidden}
-.layer{
-  position:absolute;inset:0;
-  display:flex;flex-direction:column;
-  background:var(--bg);
-  transform:translateX(100%);
-  transition:transform .32s cubic-bezier(.4,0,.2,1);
-  will-change:transform;
-}
+.layer{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--bg);transform:translateX(100%);transition:transform .32s cubic-bezier(.4,0,.2,1)}
 .layer.base{transform:translateX(0)}
 .layer.active{transform:translateX(0)}
 .layer.behind{transform:translateX(-28%)}
-
-/* ── TOPBAR ── */
-.topbar{
-  flex-shrink:0;
-  padding-top:var(--SAT);
-  background:var(--s1);
-  border-bottom:1px solid var(--border);
-}
-.topbar-inner{
-  height:52px;display:flex;align-items:center;padding:0 8px 0 4px;gap:4px;
-}
-.topbar h1{font-family:'DM Serif Display',serif;font-size:20px;color:var(--gold);flex:1;padding-left:8px;letter-spacing:.01em}
+.topbar{flex-shrink:0;padding-top:var(--SAT);background:var(--s1);border-bottom:1px solid var(--bd)}
+.topbar-inner{height:52px;display:flex;align-items:center;padding:0 8px 0 4px;gap:4px}
+.topbar h1{font-family:'DM Serif Display',serif;font-size:20px;color:var(--gold);flex:1;padding-left:8px}
 .topbar h2{font-size:16px;font-weight:600;flex:1;padding-left:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.back-btn{
-  width:40px;height:40px;border-radius:10px;background:none;border:none;
-  color:var(--t2);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;
-}
-.back-btn:active{background:var(--s3)}
-.icon-btn{
-  width:38px;height:38px;border-radius:10px;background:none;border:none;
-  color:var(--t2);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;
-}
-.icon-btn:active{background:var(--s3)}
-
-/* ── SCROLL BODY ── */
-.layer-body{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
-.layer-body::-webkit-scrollbar{display:none}
-
-/* ── FAB ── */
-.fab{
-  position:absolute;
-  bottom:calc(24px + var(--SAB));
-  right:20px;
-  width:54px;height:54px;border-radius:50%;
-  background:var(--gold);color:#0c0c0f;
-  border:none;font-size:26px;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  box-shadow:0 4px 24px rgba(200,169,110,.38);
-  z-index:10;transition:transform .15s;
-  font-family:'DM Sans',sans-serif;font-weight:300;
-}
+.back-btn,.icon-btn{width:40px;height:40px;border-radius:10px;background:none;border:none;color:var(--t2);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
+.back-btn:active,.icon-btn:active{background:var(--s3)}
+.lbody{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
+.lbody::-webkit-scrollbar{display:none}
+.fab{position:absolute;bottom:calc(24px + var(--SAB));right:20px;width:54px;height:54px;border-radius:50%;background:var(--gold);color:#0c0c0f;border:none;font-size:26px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 24px rgba(200,169,110,.38);z-index:10;transition:transform .15s;font-weight:300}
 .fab:active{transform:scale(.9)}
-
-/* ── LAYER 1: DEAL LIST ── */
-#l1-body{padding:0 0 100px}
-.l1-header-stats{
-  padding:18px 16px 14px;
-  border-bottom:1px solid var(--border);
-}
-.l1-fee-row{display:flex;align-items:baseline;gap:8px;margin-bottom:12px}
-.l1-fee-label{font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em}
-.l1-fee-val{font-family:'DM Serif Display',serif;font-size:30px;color:var(--gold)}
-.l1-stats{display:flex;gap:0}
-.l1-stat{flex:1;text-align:center;padding:10px 0;border-right:1px solid var(--border)}
-.l1-stat:last-child{border-right:none}
-.l1-stat-n{font-family:'DM Serif Display',serif;font-size:22px;color:var(--text)}
-.l1-stat-l{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;margin-top:1px}
-
-.filter-scroll{
-  display:flex;gap:6px;padding:10px 16px;
-  overflow-x:auto;-webkit-overflow-scrolling:touch;flex-shrink:0;
-  border-bottom:1px solid var(--border);
-}
-.filter-scroll::-webkit-scrollbar{display:none}
-.fchip{
-  padding:5px 12px;border-radius:20px;font-size:12px;font-weight:500;
-  background:var(--s2);border:1px solid var(--border);color:var(--t2);
-  cursor:pointer;white-space:nowrap;transition:all .18s;flex-shrink:0;
-}
-.fchip.on{background:var(--gold-dim);border-color:var(--gold);color:var(--gold)}
-
-/* deal row */
-.deal-row{
-  display:flex;align-items:center;gap:12px;
-  padding:14px 16px;border-bottom:1px solid var(--border);
-  cursor:pointer;transition:background .15s;
-  position:relative;
-}
+.stat-row{display:flex;border-bottom:1px solid var(--bd)}
+.stat-cell{flex:1;text-align:center;padding:12px 0;border-right:1px solid var(--bd)}
+.stat-cell:last-child{border-right:none}
+.stat-n{font-family:'DM Serif Display',serif;font-size:22px;color:var(--tx)}
+.stat-l{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;margin-top:1px}
+.fee-block{padding:16px;border-bottom:1px solid var(--bd)}
+.fee-label{font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
+.fee-val{font-family:'DM Serif Display',serif;font-size:30px;color:var(--gold)}
+.fbar{display:flex;gap:6px;padding:10px 16px;overflow-x:auto;-webkit-overflow-scrolling:touch;border-bottom:1px solid var(--bd)}
+.fbar::-webkit-scrollbar{display:none}
+.fchip{padding:5px 12px;border-radius:20px;font-size:12px;font-weight:500;background:var(--s2);border:1px solid var(--bd);color:var(--t2);cursor:pointer;white-space:nowrap;transition:all .18s;flex-shrink:0}
+.fchip.on{background:var(--gdim);border-color:var(--gold);color:var(--gold)}
+.deal-row{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--bd);cursor:pointer}
 .deal-row:active{background:var(--s2)}
-.deal-dot{
-  width:10px;height:10px;border-radius:50%;flex-shrink:0;
-}
+.deal-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
 .deal-main{flex:1;overflow:hidden}
-.deal-name{font-size:15px;font-weight:600;color:var(--text);margin-bottom:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.deal-sub{font-size:12px;color:var(--t2);display:flex;gap:8px;flex-wrap:wrap}
+.deal-name{font-size:15px;font-weight:600;color:var(--tx);margin-bottom:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.deal-sub{font-size:12px;color:var(--t2);display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .deal-right{text-align:right;flex-shrink:0}
 .deal-fee{font-size:13px;color:var(--gold);font-weight:600}
-.deal-stage-badge{font-size:10px;padding:2px 7px;border-radius:12px;border:1px solid;margin-top:4px;display:inline-block}
-.deal-chevron{color:var(--t3);flex-shrink:0}
-
-/* stage progress strip */
-.stage-strip{
-  display:flex;gap:2px;padding:10px 16px 0;margin-bottom:-4px;
-}
-.stage-pip{
-  height:3px;border-radius:2px;flex:1;background:var(--s3);transition:background .3s;
-}
-
-/* ── LAYER 2: DEAL DETAIL ── */
-#l2-body{padding:0 0 60px}
-
-.deal-hero{
-  padding:16px;
-  border-bottom:1px solid var(--border);
-  background:var(--s1);
-}
-.deal-hero-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px}
-.deal-hero-name{font-family:'DM Serif Display',serif;font-size:22px;color:var(--text);flex:1;line-height:1.25;margin-right:10px}
-.deal-hero-badges{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
-.deal-stage-row{display:flex;align-items:center;gap:8px;margin-bottom:10px}
-.stage-dots{display:flex;gap:4px}
-.sdot{width:8px;height:8px;border-radius:50%;background:var(--s3)}
-.sdot.done{background:var(--gold)}
-.sdot.cur{background:var(--gold);box-shadow:0 0 0 3px var(--gold-dim)}
-.deal-fee-big{font-family:'DM Serif Display',serif;font-size:26px;color:var(--gold)}
-
-/* section blocks */
-.section{margin:0;border-bottom:1px solid var(--border)}
-.section-hdr{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:13px 16px;cursor:pointer;
-}
-.section-hdr:active{background:var(--s2)}
-.section-hdr-left{display:flex;align-items:center;gap:8px}
-.section-hdr-title{font-size:13px;font-weight:600;color:var(--text)}
-.section-hdr-count{font-size:11px;color:var(--t3);background:var(--s3);padding:1px 7px;border-radius:10px}
-.section-body{padding:0 16px 14px;display:none}
-.section-body.open{display:block}
-.section-add-btn{
-  display:flex;align-items:center;gap:6px;padding:8px 0;
-  font-size:13px;color:var(--gold);background:none;border:none;cursor:pointer;
-  font-family:'DM Sans',sans-serif;font-weight:500;
-}
-
-/* person chip */
-.person-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}
-.pchip{
-  display:flex;align-items:center;gap:7px;
-  background:var(--s2);border:1px solid var(--border);border-radius:10px;
-  padding:7px 10px;cursor:pointer;transition:border-color .15s;
-}
-.pchip:active{border-color:var(--gold)}
-.pchip-av{
-  width:28px;height:28px;border-radius:50%;
-  background:var(--gold-dim);border:1px solid var(--gold);
-  display:flex;align-items:center;justify-content:center;
-  font-size:12px;font-weight:700;color:var(--gold);flex-shrink:0;
-}
-.pchip-name{font-size:13px;font-weight:500}
-.pchip-role{font-size:11px;color:var(--t2)}
-
-/* action items */
-.action-item{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)}
-.action-item:last-child{border-bottom:none}
-.acheck{
-  width:20px;height:20px;border-radius:50%;border:2px solid var(--border2);
-  flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;
-  margin-top:1px;transition:all .18s;
-}
-.acheck.done{border-color:var(--green);background:var(--green)}
-.acheck.done::after{content:'✓';font-size:11px;color:#0c0c0f;font-weight:700}
-.atxt{flex:1}
-.atitle{font-size:13px;color:var(--text)}
-.atitle.done{text-decoration:line-through;color:var(--t3)}
-.adue{font-size:11px;color:var(--t3);margin-top:2px}
-.adue.over{color:var(--red)}
-.adel{background:none;border:none;color:var(--t3);cursor:pointer;padding:4px;display:flex}
-
-/* log items */
-.log-item{padding:10px 0;border-bottom:1px solid var(--border)}
-.log-item:last-child{border-bottom:none}
-.log-date{font-size:11px;color:var(--t3);margin-bottom:3px}
-.log-content{font-size:13px;color:var(--text);line-height:1.55}
-.log-who{font-size:11px;color:var(--gold);margin-top:3px}
-
-/* drive items */
-.drive-item{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)}
-.drive-item:last-child{border-bottom:none}
-.drive-ico{width:32px;height:32px;border-radius:8px;background:rgba(85,136,224,.12);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.drive-info{flex:1;overflow:hidden}
-.drive-name{font-size:13px;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.drive-type{font-size:11px;color:var(--t3);margin-top:1px}
-.drive-open{color:var(--blue);font-size:12px;padding:4px 10px;background:rgba(85,136,224,.1);border-radius:6px;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap}
-
-/* stage changer */
-.stage-btns{display:flex;flex-wrap:wrap;gap:6px;padding:12px 0}
-.stage-btn{
-  padding:7px 14px;border-radius:20px;font-size:12px;font-weight:500;
-  background:var(--s2);border:1px solid var(--border);color:var(--t2);cursor:pointer;
-  font-family:'DM Sans',sans-serif;transition:all .18s;
-}
-.stage-btn.cur{background:var(--gold-dim);border-color:var(--gold);color:var(--gold)}
-
-/* ── LAYER 3: PERSON / FORM ── */
-#l3-body{padding:0 0 60px}
-.person-hero{
-  padding:20px 16px;background:var(--s1);
-  border-bottom:1px solid var(--border);text-align:center;
-}
-.person-av-big{
-  width:64px;height:64px;border-radius:50%;
-  background:var(--gold-dim);border:2px solid var(--gold);
-  display:flex;align-items:center;justify-content:center;
-  font-size:24px;font-weight:700;color:var(--gold);
-  margin:0 auto 10px;
-}
-.person-hero-name{font-family:'DM Serif Display',serif;font-size:20px;color:var(--text)}
-.person-hero-sub{font-size:13px;color:var(--t2);margin-top:4px}
-.stars{display:flex;gap:4px;justify-content:center;margin-top:8px}
-.star{font-size:18px;color:var(--t3);cursor:pointer;transition:color .15s}
-.star.on{color:var(--gold)}
-
-.info-row{display:flex;align-items:center;gap:10px;padding:11px 16px;border-bottom:1px solid var(--border)}
-.info-ico{width:28px;font-size:15px;text-align:center;flex-shrink:0;color:var(--t2)}
-.info-val{flex:1;font-size:14px;color:var(--text)}
-.info-copy{background:none;border:none;color:var(--t3);font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;padding:4px 8px}
-.info-memo{padding:12px 16px;font-size:13px;color:var(--t2);line-height:1.65;border-bottom:1px solid var(--border)}
-
-.deal-link-row{
-  display:flex;align-items:center;gap:12px;padding:11px 16px;
-  border-bottom:1px solid var(--border);cursor:pointer;
-}
-.deal-link-row:active{background:var(--s2)}
-
-/* ── MODAL (bottom sheet) ── */
-#modal-bg{
-  position:fixed;inset:0;background:rgba(0,0,0,.72);
-  z-index:900;display:none;align-items:flex-end;
-}
-#modal-bg.open{display:flex}
-#modal-box{
-  background:var(--s1);border-radius:20px 20px 0 0;width:100%;
-  padding:20px 20px calc(20px + var(--SAB));
-  max-height:88vh;overflow-y:auto;
-}
-#modal-box::-webkit-scrollbar{display:none}
-.modal-title{font-family:'DM Serif Display',serif;font-size:18px;color:var(--text);margin-bottom:16px}
-.modal-actions{display:flex;gap:10px;margin-top:18px}
-.modal-actions .btn{flex:1}
-
-/* ── FORMS ── */
-label{font-size:11px;color:var(--t2);display:block;margin-bottom:5px;margin-top:14px;font-weight:500;letter-spacing:.04em;text-transform:uppercase}
-label:first-child{margin-top:0}
-input,textarea,select{
-  background:var(--s2);border:1px solid var(--border2);border-radius:10px;
-  color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;
-  padding:11px 13px;width:100%;outline:none;transition:border-color .18s;
-}
-input:focus,textarea:focus,select:focus{border-color:var(--gold)}
-select option{background:var(--s2)}
-textarea{resize:none;line-height:1.55}
-.btn{
-  background:var(--gold);color:#0c0c0f;border:none;border-radius:10px;
-  padding:12px 20px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;
-  cursor:pointer;transition:opacity .15s;
-}
-.btn:active{opacity:.8}
-.btn-ghost{
-  background:var(--s2);color:var(--t2);border:1px solid var(--border2);
-  border-radius:10px;padding:12px 20px;font-family:'DM Sans',sans-serif;
-  font-size:14px;font-weight:500;cursor:pointer;
-}
-.btn-ghost:active{background:var(--s3)}
-.del-btn{
-  background:rgba(224,85,85,.1);color:var(--red);border:1px solid rgba(224,85,85,.25);
-  border-radius:8px;padding:7px 14px;font-size:12px;cursor:pointer;
-  font-family:'DM Sans',sans-serif;
-}
-
-/* ── BADGES ── */
+.deal-stage{font-size:10px;padding:2px 7px;border-radius:12px;border:1px solid;display:inline-block;margin-top:4px}
+.pip-row{display:flex;gap:2px;margin-top:6px}
+.pip{height:3px;border-radius:2px;flex:1;background:var(--s3)}
 .badge{display:inline-block;font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;border:1px solid}
 .s-발굴{color:#8888d8;border-color:#8888d8;background:rgba(136,136,216,.12)}
 .s-검토{color:#66aaee;border-color:#66aaee;background:rgba(102,170,238,.12)}
 .s-협의{color:#ccaa44;border-color:#ccaa44;background:rgba(204,170,68,.12)}
 .s-구조화{color:#bb66dd;border-color:#bb66dd;background:rgba(187,102,221,.12)}
 .s-실행{color:#44bb88;border-color:#44bb88;background:rgba(68,187,136,.12)}
-.s-클로징{color:var(--gold);border-color:var(--gold);background:var(--gold-dim)}
+.s-클로징{color:var(--gold);border-color:var(--gold);background:var(--gdim)}
 .s-완료{color:#55b875;border-color:#55b875;background:rgba(85,184,117,.12)}
 .s-중단{color:var(--red);border-color:var(--red);background:rgba(224,85,85,.12)}
 .t-MA{color:#7aaaf0;border-color:#7aaaf0;background:rgba(122,170,240,.12)}
-.t-자금조달{color:var(--gold);border-color:var(--gold);background:var(--gold-dim)}
-.t-부동산{color:#55b875;border-color:#55b875;background:rgba(85,184,117,.12)}
-.t-IPO{color:#bb66dd;border-color:#bb66dd;background:rgba(187,102,221,.12)}
-.t-무역{color:#44ccd4;border-color:#44ccd4;background:rgba(68,204,212,.12)}
-.t-엔터{color:#e066aa;border-color:#e066aa;background:rgba(224,102,170,.12)}
-.t-기타{color:#888899;border-color:#888899;background:rgba(136,136,153,.12)}
-
-/* stage dot colors */
-.dot-발굴{background:#8888d8}.dot-검토{background:#66aaee}.dot-협의{background:#ccaa44}
-.dot-구조화{background:#bb66dd}.dot-실행{background:#44bb88}.dot-클로징{background:var(--gold)}
-.dot-완료{background:#55b875}.dot-중단{background:var(--red)}
-
-/* ── SETTINGS PAGE ── */
-.settings-section{padding:14px 16px;border-bottom:1px solid var(--border)}
-.settings-title{font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;font-weight:600}
-.sync-status{font-size:12px;color:var(--t3);margin-top:8px}
-
-/* ── EMPTY ── */
+.t-fund{color:var(--gold);border-color:var(--gold);background:var(--gdim)}
+.t-re{color:#55b875;border-color:#55b875;background:rgba(85,184,117,.12)}
+.t-ipo{color:#bb66dd;border-color:#bb66dd;background:rgba(187,102,221,.12)}
+.t-trade{color:#44ccd4;border-color:#44ccd4;background:rgba(68,204,212,.12)}
+.t-ent{color:#e066aa;border-color:#e066aa;background:rgba(224,102,170,.12)}
+.t-etc{color:#888899;border-color:#888899;background:rgba(136,136,153,.12)}
+.hero{padding:16px;border-bottom:1px solid var(--bd);background:var(--s1)}
+.hero-name{font-family:'DM Serif Display',serif;font-size:22px;color:var(--tx);margin-bottom:10px;line-height:1.25}
+.hero-badges{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.hero-fee{font-family:'DM Serif Display',serif;font-size:26px;color:var(--gold);margin-top:6px}
+.sdots{display:flex;gap:4px;margin-bottom:4px}
+.sdot{width:8px;height:8px;border-radius:50%;background:var(--s3)}
+.sdot.done{background:var(--gold)}
+.sdot.cur{background:var(--gold);box-shadow:0 0 0 3px var(--gdim)}
+.sec{border-bottom:1px solid var(--bd)}
+.sec-hdr{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;cursor:pointer}
+.sec-hdr:active{background:var(--s2)}
+.sec-hdr-l{display:flex;align-items:center;gap:8px}
+.sec-title{font-size:13px;font-weight:600;color:var(--tx)}
+.sec-cnt{font-size:11px;color:var(--t3);background:var(--s3);padding:1px 7px;border-radius:10px}
+.sec-body{padding:0 16px 14px;display:none}
+.sec-body.open{display:block}
+.add-btn{display:flex;align-items:center;gap:6px;padding:8px 0;font-size:13px;color:var(--gold);background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500}
+.pchips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}
+.pchip{display:flex;align-items:center;gap:7px;background:var(--s2);border:1px solid var(--bd);border-radius:10px;padding:7px 10px;cursor:pointer}
+.pchip:active{border-color:var(--gold)}
+.pav{width:28px;height:28px;border-radius:50%;background:var(--gdim);border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--gold);flex-shrink:0}
+.pname{font-size:13px;font-weight:500}
+.prole{font-size:11px;color:var(--t2)}
+.act-item{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid var(--bd)}
+.act-item:last-of-type{border-bottom:none}
+.acheck{width:20px;height:20px;border-radius:50%;border:2px solid var(--bd2);flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;margin-top:1px;transition:all .18s}
+.acheck.done{border-color:var(--green);background:var(--green)}
+.acheck.done::after{content:'✓';font-size:11px;color:#0c0c0f;font-weight:700}
+.atxt{flex:1}
+.atitle{font-size:13px;color:var(--tx)}
+.atitle.done{text-decoration:line-through;color:var(--t3)}
+.adue{font-size:11px;color:var(--t3);margin-top:2px}
+.adue.over{color:var(--red)}
+.xbtn{background:none;border:none;color:var(--t3);cursor:pointer;padding:4px;display:flex}
+.log-item{padding:10px 0;border-bottom:1px solid var(--bd)}
+.log-item:last-of-type{border-bottom:none}
+.log-date{font-size:11px;color:var(--t3);margin-bottom:3px}
+.log-txt{font-size:13px;color:var(--tx);line-height:1.55}
+.log-who{font-size:11px;color:var(--gold);margin-top:3px}
+.ditem{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--bd)}
+.ditem:last-of-type{border-bottom:none}
+.dico{width:32px;height:32px;border-radius:8px;background:rgba(85,136,224,.12);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.dinfo{flex:1;overflow:hidden}
+.dname{font-size:13px;color:var(--tx);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dtype{font-size:11px;color:var(--t3);margin-top:1px}
+.dopen{color:var(--blue);font-size:12px;padding:4px 10px;background:rgba(85,136,224,.1);border-radius:6px;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap}
+.stage-btns{display:flex;flex-wrap:wrap;gap:6px;padding:12px 0}
+.sbtn{padding:7px 14px;border-radius:20px;font-size:12px;font-weight:500;background:var(--s2);border:1px solid var(--bd);color:var(--t2);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .18s}
+.sbtn.cur{background:var(--gdim);border-color:var(--gold);color:var(--gold)}
+.phero{padding:20px 16px;background:var(--s1);border-bottom:1px solid var(--bd);text-align:center}
+.pav-big{width:64px;height:64px;border-radius:50%;background:var(--gdim);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;color:var(--gold);margin:0 auto 10px}
+.phero-name{font-family:'DM Serif Display',serif;font-size:20px;color:var(--tx)}
+.phero-sub{font-size:13px;color:var(--t2);margin-top:4px}
+.stars{display:flex;gap:4px;justify-content:center;margin-top:8px}
+.star{font-size:18px;color:var(--t3);cursor:pointer;transition:color .15s}
+.star.on{color:var(--gold)}
+.irow{display:flex;align-items:center;gap:10px;padding:11px 16px;border-bottom:1px solid var(--bd)}
+.iico{width:28px;font-size:15px;text-align:center;flex-shrink:0;color:var(--t2)}
+.ival{flex:1;font-size:14px;color:var(--tx)}
+.icopy{background:none;border:none;color:var(--t3);font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;padding:4px 8px}
+.imemo{padding:12px 16px;font-size:13px;color:var(--t2);line-height:1.65;border-bottom:1px solid var(--bd)}
+.dlrow{display:flex;align-items:center;gap:12px;padding:11px 16px;border-bottom:1px solid var(--bd);cursor:pointer}
+.dlrow:active{background:var(--s2)}
+.swipe-hint{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--t3);padding:6px 16px;border-bottom:1px solid var(--bd);flex-shrink:0}
+#moverlay{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:900;display:none;align-items:flex-end}
+#moverlay.open{display:flex}
+#mbox{background:var(--s1);border-radius:20px 20px 0 0;width:100%;padding:20px 20px calc(20px + var(--SAB));max-height:88vh;overflow-y:auto}
+#mbox::-webkit-scrollbar{display:none}
+.mtitle{font-family:'DM Serif Display',serif;font-size:18px;color:var(--tx);margin-bottom:16px}
+.macts{display:flex;gap:10px;margin-top:18px}
+.macts .btn{flex:1}
+label{font-size:11px;color:var(--t2);display:block;margin-bottom:5px;margin-top:14px;font-weight:500;letter-spacing:.04em;text-transform:uppercase}
+label:first-child{margin-top:0}
+input,textarea,select{background:var(--s2);border:1px solid var(--bd2);border-radius:10px;color:var(--tx);font-family:'DM Sans',sans-serif;font-size:14px;padding:11px 13px;width:100%;outline:none;transition:border-color .18s}
+input:focus,textarea:focus,select:focus{border-color:var(--gold)}
+select option{background:var(--s2)}
+textarea{resize:none;line-height:1.55}
+.btn{background:var(--gold);color:#0c0c0f;border:none;border-radius:10px;padding:12px 20px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer}
+.btn:active{opacity:.8}
+.btn-g{background:var(--s2);color:var(--t2);border:1px solid var(--bd2);border-radius:10px;padding:12px 20px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer}
+.delbtn{background:rgba(224,85,85,.1);color:var(--red);border:1px solid rgba(224,85,85,.25);border-radius:8px;padding:7px 14px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif}
+.sset{padding:14px 16px;border-bottom:1px solid var(--bd)}
+.stitle{font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;font-weight:600}
+.syncmsg{font-size:12px;color:var(--t3);margin-top:8px}
 .empty{text-align:center;padding:40px 20px;color:var(--t3)}
 .empty-icon{font-size:36px;margin-bottom:10px}
 .empty p{font-size:13px;line-height:1.6}
-
-/* ── SWIPE HINT ── */
-.swipe-hint{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--t3);padding:6px 16px;border-bottom:1px solid var(--border);flex-shrink:0}
 </style>
 </head>
 <body>
 <div id="stack">
-
-  <!-- ════ LAYER 1: DEAL LIST ════ -->
   <div class="layer base" id="l1">
     <div class="topbar">
       <div class="topbar-inner">
@@ -363,789 +165,783 @@ textarea{resize:none;line-height:1.55}
         </button>
       </div>
     </div>
-    <div class="layer-body" id="l1-body">
-      <div class="l1-header-stats" id="l1-stats"></div>
-      <div class="filter-scroll" id="filter-scroll"></div>
-      <div id="deal-list"></div>
+    <div class="lbody" id="l1body">
+      <div id="l1fee" class="fee-block"></div>
+      <div id="l1stats" class="stat-row"></div>
+      <div class="fbar" id="fbar"></div>
+      <div id="deallist"></div>
     </div>
-    <button class="fab" onclick="openAddDeal()">＋</button>
+    <button class="fab" onclick="openAddDeal()">+</button>
   </div>
 
-  <!-- ════ LAYER 2: DEAL DETAIL ════ -->
   <div class="layer" id="l2">
     <div class="topbar">
       <div class="topbar-inner">
         <button class="back-btn" onclick="popLayer()">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
         </button>
-        <h2 id="l2-title">딜 상세</h2>
+        <h2 id="l2title">딜 상세</h2>
         <button class="icon-btn" onclick="openEditDeal()">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
         </button>
       </div>
     </div>
     <div class="swipe-hint">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-      왼쪽 끝에서 오른쪽으로 스와이프해서 뒤로
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      왼쪽 끝에서 오른쪽으로 스와이프 → 뒤로
     </div>
-    <div class="layer-body" id="l2-body"></div>
+    <div class="lbody" id="l2body"></div>
   </div>
 
-  <!-- ════ LAYER 3: PERSON / FORM ════ -->
   <div class="layer" id="l3">
     <div class="topbar">
       <div class="topbar-inner">
         <button class="back-btn" onclick="popLayer()">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
         </button>
-        <h2 id="l3-title">상세</h2>
-        <button class="icon-btn" id="l3-edit-btn" style="display:none" onclick="openEditPerson()">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        <h2 id="l3title">상세</h2>
+        <button class="icon-btn" id="l3editbtn" onclick="openEditPerson()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
         </button>
-        <div style="width:38px" id="l3-spacer"></div>
       </div>
     </div>
-    <div class="layer-body" id="l3-body"></div>
+    <div class="lbody" id="l3body"></div>
   </div>
 
-  <!-- ════ SETTINGS LAYER ════ -->
-  <div class="layer" id="l-settings">
+  <div class="layer" id="lset">
     <div class="topbar">
       <div class="topbar-inner">
-        <button class="back-btn" onclick="closeSettings()">
+        <button class="back-btn" onclick="popLayer()">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
         </button>
         <h2>설정</h2>
-        <div style="width:38px"></div>
+        <div style="width:40px"></div>
       </div>
     </div>
-    <div class="layer-body">
-      <div class="settings-section">
-        <div class="settings-title">GitHub 동기화</div>
+    <div class="lbody">
+      <div class="sset">
+        <div class="stitle">GitHub 동기화</div>
         <label>GitHub Token</label>
-        <input type="password" id="s-token" placeholder="ghp_xxxx..." oninput="saveSettings()">
+        <input type="password" id="s-tok" placeholder="ghp_xxxx..." oninput="saveSets()">
         <label>Repository</label>
-        <input type="text" id="s-repo" placeholder="kjsh1028/myproject" oninput="saveSettings()">
+        <input type="text" id="s-repo" placeholder="kjsh1028/myproject" oninput="saveSets()">
         <label>파일명</label>
-        <input type="text" id="s-file" placeholder="data.json" oninput="saveSettings()">
+        <input type="text" id="s-file" placeholder="data.json" oninput="saveSets()">
         <div style="display:flex;gap:8px;margin-top:14px">
-          <button class="btn" style="flex:1;font-size:13px;padding:10px" onclick="pushToGitHub()">GitHub에 저장</button>
-          <button class="btn-ghost" style="font-size:13px;padding:10px" onclick="pullFromGitHub()">불러오기</button>
+          <button class="btn" style="flex:1;font-size:13px;padding:10px" onclick="pushGH()">GitHub에 저장</button>
+          <button class="btn-g" style="font-size:13px;padding:10px" onclick="pullGH()">불러오기</button>
         </div>
-        <div class="sync-status" id="sync-status"></div>
+        <div class="syncmsg" id="syncmsg"></div>
       </div>
-      <div class="settings-section">
-        <div class="settings-title">앱 정보</div>
-        <div style="font-size:13px;color:var(--t2);line-height:2">
-          My Project v2.0<br>
-          딜: <span id="s-deal-count">0</span>개 · 관련자: <span id="s-person-count">0</span>명
-        </div>
+      <div class="sset">
+        <div class="stitle">앱 정보</div>
+        <div style="font-size:13px;color:var(--t2);line-height:2">My Project v2.0<br>딜: <span id="s-dc">0</span>개 · 관련자: <span id="s-pc">0</span>명</div>
       </div>
-      <div class="settings-section">
-        <div class="settings-title">데이터</div>
+      <div class="sset">
+        <div class="stitle">데이터</div>
         <div style="display:flex;gap:8px">
-          <button class="btn-ghost" style="font-size:12px;padding:8px 14px" onclick="exportData()">JSON 내보내기</button>
-          <button class="del-btn" onclick="confirmClear()">초기화</button>
+          <button class="btn-g" style="font-size:12px;padding:8px 14px" onclick="exportData()">JSON 내보내기</button>
+          <button class="delbtn" onclick="clearAll()">초기화</button>
         </div>
       </div>
     </div>
   </div>
+</div>
 
-</div><!-- #stack -->
-
-<!-- ════ MODAL ════ -->
-<div id="modal-bg" onclick="handleBgClick(event)">
-  <div id="modal-box">
-    <div class="modal-title" id="modal-title"></div>
-    <div id="modal-body"></div>
-    <div class="modal-actions" id="modal-actions"></div>
+<div id="moverlay" onclick="bgClick(event)">
+  <div id="mbox">
+    <div class="mtitle" id="mtitle"></div>
+    <div id="mbody"></div>
+    <div class="macts" id="macts"></div>
   </div>
 </div>
 
 <script>
-// ══ CONSTANTS ══
-const STAGES = ['발굴','검토','협의','구조화','실행','클로징','완료','중단'];
-const ACTIVE_STAGES = ['발굴','검토','협의','구조화','실행','클로징'];
-const TYPES = ['M&A','자금조달','부동산','IPO·상장','무역','엔터테인먼트','기타'];
-const TYPE_KEYS = {'M&A':'MA','자금조달':'자금조달','부동산':'부동산','IPO·상장':'IPO','무역':'무역','엔터테인먼트':'엔터','기타':'기타'};
-const ROLES = ['매수인','매도인','투자자','투자대상','FA','법무','회계','주관사','파트너','기타'];
-const DOC_TYPES = ['NDA','IM','Term Sheet','계약서','보고서','재무제표','법인등기','기타'];
+var STAGES = ['발굴','검토','협의','구조화','실행','클로징','완료','중단'];
+var ASTAGES = ['발굴','검토','협의','구조화','실행','클로징'];
+var TYPES = ['M&A','자금조달','부동산','IPO·상장','무역','엔터테인먼트','기타'];
+var ROLES = ['매수인','매도인','투자자','투자대상','FA','법무','회계','주관사','파트너','기타'];
+var DTYPES = ['NDA','IM','Term Sheet','계약서','보고서','재무제표','법인등기','기타'];
 
-// ══ STATE ══
-let DB = {deals:[], people:[]};
-let settings = {};
-let curDealId = null;
-let curPersonId = null;
-let filterType = 'all';
-let layerStack = ['l1']; // track which layers are open
-let openSections = {}; // track expanded sections per deal
+var DB = {deals:[],people:[]};
+var SETS = {};
+var curDeal = null;
+var curPerson = null;
+var ftype = 'all';
+var layers = ['l1'];
+var openSec = {};
 
-// ══ UTILS ══
-const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,5);
-const today = () => new Date().toISOString().slice(0,10);
-const fmtDate = s => {
-  if (!s) return '';
-  const d = new Date(s + 'T12:00:00');
-  return d.getFullYear()+'.'+String(d.getMonth()+1).padStart(2,'0')+'.'+String(d.getDate()).padStart(2,'0');
-};
-const daysLeft = s => {
-  if (!s) return null;
-  return Math.ceil((new Date(s+'T12:00:00') - new Date()) / 86400000);
-};
-const fmtFee = n => {
-  if (!n || isNaN(n)) return '미정';
+function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,5); }
+function today(){ return new Date().toISOString().slice(0,10); }
+
+function fmtDate(s){
+  if(!s) return '';
+  var d = new Date(s+'T12:00:00');
+  var y = d.getFullYear();
+  var m = String(d.getMonth()+1).padStart(2,'0');
+  var dd = String(d.getDate()).padStart(2,'0');
+  return y+'.'+m+'.'+dd;
+}
+
+function dLeft(s){
+  if(!s) return null;
+  return Math.ceil((new Date(s+'T12:00:00')-new Date())/86400000);
+}
+
+function fmtFee(n){
+  if(!n||isNaN(n)) return '미정';
   n = parseInt(n);
-  if (n >= 100000000) return (n/100000000).toFixed(n%100000000?1:0).replace(/\.0$/,'') + '억';
-  if (n >= 10000) return Math.round(n/10000) + '만';
+  if(n>=100000000) return (n/100000000).toFixed(1).replace(/\.0$/,'')+'억';
+  if(n>=10000) return Math.round(n/10000)+'만';
   return n.toLocaleString();
-};
-const typeKey = t => TYPE_KEYS[t] || '기타';
-const stageDotColor = s => {
-  const m = {'발굴':'#8888d8','검토':'#66aaee','협의':'#ccaa44','구조화':'#bb66dd','실행':'#44bb88','클로징':'#c8a96e','완료':'#55b875','중단':'#e05555'};
-  return m[s] || '#555568';
-};
-
-// ══ STORAGE ══
-function load() {
-  try { const d = localStorage.getItem('mp_db'); if(d) DB = JSON.parse(d); } catch(e){}
-  try { const s = localStorage.getItem('mp_set'); if(s) settings = JSON.parse(s); } catch(e){}
-  if (!DB.deals) DB.deals = [];
-  if (!DB.people) DB.people = [];
-}
-function save() {
-  localStorage.setItem('mp_db', JSON.stringify(DB));
-}
-function saveSettings() {
-  settings.token = document.getElementById('s-token').value;
-  settings.repo = document.getElementById('s-repo').value;
-  settings.file = document.getElementById('s-file').value;
-  localStorage.setItem('mp_set', JSON.stringify(settings));
 }
 
-// ══ GITHUB SYNC ══
-async function pushToGitHub() {
-  const {token, repo, file} = settings;
-  if (!token||!repo||!file) { setSyncMsg('❌ 설정을 입력하세요'); return; }
-  setSyncMsg('⏳ 저장 중...');
-  try {
-    const content = btoa(unescape(encodeURIComponent(JSON.stringify(DB, null, 2))));
-    const r1 = await fetch('https://api.github.com/repos/'+repo+'/contents/'+file, {headers:{'Authorization':'token '+token}});
-    const body = {message:'update '+new Date().toISOString(), content};
-    if (r1.ok) { const j = await r1.json(); body.sha = j.sha; }
-    const r2 = await fetch('https://api.github.com/repos/'+repo+'/contents/'+file, {
-      method:'PUT', headers:{'Authorization':'token '+token,'Content-Type':'application/json'},
-      body: JSON.stringify(body)
-    });
-    setSyncMsg(r2.ok ? '✅ 저장 완료 '+new Date().toLocaleTimeString() : '❌ 실패 '+r2.status);
-  } catch(e) { setSyncMsg('❌ '+e.message); }
-}
-async function pullFromGitHub() {
-  const {token, repo, file} = settings;
-  if (!token||!repo||!file) { setSyncMsg('❌ 설정을 입력하세요'); return; }
-  setSyncMsg('⏳ 불러오는 중...');
-  try {
-    const r = await fetch('https://api.github.com/repos/'+repo+'/contents/'+file, {headers:{'Authorization':'token '+token}});
-    if (r.ok) {
-      const j = await r.json();
-      DB = JSON.parse(decodeURIComponent(escape(atob(j.content))));
-      if (!DB.deals) DB.deals = [];
-      if (!DB.people) DB.people = [];
-      save(); renderL1();
-      setSyncMsg('✅ 불러오기 완료');
-    } else setSyncMsg('❌ 실패 '+r.status);
-  } catch(e) { setSyncMsg('❌ '+e.message); }
-}
-function setSyncMsg(m) { const el=document.getElementById('sync-status'); if(el) el.textContent=m; }
-function exportData() {
-  const b = new Blob([JSON.stringify(DB,null,2)],{type:'application/json'});
-  const a = document.createElement('a'); a.href=URL.createObjectURL(b); a.download='myproject.json'; a.click();
-}
-function confirmClear() {
-  if(confirm('모든 데이터를 삭제합니까?')) { DB={deals:[],people:[]}; save(); renderL1(); }
+function tclass(t){
+  var m = {'M&A':'MA','자금조달':'fund','부동산':'re','IPO·상장':'ipo','무역':'trade','엔터테인먼트':'ent','기타':'etc'};
+  return 't-'+(m[t]||'etc');
 }
 
-// ══ LAYER NAVIGATION ══
-function pushLayer(id) {
-  const prev = layerStack[layerStack.length-1];
+function sdotColor(s){
+  var m = {'발굴':'#8888d8','검토':'#66aaee','협의':'#ccaa44','구조화':'#bb66dd','실행':'#44bb88','클로징':'#c8a96e','완료':'#55b875','중단':'#e05555'};
+  return m[s]||'#555568';
+}
+
+function load(){
+  try{ var d=localStorage.getItem('mp2_db'); if(d) DB=JSON.parse(d); }catch(e){}
+  try{ var s=localStorage.getItem('mp2_set'); if(s) SETS=JSON.parse(s); }catch(e){}
+  if(!DB.deals) DB.deals=[];
+  if(!DB.people) DB.people=[];
+}
+
+function save(){ localStorage.setItem('mp2_db',JSON.stringify(DB)); }
+
+function saveSets(){
+  SETS.tok = document.getElementById('s-tok').value;
+  SETS.repo = document.getElementById('s-repo').value;
+  SETS.file = document.getElementById('s-file').value;
+  localStorage.setItem('mp2_set',JSON.stringify(SETS));
+}
+
+function setSync(msg){ var el=document.getElementById('syncmsg'); if(el) el.textContent=msg; }
+
+function pushGH(){
+  var tok=SETS.tok, repo=SETS.repo, file=SETS.file;
+  if(!tok||!repo||!file){ setSync('설정을 입력하세요'); return; }
+  setSync('저장 중...');
+  var content = btoa(unescape(encodeURIComponent(JSON.stringify(DB,null,2))));
+  fetch('https://api.github.com/repos/'+repo+'/contents/'+file,{headers:{'Authorization':'token '+tok}})
+  .then(function(r){ return r.ok?r.json():null; })
+  .then(function(j){
+    var body = {message:'update '+new Date().toISOString(), content:content};
+    if(j&&j.sha) body.sha=j.sha;
+    return fetch('https://api.github.com/repos/'+repo+'/contents/'+file,{method:'PUT',headers:{'Authorization':'token '+tok,'Content-Type':'application/json'},body:JSON.stringify(body)});
+  })
+  .then(function(r){ setSync(r.ok?'저장 완료 '+new Date().toLocaleTimeString():'실패 '+r.status); })
+  .catch(function(e){ setSync('오류: '+e.message); });
+}
+
+function pullGH(){
+  var tok=SETS.tok, repo=SETS.repo, file=SETS.file;
+  if(!tok||!repo||!file){ setSync('설정을 입력하세요'); return; }
+  setSync('불러오는 중...');
+  fetch('https://api.github.com/repos/'+repo+'/contents/'+file,{headers:{'Authorization':'token '+tok}})
+  .then(function(r){ return r.ok?r.json():null; })
+  .then(function(j){
+    if(!j){ setSync('실패'); return; }
+    var data = JSON.parse(decodeURIComponent(escape(atob(j.content))));
+    DB = data;
+    if(!DB.deals) DB.deals=[];
+    if(!DB.people) DB.people=[];
+    save(); renderL1(); setSync('불러오기 완료');
+  })
+  .catch(function(e){ setSync('오류: '+e.message); });
+}
+
+function exportData(){
+  var b=new Blob([JSON.stringify(DB,null,2)],{type:'application/json'});
+  var a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='myproject.json'; a.click();
+}
+
+function clearAll(){
+  if(confirm('모든 데이터를 삭제합니까?')){ DB={deals:[],people:[]}; save(); renderL1(); }
+}
+
+function pushLayer(id){
+  var prev=layers[layers.length-1];
   document.getElementById(prev).classList.add('behind');
   document.getElementById(id).classList.add('active');
-  layerStack.push(id);
-}
-function popLayer() {
-  if (layerStack.length <= 1) return;
-  const top = layerStack.pop();
-  document.getElementById(top).classList.remove('active','behind');
-  document.getElementById(top).style.transform='';
-  const prev = layerStack[layerStack.length-1];
-  document.getElementById(prev).classList.remove('behind');
-}
-function openSettings() {
-  document.getElementById('s-token').value = settings.token||'';
-  document.getElementById('s-repo').value = settings.repo||'';
-  document.getElementById('s-file').value = settings.file||'data.json';
-  document.getElementById('s-deal-count').textContent = DB.deals.length;
-  document.getElementById('s-person-count').textContent = DB.people.length;
-  pushLayer('l-settings');
-}
-function closeSettings() { popLayer(); }
-
-// ══ SWIPE BACK ══
-function initSwipe(el) {
-  let sx=0, dragging=false;
-  el.addEventListener('touchstart', e => {
-    sx = e.touches[0].clientX; dragging = sx < 44;
-  }, {passive:true});
-  el.addEventListener('touchmove', e => {
-    if (!dragging) return;
-    const dx = e.touches[0].clientX - sx;
-    if (dx > 0) el.style.transform = 'translateX('+dx+'px)';
-  }, {passive:true});
-  el.addEventListener('touchend', e => {
-    if (!dragging) return;
-    const dx = e.changedTouches[0].clientX - sx;
-    el.style.transform = '';
-    if (dx > 80) popLayer();
-    dragging = false;
-  }, {passive:true});
+  layers.push(id);
 }
 
-// ══ LAYER 1 ══
-function renderL1() {
-  const active = DB.deals.filter(d=>!['완료','중단'].includes(d.stage));
-  const closing = DB.deals.filter(d=>d.stage==='클로징');
-  const done = DB.deals.filter(d=>d.stage==='완료');
-  const expectedFee = active.reduce((a,d)=>a+(parseInt(d.fee)||0),0);
-  document.getElementById('l1-stats').innerHTML =
-    '<div class="l1-fee-row"><span class="l1-fee-label">예상 성공보수</span><span class="l1-fee-val">'+(expectedFee?fmtFee(expectedFee):'—')+'</span></div>' +
-    '<div class="l1-stats">' +
-    '<div class="l1-stat"><div class="l1-stat-n">'+DB.deals.length+'</div><div class="l1-stat-l">전체</div></div>' +
-    '<div class="l1-stat"><div class="l1-stat-n">'+active.length+'</div><div class="l1-stat-l">진행</div></div>' +
-    '<div class="l1-stat"><div class="l1-stat-n">'+closing.length+'</div><div class="l1-stat-l">클로징</div></div>' +
-    '<div class="l1-stat"><div class="l1-stat-n">'+done.length+'</div><div class="l1-stat-l">완료</div></div>' +
-    '</div>';
+function popLayer(){
+  if(layers.length<=1) return;
+  var top=layers.pop();
+  var el=document.getElementById(top);
+  el.classList.remove('active','behind');
+  el.style.transform='';
+  document.getElementById(layers[layers.length-1]).classList.remove('behind');
+}
 
-  // filter chips
-  document.getElementById('filter-scroll').innerHTML =
-    [['all','전체'],...TYPES.map(t=>[t,t])].map(([v,l]) => {
-      const cnt = v==='all' ? DB.deals.length : DB.deals.filter(d=>d.type===v).length;
-      return '<div class="fchip '+(filterType===v?'on':'')+'" onclick="setFilter(\''+v+'\')">'+(v==='all'?'전체 '+cnt:l+(cnt?' '+cnt:''))+'</div>';
-    }).join('');
+function openSettings(){
+  document.getElementById('s-tok').value=SETS.tok||'';
+  document.getElementById('s-repo').value=SETS.repo||'';
+  document.getElementById('s-file').value=SETS.file||'data.json';
+  document.getElementById('s-dc').textContent=DB.deals.length;
+  document.getElementById('s-pc').textContent=DB.people.length;
+  pushLayer('lset');
+}
 
-  let deals = filterType==='all' ? DB.deals : DB.deals.filter(d=>d.type===filterType);
-  deals = [...deals].sort((a,b)=>{
-    const si = d => STAGES.indexOf(d.stage);
-    if (si(a) !== si(b)) return si(a)-si(b);
-    return (b.updatedAt||'') > (a.updatedAt||'') ? 1 : -1;
+function initSwipe(el){
+  var sx=0,drag=false;
+  el.addEventListener('touchstart',function(e){ sx=e.touches[0].clientX; drag=sx<44; },{passive:true});
+  el.addEventListener('touchmove',function(e){ if(!drag) return; var dx=e.touches[0].clientX-sx; if(dx>0) el.style.transform='translateX('+dx+'px)'; },{passive:true});
+  el.addEventListener('touchend',function(e){ if(!drag) return; var dx=e.changedTouches[0].clientX-sx; el.style.transform=''; if(dx>80) popLayer(); drag=false; },{passive:true});
+}
+
+function renderL1(){
+  var active=DB.deals.filter(function(d){ return d.stage!=='완료'&&d.stage!=='중단'; });
+  var closing=DB.deals.filter(function(d){ return d.stage==='클로징'; });
+  var done=DB.deals.filter(function(d){ return d.stage==='완료'; });
+  var fee=active.reduce(function(a,d){ return a+(parseInt(d.fee)||0); },0);
+
+  document.getElementById('l1fee').innerHTML = '<div class="fee-label">예상 성공보수</div><div class="fee-val">'+(fee?fmtFee(fee):'—')+'</div>';
+
+  document.getElementById('l1stats').innerHTML =
+    '<div class="stat-cell"><div class="stat-n">'+DB.deals.length+'</div><div class="stat-l">전체</div></div>'+
+    '<div class="stat-cell"><div class="stat-n">'+active.length+'</div><div class="stat-l">진행</div></div>'+
+    '<div class="stat-cell"><div class="stat-n">'+closing.length+'</div><div class="stat-l">클로징</div></div>'+
+    '<div class="stat-cell"><div class="stat-n">'+done.length+'</div><div class="stat-l">완료</div></div>';
+
+  var chips = '<div class="fchip '+(ftype==='all'?'on':'')+'" onclick="setF(\'all\')">전체 '+DB.deals.length+'</div>';
+  for(var i=0;i<TYPES.length;i++){
+    var t=TYPES[i];
+    var cnt=DB.deals.filter(function(d){ return d.type===t; }).length;
+    chips += '<div class="fchip '+(ftype===t?'on':'')+'" onclick="setF(\''+t+'\')">'+t+(cnt?' '+cnt:'')+'</div>';
+  }
+  document.getElementById('fbar').innerHTML=chips;
+
+  var deals = ftype==='all' ? DB.deals.slice() : DB.deals.filter(function(d){ return d.type===ftype; });
+  deals.sort(function(a,b){
+    var si=function(d){ return STAGES.indexOf(d.stage); };
+    if(si(a)!==si(b)) return si(a)-si(b);
+    return (b.updatedAt||'')>(a.updatedAt||'')?1:-1;
   });
 
-  document.getElementById('deal-list').innerHTML = deals.length ? deals.map(dealRowHTML).join('') :
-    '<div class="empty"><div class="empty-icon">📋</div><p>딜이 없습니다<br>+ 버튼으로 추가하세요</p></div>';
-}
-function setFilter(f) { filterType=f; renderL1(); }
+  if(!deals.length){
+    document.getElementById('deallist').innerHTML='<div class="empty"><div class="empty-icon">📋</div><p>딜이 없습니다<br>+ 버튼으로 추가하세요</p></div>';
+    return;
+  }
 
-function dealRowHTML(d) {
-  const ppl = (d.personIds||[]).slice(0,2).map(pid=>DB.people.find(p=>p.id===pid)).filter(Boolean);
-  const color = stageDotColor(d.stage);
-  const stageIdx = ACTIVE_STAGES.indexOf(d.stage);
-  const pips = ACTIVE_STAGES.map((_,i) => '<div class="stage-pip" style="background:'+(i<=stageIdx?color:'var(--s3)')+'"></div>').join('');
-  return '<div class="deal-row" onclick="openDeal(\''+d.id+'\')">'+
-    '<div class="deal-dot dot-'+d.stage+'" style="background:'+color+'"></div>'+
-    '<div class="deal-main">'+
-      '<div class="deal-name">'+d.name+'</div>'+
-      '<div class="deal-sub">'+
-        '<span class="badge t-'+typeKey(d.type)+'" style="font-size:10px;padding:2px 7px">'+d.type+'</span>'+
-        (ppl.map(p=>'<span style="font-size:12px;color:var(--t2)">'+p.name+'</span>').join(''))+
-      '</div>'+
-      '<div style="display:flex;gap:2px;margin-top:6px">'+pips+'</div>'+
-    '</div>'+
-    '<div class="deal-right">'+
-      '<div class="deal-fee">'+fmtFee(parseInt(d.fee)||0)+'</div>'+
-      '<div class="badge s-'+d.stage+' deal-stage-badge">'+d.stage+'</div>'+
-    '</div>'+
-    '<svg class="deal-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>'+
-  '</div>';
+  var html='';
+  for(var i=0;i<deals.length;i++){
+    var d=deals[i];
+    var ppl=(d.personIds||[]).slice(0,2).map(function(pid){ return DB.people.find(function(p){ return p.id===pid; }); }).filter(Boolean);
+    var color=sdotColor(d.stage);
+    var si=ASTAGES.indexOf(d.stage);
+    var pips='';
+    for(var j=0;j<ASTAGES.length;j++){
+      pips+='<div class="pip" style="background:'+(j<=si?color:'var(--s3)')+'"></div>';
+    }
+    var sub='<span class="badge '+tclass(d.type)+'" style="font-size:10px;padding:2px 7px">'+d.type+'</span>';
+    for(var k=0;k<ppl.length;k++) sub+='<span style="font-size:12px;color:var(--t2)">'+ppl[k].name+'</span>';
+
+    html+='<div class="deal-row" onclick="openDeal(\''+d.id+'\')">';
+    html+='<div class="deal-dot" style="background:'+color+'"></div>';
+    html+='<div class="deal-main"><div class="deal-name">'+d.name+'</div><div class="deal-sub">'+sub+'</div><div class="pip-row">'+pips+'</div></div>';
+    html+='<div class="deal-right"><div class="deal-fee">'+fmtFee(parseInt(d.fee)||0)+'</div><div class="badge s-'+d.stage+' deal-stage">'+d.stage+'</div></div>';
+    html+='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--t3)"><path d="M9 18l6-6-6-6"/></svg>';
+    html+='</div>';
+  }
+  document.getElementById('deallist').innerHTML=html;
 }
 
-// ══ LAYER 2: DEAL DETAIL ══
-function openDeal(id) {
-  curDealId = id;
-  if (!openSections[id]) openSections[id] = {people:true, actions:true, logs:false, drive:false, stage:false};
+function setF(f){ ftype=f; renderL1(); }
+
+function openDeal(id){
+  curDeal=id;
+  if(!openSec[id]) openSec[id]={people:true,actions:true,logs:false,drive:false,stage:false};
   renderL2();
-  document.getElementById('l2-body').scrollTop = 0;
+  document.getElementById('l2body').scrollTop=0;
   pushLayer('l2');
 }
-function renderL2() {
-  const d = DB.deals.find(d=>d.id===curDealId); if(!d) return;
-  document.getElementById('l2-title').textContent = d.name;
-  const sec = openSections[curDealId];
-  const stageIdx = ACTIVE_STAGES.indexOf(d.stage);
-  const sdots = ACTIVE_STAGES.map((s,i) => '<div class="sdot'+(i<stageIdx?' done':i===stageIdx?' cur':'')+'"></div>').join('');
-  const people = (d.personIds||[]).map(pid=>DB.people.find(p=>p.id===pid)).filter(Boolean);
-  const actions = d.actions||[];
-  const logs = d.logs||[];
-  const drives = d.driveLinks||[];
 
-  document.getElementById('l2-body').innerHTML =
-    // HERO
-    '<div class="deal-hero">'+
-      '<div class="deal-hero-top">'+
-        '<div class="deal-hero-name">'+d.name+'</div>'+
-      '</div>'+
-      '<div class="deal-hero-badges">'+
-        '<span class="badge t-'+typeKey(d.type)+'">'+d.type+'</span>'+
-        '<span class="badge s-'+d.stage+'">'+d.stage+'</span>'+
-      '</div>'+
-      '<div class="deal-stage-row"><div class="stage-dots">'+sdots+'</div><span style="font-size:12px;color:var(--t2);margin-left:6px">'+ACTIVE_STAGES[Math.min(stageIdx,ACTIVE_STAGES.length-1)]+'</span></div>'+
-      (d.fee ? '<div class="deal-fee-big">'+fmtFee(parseInt(d.fee))+'</div>' : '')+
-      (d.desc ? '<div style="font-size:13px;color:var(--t2);margin-top:8px;line-height:1.55">'+d.desc.replace(/\n/g,'<br>')+'</div>' : '')+
-      (d.country ? '<div style="font-size:12px;color:var(--t3);margin-top:6px">📍 '+d.country+'</div>' : '')+
-    '</div>'+
+function renderL2(){
+  var d=DB.deals.find(function(x){ return x.id===curDeal; });
+  if(!d) return;
+  document.getElementById('l2title').textContent=d.name;
+  var sec=openSec[curDeal];
+  var si=ASTAGES.indexOf(d.stage);
+  var sdots='';
+  for(var i=0;i<ASTAGES.length;i++){
+    var cls='sdot'+(i<si?' done':i===si?' cur':'');
+    sdots+='<div class="'+cls+'"></div>';
+  }
+  var ppl=(d.personIds||[]).map(function(pid){ return DB.people.find(function(p){ return p.id===pid; }); }).filter(Boolean);
+  var acts=d.actions||[];
+  var logs=d.logs||[];
+  var drvs=d.driveLinks||[];
+  var openActs=acts.filter(function(a){ return !a.done; }).length;
 
-    // STAGE CHANGE
-    '<div class="section">'+
-      '<div class="section-hdr" onclick="toggleSec(\'stage\')">'+
-        '<div class="section-hdr-left"><span style="font-size:16px">🚦</span><span class="section-hdr-title">단계 변경</span></div>'+
-        '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--t3);transform:rotate('+(sec.stage?'180':'0')+'deg);transition:transform .2s"><path d="M6 9l6 6 6-6"/></svg>'+
-      '</div>'+
-      '<div class="section-body '+(sec.stage?'open':'')+'">'+
-        '<div class="stage-btns">'+
-          STAGES.map(s=>'<button class="stage-btn '+(d.stage===s?'cur':'')+'" onclick="changeStage(\''+s+'\')">'+s+'</button>').join('')+
-        '</div>'+
-        (d.stageHistory&&d.stageHistory.length ? '<div style="margin-top:8px;font-size:11px;color:var(--t3)">'+
-          [...d.stageHistory].reverse().slice(0,3).map(h=>fmtDate(h.date)+' '+h.from+' → '+h.to).join('<br>')+
-        '</div>' : '')+
-      '</div>'+
-    '</div>'+
+  var html='';
+  // HERO
+  html+='<div class="hero">';
+  html+='<div class="hero-name">'+d.name+'</div>';
+  html+='<div class="hero-badges"><span class="badge '+tclass(d.type)+'">'+d.type+'</span><span class="badge s-'+d.stage+'">'+d.stage+'</span></div>';
+  html+='<div class="sdots">'+sdots+'</div>';
+  if(d.fee) html+='<div class="hero-fee">'+fmtFee(parseInt(d.fee))+'</div>';
+  if(d.desc) html+='<div style="font-size:13px;color:var(--t2);margin-top:8px;line-height:1.55">'+d.desc.replace(/\n/g,'<br>')+'</div>';
+  if(d.country) html+='<div style="font-size:12px;color:var(--t3);margin-top:6px">📍 '+d.country+'</div>';
+  html+='</div>';
 
-    // PEOPLE
-    '<div class="section">'+
-      '<div class="section-hdr" onclick="toggleSec(\'people\')">'+
-        '<div class="section-hdr-left"><span style="font-size:16px">👥</span><span class="section-hdr-title">관련자</span><span class="section-hdr-count">'+people.length+'</span></div>'+
-        '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--t3);transform:rotate('+(sec.people?'180':'0')+'deg);transition:transform .2s"><path d="M6 9l6 6 6-6"/></svg>'+
-      '</div>'+
-      '<div class="section-body '+(sec.people?'open':'')+'">'+
-        '<div class="person-chips">'+
-          people.map(p=>'<div class="pchip" onclick="openPerson(\''+p.id+'\')"><div class="pchip-av">'+p.name.slice(-1)+'</div><div><div class="pchip-name">'+p.name+'</div><div class="pchip-role">'+( p.role||p.org||'' )+'</div></div></div>').join('')+
-        '</div>'+
-        '<button class="section-add-btn" onclick="openLinkPerson()">+ 관련자 연결</button>'+
-      '</div>'+
-    '</div>'+
+  // STAGE
+  html+='<div class="sec"><div class="sec-hdr" onclick="toggleSec(\'stage\')"><div class="sec-hdr-l"><span style="font-size:16px">🚦</span><span class="sec-title">단계 변경</span></div><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--t3);transform:rotate('+(sec.stage?'180':'0')+'deg)"><path d="M6 9l6 6 6-6"/></svg></div>';
+  html+='<div class="sec-body '+(sec.stage?'open':'')+'"><div class="stage-btns">';
+  for(var i=0;i<STAGES.length;i++){
+    html+='<button class="sbtn '+(d.stage===STAGES[i]?'cur':'')+'" onclick="chStage(\''+STAGES[i]+'\')">'+STAGES[i]+'</button>';
+  }
+  html+='</div>';
+  if(d.stageHistory&&d.stageHistory.length){
+    var hist=[].concat(d.stageHistory).reverse().slice(0,3);
+    html+='<div style="font-size:11px;color:var(--t3)">';
+    for(var i=0;i<hist.length;i++) html+=fmtDate(hist[i].date)+' '+hist[i].from+' → '+hist[i].to+'<br>';
+    html+='</div>';
+  }
+  html+='</div></div>';
 
-    // ACTIONS
-    '<div class="section">'+
-      '<div class="section-hdr" onclick="toggleSec(\'actions\')">'+
-        '<div class="section-hdr-left"><span style="font-size:16px">✅</span><span class="section-hdr-title">액션 아이템</span><span class="section-hdr-count">'+actions.filter(a=>!a.done).length+'</span></div>'+
-        '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--t3);transform:rotate('+(sec.actions?'180':'0')+'deg);transition:transform .2s"><path d="M6 9l6 6 6-6"/></svg>'+
-      '</div>'+
-      '<div class="section-body '+(sec.actions?'open':'')+'">'+
-        actions.map((a,i) => {
-          const diff = daysLeft(a.due);
-          const overdue = diff!==null&&diff<0&&!a.done;
-          return '<div class="action-item">'+
-            '<div class="acheck '+(a.done?'done':'')+'" onclick="toggleAction('+i+')"></div>'+
-            '<div class="atxt">'+
-              '<div class="atitle '+(a.done?'done':'')+'">'+a.title+'</div>'+
-              (a.due ? '<div class="adue '+(overdue?'over':'')+'">'+fmtDate(a.due)+(diff!==null&&!a.done?' (D'+(diff>=0?'-'+diff:'+'+Math.abs(diff))+')':'')+'</div>':'') +
-              (a.note ? '<div style="font-size:11px;color:var(--t3);margin-top:2px">'+a.note+'</div>' : '')+
-            '</div>'+
-            '<button class="adel" onclick="delAction('+i+')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>'+
-          '</div>';
-        }).join('') +
-        '<button class="section-add-btn" onclick="openAddAction()">+ 액션 추가</button>'+
-      '</div>'+
-    '</div>'+
+  // PEOPLE
+  html+='<div class="sec"><div class="sec-hdr" onclick="toggleSec(\'people\')"><div class="sec-hdr-l"><span style="font-size:16px">👥</span><span class="sec-title">관련자</span><span class="sec-cnt">'+ppl.length+'</span></div><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--t3);transform:rotate('+(sec.people?'180':'0')+'deg)"><path d="M6 9l6 6 6-6"/></svg></div>';
+  html+='<div class="sec-body '+(sec.people?'open':'')+'">';
+  html+='<div class="pchips">';
+  for(var i=0;i<ppl.length;i++){
+    var p=ppl[i];
+    html+='<div class="pchip" onclick="openPerson(\''+p.id+'\')"><div class="pav">'+p.name.slice(-1)+'</div><div><div class="pname">'+p.name+'</div><div class="prole">'+(p.role||p.org||'')+'</div></div></div>';
+  }
+  html+='</div><button class="add-btn" onclick="openLinkPerson()">+ 관련자 연결</button>';
+  html+='</div></div>';
 
-    // LOGS
-    '<div class="section">'+
-      '<div class="section-hdr" onclick="toggleSec(\'logs\')">'+
-        '<div class="section-hdr-left"><span style="font-size:16px">📝</span><span class="section-hdr-title">미팅 / 커뮤니케이션 로그</span><span class="section-hdr-count">'+logs.length+'</span></div>'+
-        '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--t3);transform:rotate('+(sec.logs?'180':'0')+'deg);transition:transform .2s"><path d="M6 9l6 6 6-6"/></svg>'+
-      '</div>'+
-      '<div class="section-body '+(sec.logs?'open':'')+'">'+
-        [...logs].reverse().map((l,ri)=>{
-          const realIdx = logs.length-1-ri;
-          return '<div class="log-item">'+
-            '<div class="log-date">'+fmtDate(l.date)+(l.channel?' · '+l.channel:'')+'</div>'+
-            '<div class="log-content">'+l.content.replace(/\n/g,'<br>')+'</div>'+
-            (l.who?'<div class="log-who">참석: '+l.who+'</div>':'')+
-            '<button style="background:none;border:none;color:var(--t3);font-size:11px;cursor:pointer;margin-top:4px;font-family:DM Sans,sans-serif" onclick="delLog('+realIdx+')">삭제</button>'+
-          '</div>';
-        }).join('') +
-        '<button class="section-add-btn" onclick="openAddLog()">+ 로그 추가</button>'+
-      '</div>'+
-    '</div>'+
+  // ACTIONS
+  html+='<div class="sec"><div class="sec-hdr" onclick="toggleSec(\'actions\')"><div class="sec-hdr-l"><span style="font-size:16px">✅</span><span class="sec-title">액션 아이템</span><span class="sec-cnt">'+openActs+'</span></div><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--t3);transform:rotate('+(sec.actions?'180':'0')+'deg)"><path d="M6 9l6 6 6-6"/></svg></div>';
+  html+='<div class="sec-body '+(sec.actions?'open':'')+'">';
+  for(var i=0;i<acts.length;i++){
+    var a=acts[i];
+    var dl=dLeft(a.due);
+    var over=dl!==null&&dl<0&&!a.done;
+    html+='<div class="act-item">';
+    html+='<div class="acheck '+(a.done?'done':'')+'" onclick="togAct('+i+')"></div>';
+    html+='<div class="atxt"><div class="atitle '+(a.done?'done':'')+'">'+a.title+'</div>';
+    if(a.due) html+='<div class="adue '+(over?'over':'')+'">'+fmtDate(a.due)+(dl!==null&&!a.done?' (D'+(dl>=0?'-'+dl:'+'+Math.abs(dl))+')':'')+'</div>';
+    if(a.note) html+='<div style="font-size:11px;color:var(--t3);margin-top:2px">'+a.note+'</div>';
+    html+='</div><button class="xbtn" onclick="delAct('+i+')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>';
+    html+='</div>';
+  }
+  html+='<button class="add-btn" onclick="openAddAct()">+ 액션 추가</button>';
+  html+='</div></div>';
 
-    // DRIVE
-    '<div class="section">'+
-      '<div class="section-hdr" onclick="toggleSec(\'drive\')">'+
-        '<div class="section-hdr-left"><span style="font-size:16px">📂</span><span class="section-hdr-title">Google Drive</span><span class="section-hdr-count">'+drives.length+'</span></div>'+
-        '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--t3);transform:rotate('+(sec.drive?'180':'0')+'deg);transition:transform .2s"><path d="M6 9l6 6 6-6"/></svg>'+
-      '</div>'+
-      '<div class="section-body '+(sec.drive?'open':'')+'">'+
-        drives.map((lnk,i)=>'<div class="drive-item">'+
-          '<div class="drive-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>'+
-          '<div class="drive-info"><div class="drive-name">'+lnk.name+'</div><div class="drive-type">'+( lnk.docType||'' )+'</div></div>'+
-          '<button class="drive-open" onclick="window.open(\''+lnk.url+'\',\'_blank\')">열기</button>'+
-          '<button style="background:none;border:none;color:var(--t3);cursor:pointer;padding:4px;display:flex" onclick="delDrive('+i+')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>'+
-        '</div>').join('') +
-        '<button class="section-add-btn" onclick="openAddDrive()">+ Drive 링크 추가</button>'+
-      '</div>'+
-    '</div>'+
+  // LOGS
+  html+='<div class="sec"><div class="sec-hdr" onclick="toggleSec(\'logs\')"><div class="sec-hdr-l"><span style="font-size:16px">📝</span><span class="sec-title">미팅 / 로그</span><span class="sec-cnt">'+logs.length+'</span></div><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--t3);transform:rotate('+(sec.logs?'180':'0')+'deg)"><path d="M6 9l6 6 6-6"/></svg></div>';
+  html+='<div class="sec-body '+(sec.logs?'open':'')+'">';
+  var rlogs=[].concat(logs).reverse();
+  for(var i=0;i<rlogs.length;i++){
+    var l=rlogs[i];
+    var ri=logs.length-1-i;
+    html+='<div class="log-item"><div class="log-date">'+fmtDate(l.date)+(l.channel?' · '+l.channel:'')+'</div><div class="log-txt">'+l.content.replace(/\n/g,'<br>')+'</div>';
+    if(l.who) html+='<div class="log-who">참석: '+l.who+'</div>';
+    html+='<button style="background:none;border:none;color:var(--t3);font-size:11px;cursor:pointer;margin-top:3px;font-family:DM Sans,sans-serif" onclick="delLog('+ri+')">삭제</button></div>';
+  }
+  html+='<button class="add-btn" onclick="openAddLog()">+ 로그 추가</button>';
+  html+='</div></div>';
 
-    // DELETE
-    '<div style="padding:20px 16px">'+
-      '<button class="del-btn" onclick="deleteDeal()">이 딜 삭제</button>'+
-    '</div>';
+  // DRIVE
+  html+='<div class="sec"><div class="sec-hdr" onclick="toggleSec(\'drive\')"><div class="sec-hdr-l"><span style="font-size:16px">📂</span><span class="sec-title">Google Drive</span><span class="sec-cnt">'+drvs.length+'</span></div><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--t3);transform:rotate('+(sec.drive?'180':'0')+'deg)"><path d="M6 9l6 6 6-6"/></svg></div>';
+  html+='<div class="sec-body '+(sec.drive?'open':'')+'">';
+  for(var i=0;i<drvs.length;i++){
+    var lk=drvs[i];
+    html+='<div class="ditem"><div class="dico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>';
+    html+='<div class="dinfo"><div class="dname">'+lk.name+'</div><div class="dtype">'+(lk.docType||'')+'</div></div>';
+    html+='<button class="dopen" onclick="window.open(\''+lk.url+'\',\'_blank\')">열기</button>';
+    html+='<button style="background:none;border:none;color:var(--t3);cursor:pointer;padding:4px;display:flex" onclick="delDrv('+i+')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>';
+    html+='</div>';
+  }
+  html+='<button class="add-btn" onclick="openAddDrv()">+ Drive 링크 추가</button>';
+  html+='</div></div>';
+
+  html+='<div style="padding:20px 16px"><button class="delbtn" onclick="delDeal()">이 딜 삭제</button></div>';
+  document.getElementById('l2body').innerHTML=html;
 }
-function toggleSec(key) {
-  if (!openSections[curDealId]) openSections[curDealId]={};
-  openSections[curDealId][key] = !openSections[curDealId][key];
+
+function toggleSec(k){
+  if(!openSec[curDeal]) openSec[curDeal]={};
+  openSec[curDeal][k]=!openSec[curDeal][k];
   renderL2();
 }
-function changeStage(s) {
-  const d = DB.deals.find(d=>d.id===curDealId); if(!d) return;
-  if (d.stage !== s) {
-    if (!d.stageHistory) d.stageHistory=[];
-    d.stageHistory.push({from:d.stage, to:s, date:today()});
-    d.stage = s; d.updatedAt = today();
-    save(); renderL2(); renderL1();
-  }
+
+function chStage(s){
+  var d=DB.deals.find(function(x){ return x.id===curDeal; });
+  if(!d||d.stage===s) return;
+  if(!d.stageHistory) d.stageHistory=[];
+  d.stageHistory.push({from:d.stage,to:s,date:today()});
+  d.stage=s; d.updatedAt=today();
+  save(); renderL2(); renderL1();
 }
-function deleteDeal() {
-  if (!confirm('딜을 삭제합니까?')) return;
-  DB.deals = DB.deals.filter(d=>d.id!==curDealId);
+
+function delDeal(){
+  if(!confirm('딜을 삭제합니까?')) return;
+  DB.deals=DB.deals.filter(function(d){ return d.id!==curDeal; });
   save(); popLayer(); renderL1();
 }
 
-// Actions
-function toggleAction(i) {
-  const d = DB.deals.find(d=>d.id===curDealId); if(!d) return;
-  d.actions[i].done = !d.actions[i].done; d.updatedAt=today();
+function togAct(i){
+  var d=DB.deals.find(function(x){ return x.id===curDeal; });
+  if(!d) return;
+  d.actions[i].done=!d.actions[i].done; d.updatedAt=today();
   save(); renderL2();
 }
-function delAction(i) {
-  const d = DB.deals.find(d=>d.id===curDealId); if(!d) return;
+
+function delAct(i){
+  var d=DB.deals.find(function(x){ return x.id===curDeal; });
+  if(!d) return;
   d.actions.splice(i,1); save(); renderL2();
 }
-function delLog(i) {
-  const d = DB.deals.find(d=>d.id===curDealId); if(!d) return;
+
+function delLog(i){
+  var d=DB.deals.find(function(x){ return x.id===curDeal; });
+  if(!d) return;
   d.logs.splice(i,1); save(); renderL2();
 }
-function delDrive(i) {
-  const d = DB.deals.find(d=>d.id===curDealId); if(!d) return;
+
+function delDrv(i){
+  var d=DB.deals.find(function(x){ return x.id===curDeal; });
+  if(!d) return;
   d.driveLinks.splice(i,1); save(); renderL2();
 }
-function unlinkPerson(pid) {
-  const d = DB.deals.find(d=>d.id===curDealId); if(!d) return;
-  d.personIds = (d.personIds||[]).filter(id=>id!==pid);
-  save(); renderL2();
-}
 
-// ══ LAYER 3: PERSON ══
-function openPerson(id) {
-  curPersonId = id;
-  document.getElementById('l3-edit-btn').style.display = '';
-  document.getElementById('l3-spacer').style.display = 'none';
-  renderL3Person();
-  document.getElementById('l3-body').scrollTop = 0;
+function openPerson(id){
+  curPerson=id;
+  renderL3();
+  document.getElementById('l3body').scrollTop=0;
   pushLayer('l3');
 }
-function renderL3Person() {
-  const p = DB.people.find(p=>p.id===curPersonId); if(!p) return;
-  document.getElementById('l3-title').textContent = p.name;
-  const deals = DB.deals.filter(d=>(d.personIds||[]).includes(p.id));
-  document.getElementById('l3-body').innerHTML =
-    '<div class="person-hero">'+
-      '<div class="person-av-big">'+p.name.slice(-1)+'</div>'+
-      '<div class="person-hero-name">'+p.name+'</div>'+
-      '<div class="person-hero-sub">'+(p.org||'')+( p.title?' · '+p.title:'' )+'</div>'+
-      (p.role ? '<div style="margin-top:8px"><span class="badge" style="background:var(--s2);color:var(--t2);border-color:var(--border2)">'+p.role+'</span></div>' : '')+
-      '<div class="stars">'+[1,2,3,4,5].map(i=>'<span class="star '+(( p.rating||0)>=i?'on':'')+'">★</span>').join('')+'</div>'+
-    '</div>'+
 
-    // contacts
-    (p.phone ? '<div class="info-row"><span class="info-ico">📞</span><span class="info-val">'+p.phone+'</span><button class="info-copy" onclick="copy(\''+p.phone+'\')">복사</button></div>' : '')+
-    (p.email ? '<div class="info-row"><span class="info-ico">✉️</span><span class="info-val">'+p.email+'</span><button class="info-copy" onclick="copy(\''+p.email+'\')">복사</button></div>' : '')+
-    (p.wechat ? '<div class="info-row"><span class="info-ico">💬</span><span class="info-val">'+p.wechat+'</span><button class="info-copy" onclick="copy(\''+p.wechat+'\')">복사</button></div>' : '')+
-    (p.country ? '<div class="info-row"><span class="info-ico">🌏</span><span class="info-val">'+p.country+(p.lang?' · '+p.lang:'')+'</span></div>' : '')+
-    (p.memo ? '<div class="info-memo">'+p.memo.replace(/\n/g,'<br>')+'</div>' : '')+
+function renderL3(){
+  var p=DB.people.find(function(x){ return x.id===curPerson; });
+  if(!p) return;
+  document.getElementById('l3title').textContent=p.name;
+  var deals=DB.deals.filter(function(d){ return (d.personIds||[]).indexOf(p.id)>=0; });
+  var starHtml='';
+  for(var i=1;i<=5;i++) starHtml+='<span class="star '+((p.rating||0)>=i?'on':'')+'">★</span>';
 
-    // person logs
-    '<div class="section" style="border-top:1px solid var(--border)">'+
-      '<div class="section-hdr" onclick="this.nextElementSibling.classList.toggle(\'open\')">'+
-        '<div class="section-hdr-left"><span style="font-size:15px">💬</span><span class="section-hdr-title">대화 로그</span><span class="section-hdr-count">'+(p.logs||[]).length+'</span></div>'+
-        '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--t3)"><path d="M6 9l6 6 6-6"/></svg>'+
-      '</div>'+
-      '<div class="section-body">'+
-        [...(p.logs||[])].reverse().map((l,ri)=>{
-          const realIdx = (p.logs.length-1-ri);
-          return '<div class="log-item"><div class="log-date">'+fmtDate(l.date)+(l.channel?' · '+l.channel:'')+'</div><div class="log-content">'+l.content.replace(/\n/g,'<br>')+'</div><button style="background:none;border:none;color:var(--t3);font-size:11px;cursor:pointer;margin-top:3px;font-family:DM Sans,sans-serif" onclick="delPersonLog('+realIdx+')">삭제</button></div>';
-        }).join('') +
-        '<button class="section-add-btn" onclick="openAddPersonLog()">+ 대화 로그</button>'+
-      '</div>'+
-    '</div>'+
+  var html='';
+  html+='<div class="phero">';
+  html+='<div class="pav-big">'+p.name.slice(-1)+'</div>';
+  html+='<div class="phero-name">'+p.name+'</div>';
+  html+='<div class="phero-sub">'+(p.org||'')+(p.title?' · '+p.title:'')+'</div>';
+  if(p.role) html+='<div style="margin-top:8px"><span class="badge" style="background:var(--s2);color:var(--t2);border-color:var(--bd2)">'+p.role+'</span></div>';
+  html+='<div class="stars">'+starHtml+'</div>';
+  html+='</div>';
 
-    // linked deals
-    (deals.length ? '<div style="border-top:1px solid var(--border)"><div style="padding:13px 16px 6px;font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;font-weight:600">참여 딜</div>'+
-      deals.map(d=>'<div class="deal-link-row" onclick="goToDeal(\''+d.id+'\')">'+
-        '<div class="deal-dot" style="background:'+stageDotColor(d.stage)+'"></div>'+
-        '<div style="flex:1"><div style="font-size:14px;font-weight:500">'+d.name+'</div><div style="font-size:12px;color:var(--t2);margin-top:2px">'+d.type+' · '+d.stage+'</div></div>'+
-        '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--t3)"><path d="M9 18l6-6-6-6"/></svg>'+
-      '</div>').join('')+'</div>' : '')+
+  if(p.phone) html+='<div class="irow"><span class="iico">📞</span><span class="ival">'+p.phone+'</span><button class="icopy" onclick="copyTxt(\''+p.phone+'\')">복사</button></div>';
+  if(p.email) html+='<div class="irow"><span class="iico">✉️</span><span class="ival">'+p.email+'</span><button class="icopy" onclick="copyTxt(\''+p.email+'\')">복사</button></div>';
+  if(p.wechat) html+='<div class="irow"><span class="iico">💬</span><span class="ival">'+p.wechat+'</span><button class="icopy" onclick="copyTxt(\''+p.wechat+'\')">복사</button></div>';
+  if(p.country) html+='<div class="irow"><span class="iico">🌏</span><span class="ival">'+p.country+(p.lang?' · '+p.lang:'')+'</span></div>';
+  if(p.memo) html+='<div class="imemo">'+p.memo.replace(/\n/g,'<br>')+'</div>';
 
-    '<div style="padding:16px"><button class="del-btn" onclick="deletePerson()">관련자 삭제</button></div>';
-}
-function copy(txt) { navigator.clipboard && navigator.clipboard.writeText(txt); }
-function goToDeal(id) {
-  // pop to l1 first if needed
-  while (layerStack.length > 1) {
-    const top = layerStack.pop();
-    document.getElementById(top).classList.remove('active','behind');
-    document.getElementById(top).style.transform='';
+  // person logs
+  var plogs=p.logs||[];
+  html+='<div class="sec" style="border-top:1px solid var(--bd)"><div class="sec-hdr" onclick="this.nextElementSibling.classList.toggle(\'open\')"><div class="sec-hdr-l"><span style="font-size:15px">💬</span><span class="sec-title">대화 로그</span><span class="sec-cnt">'+plogs.length+'</span></div><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--t3)"><path d="M6 9l6 6 6-6"/></svg></div>';
+  html+='<div class="sec-body">';
+  var rplogs=[].concat(plogs).reverse();
+  for(var i=0;i<rplogs.length;i++){
+    var l=rplogs[i];
+    var ri=plogs.length-1-i;
+    html+='<div class="log-item"><div class="log-date">'+fmtDate(l.date)+(l.channel?' · '+l.channel:'')+'</div><div class="log-txt">'+l.content.replace(/\n/g,'<br>')+'</div>';
+    html+='<button style="background:none;border:none;color:var(--t3);font-size:11px;cursor:pointer;margin-top:3px;font-family:DM Sans,sans-serif" onclick="delPLog('+ri+')">삭제</button></div>';
   }
+  html+='<button class="add-btn" onclick="openAddPLog()">+ 대화 로그</button></div></div>';
+
+  if(deals.length){
+    html+='<div style="border-top:1px solid var(--bd)"><div style="padding:13px 16px 6px;font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;font-weight:600">참여 딜</div>';
+    for(var i=0;i<deals.length;i++){
+      var d=deals[i];
+      html+='<div class="dlrow" onclick="goToDeal(\''+d.id+'\')">';
+      html+='<div class="deal-dot" style="background:'+sdotColor(d.stage)+'"></div>';
+      html+='<div style="flex:1"><div style="font-size:14px;font-weight:500">'+d.name+'</div><div style="font-size:12px;color:var(--t2);margin-top:2px">'+d.type+' · '+d.stage+'</div></div>';
+      html+='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--t3)"><path d="M9 18l6-6-6-6"/></svg></div>';
+    }
+    html+='</div>';
+  }
+
+  html+='<div style="padding:16px"><button class="delbtn" onclick="delPerson()">관련자 삭제</button></div>';
+  document.getElementById('l3body').innerHTML=html;
+}
+
+function copyTxt(txt){ if(navigator.clipboard) navigator.clipboard.writeText(txt); }
+
+function goToDeal(id){
+  while(layers.length>1){ var t=layers.pop(); document.getElementById(t).classList.remove('active','behind'); document.getElementById(t).style.transform=''; }
   document.getElementById('l1').classList.remove('behind');
-  curDealId = id;
-  renderL2();
-  pushLayer('l2');
+  curDeal=id; renderL2(); pushLayer('l2');
 }
-function delPersonLog(i) {
-  const p = DB.people.find(p=>p.id===curPersonId); if(!p) return;
-  p.logs.splice(i,1); save(); renderL3Person();
+
+function delPLog(i){
+  var p=DB.people.find(function(x){ return x.id===curPerson; });
+  if(!p) return;
+  p.logs.splice(i,1); save(); renderL3();
 }
-function deletePerson() {
-  if (!confirm('관련자를 삭제합니까?')) return;
-  DB.people = DB.people.filter(p=>p.id!==curPersonId);
-  DB.deals.forEach(d=>{ if(d.personIds) d.personIds=d.personIds.filter(pid=>pid!==curPersonId); });
+
+function delPerson(){
+  if(!confirm('관련자를 삭제합니까?')) return;
+  DB.people=DB.people.filter(function(p){ return p.id!==curPerson; });
+  DB.deals.forEach(function(d){ if(d.personIds) d.personIds=d.personIds.filter(function(pid){ return pid!==curPerson; }); });
   save(); popLayer();
 }
 
-// ══ MODALS ══
-let modalCb = null;
-function showModal(title, body, actions) {
-  document.getElementById('modal-title').textContent = title;
-  document.getElementById('modal-body').innerHTML = body;
-  document.getElementById('modal-actions').innerHTML = actions.map(a=>
-    '<button class="'+(a.ghost?'btn-ghost':'btn')+'" onclick="'+a.fn+'">'+a.label+'</button>'
-  ).join('');
-  document.getElementById('modal-bg').classList.add('open');
+function showModal(title,body,acts){
+  document.getElementById('mtitle').textContent=title;
+  document.getElementById('mbody').innerHTML=body;
+  var html='';
+  for(var i=0;i<acts.length;i++){
+    html+='<button class="'+(acts[i].g?'btn-g':'btn')+'" onclick="'+acts[i].fn+'">'+acts[i].label+'</button>';
+  }
+  document.getElementById('macts').innerHTML=html;
+  document.getElementById('moverlay').classList.add('open');
 }
-function closeModal() { document.getElementById('modal-bg').classList.remove('open'); }
-function handleBgClick(e) { if(e.target===document.getElementById('modal-bg')) closeModal(); }
 
-// Add/Edit Deal
-function openAddDeal() {
-  showModal('새 딜 추가', dealForm(), [
-    {label:'추가', fn:'saveDeal(false)'},
-    {label:'취소', fn:'closeModal()', ghost:true}
-  ]);
+function closeModal(){ document.getElementById('moverlay').classList.remove('open'); }
+function bgClick(e){ if(e.target===document.getElementById('moverlay')) closeModal(); }
+
+function dealFormHTML(d){
+  var typeOpts='';
+  for(var i=0;i<TYPES.length;i++) typeOpts+='<option value="'+TYPES[i]+'"'+(d&&d.type===TYPES[i]?' selected':'')+'>'+TYPES[i]+'</option>';
+  var stageOpts='';
+  for(var i=0;i<STAGES.length;i++) stageOpts+='<option value="'+STAGES[i]+'"'+(d&&d.stage===STAGES[i]?' selected':'')+'>'+STAGES[i]+'</option>';
+  var html='<label>딜명 *</label><input id="fn" value="'+(d?d.name:'')+'" placeholder="딜 이름">';
+  html+='<label>타입</label><select id="ft">'+typeOpts+'</select>';
+  html+='<label>단계</label><select id="fs">'+stageOpts+'</select>';
+  html+='<label>예상 성공보수 (원)</label><input id="ff" type="number" value="'+(d&&d.fee?d.fee:'')+'" placeholder="100000000">';
+  html+='<label>국가/지역</label><input id="fc" value="'+(d&&d.country?d.country:'')+'" placeholder="한국, 중국...">';
+  html+='<label>설명</label><textarea id="fd" rows="3">'+(d&&d.desc?d.desc:'')+'</textarea>';
+  return html;
 }
-function openEditDeal() {
-  const d = DB.deals.find(d=>d.id===curDealId); if(!d) return;
-  showModal('딜 수정', dealForm(d), [
-    {label:'저장', fn:'saveDeal(true)'},
-    {label:'취소', fn:'closeModal()', ghost:true}
-  ]);
+
+function openAddDeal(){
+  showModal('새 딜 추가',dealFormHTML(null),[{label:'추가',fn:'saveDeal(false)'},{label:'취소',fn:'closeModal()',g:true}]);
 }
-function dealForm(d) {
-  return '<label>딜명 *</label><input id="f-name" value="'+(d?d.name:'')+'" placeholder="딜 이름">'+
-    '<label>타입</label><select id="f-type">'+TYPES.map(t=>'<option value="'+t+'"'+(d&&d.type===t?' selected':'')+'>'+t+'</option>').join('')+'</select>'+
-    '<label>단계</label><select id="f-stage">'+STAGES.map(s=>'<option value="'+s+'"'+(d&&d.stage===s?' selected':'')+'>'+s+'</option>').join('')+'</select>'+
-    '<label>예상 성공보수 (원)</label><input id="f-fee" type="number" value="'+(d?(d.fee||''):'')+'" placeholder="100000000">'+
-    '<label>국가/지역</label><input id="f-country" value="'+(d?(d.country||''):'')+'" placeholder="한국, 중국...">'+
-    '<label>설명</label><textarea id="f-desc" rows="3">'+(d?(d.desc||''):'')+'</textarea>';
+
+function openEditDeal(){
+  var d=DB.deals.find(function(x){ return x.id===curDeal; });
+  if(!d) return;
+  showModal('딜 수정',dealFormHTML(d),[{label:'저장',fn:'saveDeal(true)'},{label:'취소',fn:'closeModal()',g:true}]);
 }
-function saveDeal(isEdit) {
-  const name = document.getElementById('f-name').value.trim();
-  if (!name) { alert('딜명을 입력하세요'); return; }
-  if (isEdit) {
-    const d = DB.deals.find(d=>d.id===curDealId); if(!d) return;
-    const oldStage = d.stage;
-    const newStage = document.getElementById('f-stage').value;
-    d.name=name; d.type=document.getElementById('f-type').value;
-    d.stage=newStage; d.fee=document.getElementById('f-fee').value;
-    d.country=document.getElementById('f-country').value;
-    d.desc=document.getElementById('f-desc').value; d.updatedAt=today();
-    if (oldStage!==newStage) { if(!d.stageHistory)d.stageHistory=[]; d.stageHistory.push({from:oldStage,to:newStage,date:today()}); }
+
+function saveDeal(isEdit){
+  var name=document.getElementById('fn').value.trim();
+  if(!name){ alert('딜명을 입력하세요'); return; }
+  if(isEdit){
+    var d=DB.deals.find(function(x){ return x.id===curDeal; });
+    if(!d) return;
+    var os=d.stage, ns=document.getElementById('fs').value;
+    d.name=name; d.type=document.getElementById('ft').value; d.stage=ns;
+    d.fee=document.getElementById('ff').value; d.country=document.getElementById('fc').value;
+    d.desc=document.getElementById('fd').value; d.updatedAt=today();
+    if(os!==ns){ if(!d.stageHistory) d.stageHistory=[]; d.stageHistory.push({from:os,to:ns,date:today()}); }
   } else {
-    DB.deals.push({id:uid(),name,type:document.getElementById('f-type').value,
-      stage:document.getElementById('f-stage').value,fee:document.getElementById('f-fee').value,
-      country:document.getElementById('f-country').value,desc:document.getElementById('f-desc').value,
-      personIds:[],actions:[],logs:[],driveLinks:[],stageHistory:[],createdAt:today(),updatedAt:today()});
+    DB.deals.push({id:uid(),name:name,type:document.getElementById('ft').value,stage:document.getElementById('fs').value,
+      fee:document.getElementById('ff').value,country:document.getElementById('fc').value,
+      desc:document.getElementById('fd').value,personIds:[],actions:[],logs:[],driveLinks:[],stageHistory:[],createdAt:today(),updatedAt:today()});
   }
   save(); closeModal(); renderL1();
-  if (isEdit) renderL2();
+  if(isEdit) renderL2();
 }
 
-// Add/Edit Person
-function openAddPersonModal() {
-  showModal('새 관련자', personForm(), [
-    {label:'추가', fn:'savePerson(false)'},
-    {label:'취소', fn:'closeModal()', ghost:true}
-  ]);
+function personFormHTML(p){
+  var roleOpts='';
+  for(var i=0;i<ROLES.length;i++) roleOpts+='<option value="'+ROLES[i]+'"'+(p&&p.role===ROLES[i]?' selected':'')+'>'+ROLES[i]+'</option>';
+  var stars='<div class="stars" id="fpstars" style="margin-top:6px;justify-content:flex-start">';
+  for(var i=1;i<=5;i++) stars+='<span class="star '+((p&&(p.rating||0)>=i)?'on':'')+'" onclick="setStar('+i+')">★</span>';
+  stars+='</div><input type="hidden" id="fprat" value="'+(p?p.rating||0:0)+'">';
+  var html='<label>이름 *</label><input id="fpn" value="'+(p?p.name:'')+'" placeholder="홍길동">';
+  html+='<label>소속/회사</label><input id="fpo" value="'+(p&&p.org?p.org:'')+'" placeholder="ABC 코리아">';
+  html+='<label>직함</label><input id="fpt" value="'+(p&&p.title?p.title:'')+'" placeholder="대표이사">';
+  html+='<label>역할</label><select id="fpr">'+roleOpts+'</select>';
+  html+='<label>전화</label><input id="fpph" value="'+(p&&p.phone?p.phone:'')+'" placeholder="+82-10-1234-5678">';
+  html+='<label>이메일</label><input id="fpe" type="email" value="'+(p&&p.email?p.email:'')+'" placeholder="name@company.com">';
+  html+='<label>WeChat ID</label><input id="fpw" value="'+(p&&p.wechat?p.wechat:'')+'" placeholder="WeChat ID">';
+  html+='<label>국가</label><input id="fpco" value="'+(p&&p.country?p.country:'')+'" placeholder="중국, 한국...">';
+  html+='<label>언어</label><input id="fpl" value="'+(p&&p.lang?p.lang:'')+'" placeholder="한국어, 중국어...">';
+  html+='<label>중요도</label>'+stars;
+  html+='<label>메모</label><textarea id="fpm" rows="3">'+(p&&p.memo?p.memo:'')+'</textarea>';
+  return html;
 }
-function openEditPerson() {
-  const p = DB.people.find(p=>p.id===curPersonId); if(!p) return;
-  showModal('관련자 수정', personForm(p), [
-    {label:'저장', fn:'savePerson(true)'},
-    {label:'취소', fn:'closeModal()', ghost:true}
-  ]);
+
+function setStar(n){
+  document.getElementById('fprat').value=n;
+  var stars=document.querySelectorAll('#fpstars .star');
+  for(var i=0;i<stars.length;i++) stars[i].classList.toggle('on',i<n);
 }
-function personForm(p) {
-  return '<label>이름 *</label><input id="fp-name" value="'+(p?p.name:'')+'" placeholder="홍길동">'+
-    '<label>소속/회사</label><input id="fp-org" value="'+(p?(p.org||''):'')+'" placeholder="ABC 코리아">'+
-    '<label>직함</label><input id="fp-title" value="'+(p?(p.title||''):'')+'" placeholder="대표이사">'+
-    '<label>역할</label><select id="fp-role">'+ROLES.map(r=>'<option value="'+r+'"'+(p&&p.role===r?' selected':'')+'>'+r+'</option>').join('')+'</select>'+
-    '<label>전화</label><input id="fp-phone" value="'+(p?(p.phone||''):'')+'" placeholder="+82-10-1234-5678">'+
-    '<label>이메일</label><input id="fp-email" type="email" value="'+(p?(p.email||''):'')+'" placeholder="name@company.com">'+
-    '<label>WeChat ID</label><input id="fp-wechat" value="'+(p?(p.wechat||''):'')+'" placeholder="WeChat ID">'+
-    '<label>국가</label><input id="fp-country" value="'+(p?(p.country||''):'')+'" placeholder="중국, 한국...">'+
-    '<label>언어</label><input id="fp-lang" value="'+(p?(p.lang||''):'')+'" placeholder="한국어, 중국어...">'+
-    '<label>중요도</label><div class="stars" id="fp-stars" style="margin-top:6px;justify-content:flex-start">'+
-    [1,2,3,4,5].map(i=>'<span class="star '+(p&&(p.rating||0)>=i?'on':'')+'" onclick="setRating('+i+')">★</span>').join('')+
-    '</div><input type="hidden" id="fp-rating" value="'+(p?(p.rating||0):0)+'">'+
-    '<label>메모</label><textarea id="fp-memo" rows="3">'+(p?(p.memo||''):'')+'</textarea>';
+
+function openAddPersonModal(){
+  showModal('새 관련자',personFormHTML(null),[{label:'추가',fn:'savePerson(false)'},{label:'취소',fn:'closeModal()',g:true}]);
 }
-function setRating(n) {
-  document.getElementById('fp-rating').value=n;
-  document.querySelectorAll('#fp-stars .star').forEach((s,i)=>s.classList.toggle('on',i<n));
+
+function openEditPerson(){
+  var p=DB.people.find(function(x){ return x.id===curPerson; });
+  if(!p) return;
+  showModal('관련자 수정',personFormHTML(p),[{label:'저장',fn:'savePerson(true)'},{label:'취소',fn:'closeModal()',g:true}]);
 }
-function savePerson(isEdit) {
-  const name = document.getElementById('fp-name').value.trim();
-  if (!name) { alert('이름을 입력하세요'); return; }
-  const data = {name,org:document.getElementById('fp-org').value,title:document.getElementById('fp-title').value,
-    role:document.getElementById('fp-role').value,phone:document.getElementById('fp-phone').value,
-    email:document.getElementById('fp-email').value,wechat:document.getElementById('fp-wechat').value,
-    country:document.getElementById('fp-country').value,lang:document.getElementById('fp-lang').value,
-    rating:parseInt(document.getElementById('fp-rating').value)||0,memo:document.getElementById('fp-memo').value};
-  if (isEdit) { const p=DB.people.find(p=>p.id===curPersonId); if(p) Object.assign(p,data); }
-  else DB.people.push({id:uid(),...data,logs:[],createdAt:today()});
+
+function savePerson(isEdit){
+  var name=document.getElementById('fpn').value.trim();
+  if(!name){ alert('이름을 입력하세요'); return; }
+  var data={name:name,org:document.getElementById('fpo').value,title:document.getElementById('fpt').value,
+    role:document.getElementById('fpr').value,phone:document.getElementById('fpph').value,
+    email:document.getElementById('fpe').value,wechat:document.getElementById('fpw').value,
+    country:document.getElementById('fpco').value,lang:document.getElementById('fpl').value,
+    rating:parseInt(document.getElementById('fprat').value)||0,memo:document.getElementById('fpm').value};
+  if(isEdit){ var p=DB.people.find(function(x){ return x.id===curPerson; }); if(p) Object.assign(p,data); }
+  else { var np={id:uid(),logs:[],createdAt:today()}; Object.assign(np,data); DB.people.push(np); }
   save(); closeModal();
-  if (isEdit) renderL3Person();
+  if(isEdit) renderL3();
 }
 
-// Link person to deal
-function openLinkPerson() {
-  const d = DB.deals.find(d=>d.id===curDealId); if(!d) return;
-  const avail = DB.people.filter(p=>!(d.personIds||[]).includes(p.id));
-  showModal('관련자 연결',
-    (avail.length ? avail.map(p=>
-      '<div class="person-chips" style="margin-bottom:0"><div class="pchip" onclick="linkPerson(\''+p.id+'\')" style="width:100%;margin-bottom:6px">'+
-      '<div class="pchip-av">'+p.name.slice(-1)+'</div>'+
-      '<div><div class="pchip-name">'+p.name+'</div><div class="pchip-role">'+(p.org||'')+(p.title?' · '+p.title:'')+'</div></div>'+
-      '</div></div>'
-    ).join('') : '<p style="font-size:13px;color:var(--t2);margin-bottom:12px">추가된 관련자가 없습니다</p>')+
-    '<button class="section-add-btn" style="margin-top:8px" onclick="closeModal();openAddPersonAndLink()">+ 새 관련자 추가</button>',
-    [{label:'닫기', fn:'closeModal()', ghost:true}]
-  );
+function openLinkPerson(){
+  var d=DB.deals.find(function(x){ return x.id===curDeal; });
+  if(!d) return;
+  var avail=DB.people.filter(function(p){ return (d.personIds||[]).indexOf(p.id)<0; });
+  var html='';
+  if(avail.length){
+    for(var i=0;i<avail.length;i++){
+      var p=avail[i];
+      html+='<div class="pchip" onclick="linkP(\''+p.id+'\')" style="width:100%;margin-bottom:8px">';
+      html+='<div class="pav">'+p.name.slice(-1)+'</div><div><div class="pname">'+p.name+'</div><div class="prole">'+(p.org||'')+(p.title?' · '+p.title:'')+'</div></div></div>';
+    }
+  } else {
+    html='<p style="font-size:13px;color:var(--t2);margin-bottom:12px">추가된 관련자가 없습니다</p>';
+  }
+  html+='<button class="add-btn" style="margin-top:8px" onclick="closeModal();openAddAndLink()">+ 새 관련자 추가</button>';
+  showModal('관련자 연결',html,[{label:'닫기',fn:'closeModal()',g:true}]);
 }
-function linkPerson(pid) {
-  const d = DB.deals.find(d=>d.id===curDealId); if(!d) return;
-  if (!d.personIds) d.personIds=[];
-  if (!d.personIds.includes(pid)) { d.personIds.push(pid); d.updatedAt=today(); save(); }
+
+function linkP(pid){
+  var d=DB.deals.find(function(x){ return x.id===curDeal; });
+  if(!d) return;
+  if(!d.personIds) d.personIds=[];
+  if(d.personIds.indexOf(pid)<0){ d.personIds.push(pid); d.updatedAt=today(); save(); }
   closeModal(); renderL2();
 }
-function openAddPersonAndLink() {
-  showModal('새 관련자 추가', personForm(), [
-    {label:'추가 후 연결', fn:'savePersonAndLink()'},
-    {label:'취소', fn:'closeModal()', ghost:true}
-  ]);
+
+function openAddAndLink(){
+  showModal('새 관련자 추가',personFormHTML(null),[{label:'추가 후 연결',fn:'saveAndLink()'},{label:'취소',fn:'closeModal()',g:true}]);
 }
-function savePersonAndLink() {
-  const name = document.getElementById('fp-name').value.trim();
-  if (!name) { alert('이름을 입력하세요'); return; }
-  const data = {name,org:document.getElementById('fp-org').value,title:document.getElementById('fp-title').value,
-    role:document.getElementById('fp-role').value,phone:document.getElementById('fp-phone').value,
-    email:document.getElementById('fp-email').value,wechat:document.getElementById('fp-wechat').value,
-    country:document.getElementById('fp-country').value,lang:document.getElementById('fp-lang').value,
-    rating:parseInt(document.getElementById('fp-rating').value)||0,memo:document.getElementById('fp-memo').value};
-  const p = {id:uid(),...data,logs:[],createdAt:today()};
-  DB.people.push(p);
-  const d = DB.deals.find(d=>d.id===curDealId);
-  if (d) { if(!d.personIds)d.personIds=[]; d.personIds.push(p.id); d.updatedAt=today(); }
+
+function saveAndLink(){
+  var name=document.getElementById('fpn').value.trim();
+  if(!name){ alert('이름을 입력하세요'); return; }
+  var np={id:uid(),name:name,org:document.getElementById('fpo').value,title:document.getElementById('fpt').value,
+    role:document.getElementById('fpr').value,phone:document.getElementById('fpph').value,
+    email:document.getElementById('fpe').value,wechat:document.getElementById('fpw').value,
+    country:document.getElementById('fpco').value,lang:document.getElementById('fpl').value,
+    rating:parseInt(document.getElementById('fprat').value)||0,memo:document.getElementById('fpm').value,
+    logs:[],createdAt:today()};
+  DB.people.push(np);
+  var d=DB.deals.find(function(x){ return x.id===curDeal; });
+  if(d){ if(!d.personIds) d.personIds=[]; d.personIds.push(np.id); d.updatedAt=today(); }
   save(); closeModal(); renderL2();
 }
 
-// Add Action
-function openAddAction() {
-  showModal('액션 추가',
-    '<label>내용 *</label><input id="fa-title" placeholder="할 일">'+
-    '<label>기한</label><input id="fa-due" type="date" value="'+today()+'">'+
-    '<label>메모</label><input id="fa-note" placeholder="추가 메모...">',
-    [{label:'추가', fn:'saveAction()'},{label:'취소', fn:'closeModal()', ghost:true}]
-  );
+function openAddAct(){
+  var html='<label>내용 *</label><input id="fan" placeholder="할 일">';
+  html+='<label>기한</label><input id="fad" type="date" value="'+today()+'">';
+  html+='<label>메모</label><input id="fam" placeholder="추가 메모...">';
+  showModal('액션 추가',html,[{label:'추가',fn:'saveAct()'},{label:'취소',fn:'closeModal()',g:true}]);
 }
-function saveAction() {
-  const title = document.getElementById('fa-title').value.trim();
-  if (!title) { alert('내용을 입력하세요'); return; }
-  const d = DB.deals.find(d=>d.id===curDealId); if(!d) return;
-  if (!d.actions) d.actions=[];
-  d.actions.push({id:uid(),title,due:document.getElementById('fa-due').value,note:document.getElementById('fa-note').value,done:false});
+
+function saveAct(){
+  var title=document.getElementById('fan').value.trim();
+  if(!title){ alert('내용을 입력하세요'); return; }
+  var d=DB.deals.find(function(x){ return x.id===curDeal; });
+  if(!d) return;
+  if(!d.actions) d.actions=[];
+  d.actions.push({id:uid(),title:title,due:document.getElementById('fad').value,note:document.getElementById('fam').value,done:false});
   d.updatedAt=today(); save(); closeModal(); renderL2();
 }
 
-// Add Log
-function openAddLog() {
-  showModal('로그 추가',
-    '<label>날짜</label><input id="fl-date" type="date" value="'+today()+'">'+
-    '<label>채널</label><input id="fl-channel" placeholder="전화, 미팅, 이메일, WeChat...">'+
-    '<label>참석자</label><input id="fl-who" placeholder="홍길동, 김철수...">'+
-    '<label>내용 *</label><textarea id="fl-content" rows="4" placeholder="논의 내용..."></textarea>',
-    [{label:'추가', fn:'saveLog()'},{label:'취소', fn:'closeModal()', ghost:true}]
-  );
+function openAddLog(){
+  var html='<label>날짜</label><input id="fld" type="date" value="'+today()+'">';
+  html+='<label>채널</label><input id="flc" placeholder="전화, 미팅, 이메일, WeChat...">';
+  html+='<label>참석자</label><input id="flw" placeholder="홍길동, 김철수...">';
+  html+='<label>내용 *</label><textarea id="flx" rows="4" placeholder="논의 내용..."></textarea>';
+  showModal('로그 추가',html,[{label:'추가',fn:'saveLog()'},{label:'취소',fn:'closeModal()',g:true}]);
 }
-function saveLog() {
-  const content = document.getElementById('fl-content').value.trim();
-  if (!content) { alert('내용을 입력하세요'); return; }
-  const d = DB.deals.find(d=>d.id===curDealId); if(!d) return;
-  if (!d.logs) d.logs=[];
-  d.logs.push({id:uid(),date:document.getElementById('fl-date').value,channel:document.getElementById('fl-channel').value,who:document.getElementById('fl-who').value,content});
+
+function saveLog(){
+  var content=document.getElementById('flx').value.trim();
+  if(!content){ alert('내용을 입력하세요'); return; }
+  var d=DB.deals.find(function(x){ return x.id===curDeal; });
+  if(!d) return;
+  if(!d.logs) d.logs=[];
+  d.logs.push({id:uid(),date:document.getElementById('fld').value,channel:document.getElementById('flc').value,who:document.getElementById('flw').value,content:content});
   d.updatedAt=today(); save(); closeModal(); renderL2();
 }
 
-// Add Drive
-function openAddDrive() {
-  showModal('Drive 링크 추가',
-    '<label>문서명 *</label><input id="fd-name" placeholder="NDA_홍콩코스메틱">'+
-    '<label>문서 타입</label><select id="fd-type">'+DOC_TYPES.map(t=>'<option value="'+t+'">'+t+'</option>').join('')+'</select>'+
-    '<label>Google Drive URL *</label><input id="fd-url" type="url" placeholder="https://drive.google.com/...">',
-    [{label:'추가', fn:'saveDrive()'},{label:'취소', fn:'closeModal()', ghost:true}]
-  );
+function openAddDrv(){
+  var typeOpts='';
+  for(var i=0;i<DTYPES.length;i++) typeOpts+='<option value="'+DTYPES[i]+'">'+DTYPES[i]+'</option>';
+  var html='<label>문서명 *</label><input id="fdn" placeholder="NDA_홍콩코스메틱">';
+  html+='<label>문서 타입</label><select id="fdt">'+typeOpts+'</select>';
+  html+='<label>Google Drive URL *</label><input id="fdu" type="url" placeholder="https://drive.google.com/...">';
+  showModal('Drive 링크',html,[{label:'추가',fn:'saveDrv()'},{label:'취소',fn:'closeModal()',g:true}]);
 }
-function saveDrive() {
-  const name = document.getElementById('fd-name').value.trim();
-  const url = document.getElementById('fd-url').value.trim();
-  if (!name||!url) { alert('문서명과 URL을 입력하세요'); return; }
-  const d = DB.deals.find(d=>d.id===curDealId); if(!d) return;
-  if (!d.driveLinks) d.driveLinks=[];
-  d.driveLinks.push({id:uid(),name,url,docType:document.getElementById('fd-type').value});
+
+function saveDrv(){
+  var name=document.getElementById('fdn').value.trim();
+  var url=document.getElementById('fdu').value.trim();
+  if(!name||!url){ alert('문서명과 URL을 입력하세요'); return; }
+  var d=DB.deals.find(function(x){ return x.id===curDeal; });
+  if(!d) return;
+  if(!d.driveLinks) d.driveLinks=[];
+  d.driveLinks.push({id:uid(),name:name,url:url,docType:document.getElementById('fdt').value});
   d.updatedAt=today(); save(); closeModal(); renderL2();
 }
 
-// Person log
-function openAddPersonLog() {
-  showModal('대화 로그',
-    '<label>날짜</label><input id="fpl-date" type="date" value="'+today()+'">'+
-    '<label>채널</label><input id="fpl-channel" placeholder="전화, 미팅, WeChat...">'+
-    '<label>내용 *</label><textarea id="fpl-content" rows="4"></textarea>',
-    [{label:'추가', fn:'savePersonLog()'},{label:'취소', fn:'closeModal()', ghost:true}]
-  );
-}
-function savePersonLog() {
-  const content = document.getElementById('fpl-content').value.trim();
-  if (!content) { alert('내용을 입력하세요'); return; }
-  const p = DB.people.find(p=>p.id===curPersonId); if(!p) return;
-  if (!p.logs) p.logs=[];
-  p.logs.push({id:uid(),date:document.getElementById('fpl-date').value,channel:document.getElementById('fpl-channel').value,content});
-  save(); closeModal(); renderL3Person();
+function openAddPLog(){
+  var html='<label>날짜</label><input id="fpld" type="date" value="'+today()+'">';
+  html+='<label>채널</label><input id="fplc" placeholder="전화, 미팅, WeChat...">';
+  html+='<label>내용 *</label><textarea id="fplx" rows="4"></textarea>';
+  showModal('대화 로그',html,[{label:'추가',fn:'savePLog()'},{label:'취소',fn:'closeModal()',g:true}]);
 }
 
-// ══ INIT ══
-function init() {
+function savePLog(){
+  var content=document.getElementById('fplx').value.trim();
+  if(!content){ alert('내용을 입력하세요'); return; }
+  var p=DB.people.find(function(x){ return x.id===curPerson; });
+  if(!p) return;
+  if(!p.logs) p.logs=[];
+  p.logs.push({id:uid(),date:document.getElementById('fpld').value,channel:document.getElementById('fplc').value,content:content});
+  save(); closeModal(); renderL3();
+}
+
+// + button on L1 shows deal or person choice
+function openAddDeal(){
+  showModal('새로 추가하기',
+    '<div style="display:flex;flex-direction:column;gap:10px">'+
+    '<button class="btn" onclick="closeModal();setTimeout(function(){ showAddDealForm(); },100)">📋 새 딜 추가</button>'+
+    '<button class="btn-g" onclick="closeModal();setTimeout(function(){ openAddPersonModal(); },100)">👤 새 관련자 추가</button>'+
+    '</div>',
+    [{label:'취소',fn:'closeModal()',g:true}]
+  );
+}
+
+function showAddDealForm(){
+  showModal('새 딜 추가',dealFormHTML(null),[{label:'추가',fn:'saveDeal(false)'},{label:'취소',fn:'closeModal()',g:true}]);
+}
+
+function init(){
   load();
-  ['l2','l3','l-settings'].forEach(id => initSwipe(document.getElementById(id)));
+  ['l2','l3','lset'].forEach(function(id){ initSwipe(document.getElementById(id)); });
   renderL1();
-  if (settings.token&&settings.repo&&settings.file) pullFromGitHub();
+  if(SETS.tok&&SETS.repo&&SETS.file) pullGH();
 }
+
 init();
 </script>
 </body>
