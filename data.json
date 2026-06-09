@@ -1,4 +1,21 @@
 {
-  "deals": [],
+  "deals": [
+    {
+      "id": "mq6slr5wwj6",
+      "name": "연습니다. 한번 보자",
+      "type": "M&A",
+      "stage": "발굴",
+      "fee": "",
+      "country": "",
+      "desc": "",
+      "personIds": [],
+      "actions": [],
+      "logs": [],
+      "driveLinks": [],
+      "stageHistory": [],
+      "createdAt": "2026-06-09",
+      "updatedAt": "2026-06-09"
+    }
+  ],
   "people": []
 }
