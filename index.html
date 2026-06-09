@@ -222,7 +222,7 @@ textarea{resize:none;line-height:1.55}
       <div class="sset">
         <div class="stitle">GitHub 동기화</div>
         <label>GitHub Token</label>
-        <input type="password" id="s-tok" placeholder="ghp_xxxx...">
+        <input type="text" id="s-tok" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="ghp_xxxx...">
         <label>Repository</label>
         <input type="text" id="s-repo" placeholder="kjsh1028/myproject">
         <label>파일명</label>
@@ -330,7 +330,7 @@ function pushGH(){
   var file=document.getElementById('s-file').value.trim();
   SETS.tok=tok; SETS.repo=repo; SETS.file=file;
   localStorage.setItem('mp2_set',JSON.stringify(SETS));
-  if(!tok||!repo||!file){ setSync('설정을 입력하세요'); return; }
+  if(!tok||!repo||!file){ setSync('❌ 값 확인: tok='+(tok?'있음':'없음')+' repo='+(repo?'있음':'없음')+' file='+(file?'있음':'없음')); return; }
   setSync('저장 중...');
   var content = btoa(unescape(encodeURIComponent(JSON.stringify(DB,null,2))));
   fetch('https://api.github.com/repos/'+repo+'/contents/'+file,{headers:{'Authorization':'token '+tok}})
@@ -350,7 +350,7 @@ function pullGH(){
   var file=document.getElementById('s-file').value.trim();
   SETS.tok=tok; SETS.repo=repo; SETS.file=file;
   localStorage.setItem('mp2_set',JSON.stringify(SETS));
-  if(!tok||!repo||!file){ setSync('설정을 입력하세요'); return; }
+  if(!tok||!repo||!file){ setSync('❌ 값 확인: tok='+(tok?'있음':'없음')+' repo='+(repo?'있음':'없음')+' file='+(file?'있음':'없음')); return; }
   setSync('불러오는 중...');
   fetch('https://api.github.com/repos/'+repo+'/contents/'+file,{headers:{'Authorization':'token '+tok}})
   .then(function(r){ return r.ok?r.json():null; })
