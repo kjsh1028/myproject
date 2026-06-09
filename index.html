@@ -486,7 +486,7 @@ const today = () => new Date().toISOString().slice(0,10);
 const fmtDate = s => {
   if (!s) return '';
   const d = new Date(s + 'T12:00:00');
-  return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
+  return d.getFullYear()+'.'+String(d.getMonth()+1).padStart(2,'0')+'.'+String(d.getDate()).padStart(2,'0');
 };
 const daysLeft = s => {
   if (!s) return null;
@@ -950,9 +950,9 @@ function dealForm(d) {
   return '<label>딜명 *</label><input id="f-name" value="'+(d?d.name:'')+'" placeholder="딜 이름">'+
     '<label>타입</label><select id="f-type">'+TYPES.map(t=>'<option value="'+t+'"'+(d&&d.type===t?' selected':'')+'>'+t+'</option>').join('')+'</select>'+
     '<label>단계</label><select id="f-stage">'+STAGES.map(s=>'<option value="'+s+'"'+(d&&d.stage===s?' selected':'')+'>'+s+'</option>').join('')+'</select>'+
-    '<label>예상 성공보수 (원)</label><input id="f-fee" type="number" value="'+(d?d.fee||'':'')+'" placeholder="100000000">'+
-    '<label>국가/지역</label><input id="f-country" value="'+(d?d.country||'':'')+'" placeholder="한국, 중국...">'+
-    '<label>설명</label><textarea id="f-desc" rows="3">'+(d?d.desc||':'')+'</textarea>';
+    '<label>예상 성공보수 (원)</label><input id="f-fee" type="number" value="'+(d?(d.fee||''):'')+'" placeholder="100000000">'+
+    '<label>국가/지역</label><input id="f-country" value="'+(d?(d.country||''):'')+'" placeholder="한국, 중국...">'+
+    '<label>설명</label><textarea id="f-desc" rows="3">'+(d?(d.desc||''):'')+'</textarea>';
 }
 function saveDeal(isEdit) {
   const name = document.getElementById('f-name').value.trim();
@@ -992,18 +992,18 @@ function openEditPerson() {
 }
 function personForm(p) {
   return '<label>이름 *</label><input id="fp-name" value="'+(p?p.name:'')+'" placeholder="홍길동">'+
-    '<label>소속/회사</label><input id="fp-org" value="'+(p?p.org||'':'')+'" placeholder="ABC 코리아">'+
-    '<label>직함</label><input id="fp-title" value="'+(p?p.title||'':'')+'" placeholder="대표이사">'+
+    '<label>소속/회사</label><input id="fp-org" value="'+(p?(p.org||''):'')+'" placeholder="ABC 코리아">'+
+    '<label>직함</label><input id="fp-title" value="'+(p?(p.title||''):'')+'" placeholder="대표이사">'+
     '<label>역할</label><select id="fp-role">'+ROLES.map(r=>'<option value="'+r+'"'+(p&&p.role===r?' selected':'')+'>'+r+'</option>').join('')+'</select>'+
-    '<label>전화</label><input id="fp-phone" value="'+(p?p.phone||'':'')+'" placeholder="+82-10-1234-5678">'+
-    '<label>이메일</label><input id="fp-email" type="email" value="'+(p?p.email||'':'')+'" placeholder="name@company.com">'+
-    '<label>WeChat ID</label><input id="fp-wechat" value="'+(p?p.wechat||'':'')+'" placeholder="WeChat ID">'+
-    '<label>국가</label><input id="fp-country" value="'+(p?p.country||'':'')+'" placeholder="중국, 한국...">'+
-    '<label>언어</label><input id="fp-lang" value="'+(p?p.lang||'':'')+'" placeholder="한국어, 중국어...">'+
+    '<label>전화</label><input id="fp-phone" value="'+(p?(p.phone||''):'')+'" placeholder="+82-10-1234-5678">'+
+    '<label>이메일</label><input id="fp-email" type="email" value="'+(p?(p.email||''):'')+'" placeholder="name@company.com">'+
+    '<label>WeChat ID</label><input id="fp-wechat" value="'+(p?(p.wechat||''):'')+'" placeholder="WeChat ID">'+
+    '<label>국가</label><input id="fp-country" value="'+(p?(p.country||''):'')+'" placeholder="중국, 한국...">'+
+    '<label>언어</label><input id="fp-lang" value="'+(p?(p.lang||''):'')+'" placeholder="한국어, 중국어...">'+
     '<label>중요도</label><div class="stars" id="fp-stars" style="margin-top:6px;justify-content:flex-start">'+
     [1,2,3,4,5].map(i=>'<span class="star '+(p&&(p.rating||0)>=i?'on':'')+'" onclick="setRating('+i+')">★</span>').join('')+
-    '</div><input type="hidden" id="fp-rating" value="'+(p?p.rating||0:0)+'">'+
-    '<label>메모</label><textarea id="fp-memo" rows="3">'+(p?p.memo||'':'')+'</textarea>';
+    '</div><input type="hidden" id="fp-rating" value="'+(p?(p.rating||0):0)+'">'+
+    '<label>메모</label><textarea id="fp-memo" rows="3">'+(p?(p.memo||''):'')+'</textarea>';
 }
 function setRating(n) {
   document.getElementById('fp-rating').value=n;
