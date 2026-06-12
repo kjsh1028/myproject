@@ -16,7 +16,11 @@
       "driveLinks": [],
       "stageHistory": [],
       "createdAt": "2026-06-09",
-      "updatedAt": "2026-06-09"
+      "updatedAt": "2026-06-09",
+      "category": "important",
+      "timeline": [],
+      "docs": [],
+      "research": []
     },
     {
       "id": "mq6spm507eo",
@@ -40,7 +44,11 @@
       "driveLinks": [],
       "stageHistory": [],
       "createdAt": "2026-06-09",
-      "updatedAt": "2026-06-09"
+      "updatedAt": "2026-06-09",
+      "category": "important",
+      "timeline": [],
+      "docs": [],
+      "research": []
     }
   ],
   "people": [
