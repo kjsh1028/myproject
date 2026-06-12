@@ -265,7 +265,7 @@ textarea { resize: none; line-height: 1.6; }
 </style>
 </head>
 <body>
-<div id="update-banner" onclick="location.reload(true)" style="display:none;position:fixed;top:0;left:0;right:0;z-index:999;background:var(--gold);color:#1c2130;padding:calc(10px + var(--SAT)) 16px 10px;align-items:center;justify-content:center;gap:8px;cursor:pointer;font-family:DM Sans,sans-serif;font-size:14px;font-weight:600;">
+<div id="update-banner" onclick="location.reload(true)" style="display:none;pointer-events:none;position:fixed;top:0;left:0;right:0;z-index:999;background:var(--gold);color:#1c2130;padding:calc(10px + var(--SAT)) 16px 10px;align-items:center;justify-content:center;gap:8px;cursor:pointer;font-family:DM Sans,sans-serif;font-size:14px;font-weight:600;">
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
   <span>새 버전 확인 중...</span>
 </div>
@@ -357,7 +357,7 @@ textarea { resize: none; line-height: 1.6; }
 </div>
 
 <script>
-var APP_VERSION = '4.2';
+var APP_VERSION = '4.3';
 
 function checkUpdate(){
   fetch('https://api.github.com/repos/kjsh1028/myproject/contents/index.html',{headers:{'Cache-Control':'no-cache'}})
@@ -372,7 +372,7 @@ function checkUpdate(){
     if(remoteVer !== APP_VERSION){
       var banner = document.getElementById('update-banner');
       if(banner){
-        banner.style.display='flex';
+        banner.style.display='flex'; banner.style.pointerEvents='auto';
         banner.querySelector('span').textContent = 'v'+remoteVer+' 업데이트 → 탭해서 적용';
       }
     }
@@ -1078,9 +1078,12 @@ function init(){
   dashBtn.onclick=function(){ switchTab('dash'); };
   dashBtn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>현황';
   document.getElementById('tabbar').insertBefore(dashBtn, setBtn);
+  // ensure l1 is clean base
+  document.getElementById('l1').className = 'layer base';
+  layers = ['l1'];
   renderDeals();
   if(SETS.tok&&SETS.repo&&SETS.file) pullGH();
-  setTimeout(checkUpdate, 2000);
+  setTimeout(checkUpdate, 3000);
 }
 init();
 </script>
