@@ -1,23 +1,4 @@
 {
-  "deals": [
-    {
-      "id": "mqbl1dpqohr",
-      "name": "임청선",
-      "category": "important",
-      "type": "M&A",
-      "stage": "발굴",
-      "fee": "",
-      "country": "중국",
-      "desc": "",
-      "personIds": [],
-      "actions": [],
-      "timeline": [],
-      "docs": [],
-      "research": [],
-      "stageHistory": [],
-      "createdAt": "2026-06-12",
-      "updatedAt": "2026-06-12"
-    }
-  ],
+  "deals": [],
   "people": []
 }
