@@ -140,7 +140,9 @@
       "currency": "KRW",
       "country": "미국",
       "desc": "",
-      "personIds": [],
+      "personIds": [
+        "mqbx90tnpuo"
+      ],
       "actions": [],
       "timeline": [],
       "docs": [],
@@ -179,6 +181,22 @@
       "country": "중국",
       "lang": "",
       "rating": 0,
+      "memo": "",
+      "logs": [],
+      "createdAt": "2026-06-13"
+    },
+    {
+      "id": "mqbx90tnpuo",
+      "name": "알렉스",
+      "org": "",
+      "title": "",
+      "role": "파트너",
+      "phone": "",
+      "email": "",
+      "wechat": "",
+      "country": "",
+      "lang": "",
+      "rating": 5,
       "memo": "",
       "logs": [],
       "createdAt": "2026-06-13"
