@@ -356,7 +356,7 @@ textarea { resize: none; line-height: 1.6; }
 </div>
 
 <script>
-var VER = '8.4';
+var VER = '8.5';
 var STAGES = ['발굴','검토','협의','구조화','실행','클로징','완료','중단'];
 var ASTAGES = ['발굴','검토','협의','구조화','실행','클로징'];
 var TYPES = ['M&A','자금조달','부동산','IPO·상장','무역','엔터테인먼트','기타'];
@@ -556,11 +556,8 @@ function renderDeals(){
       html+='<div style="font-size:13px;color:#6070a0;margin-bottom:8px">'+subParts.join(' · ')+'</div>';
     }
 
-    // Stage badge + next action
-    html+='<div style="display:flex;align-items:center;justify-content:space-between">';
-    html+='<span style="font-size:12px;font-weight:600;padding:3px 10px;border-radius:20px;background:'+stageColor+'22;color:'+stageColor+';border:1px solid '+stageColor+'44">'+d.stage+'</span>';
-    if(nextAct) html+='<span style="font-size:13px;color:#4a5878">→ '+nextAct.title+'</span>';
-    html+='</div>';
+    // Next action only (no stage badge)
+    if(nextAct) html+='<div style="font-size:13px;color:#6070a0;margin-top:4px">→ '+nextAct.title+'</div>';
 
     html+='</div>';
   }
