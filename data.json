@@ -92,6 +92,25 @@
       "stageHistory": [],
       "createdAt": "2026-06-13",
       "updatedAt": "2026-06-13"
+    },
+    {
+      "id": "mqbwlhn857o",
+      "name": "보스코 엔터테인먼트",
+      "category": "important",
+      "type": "엔터테인먼트",
+      "stage": "구조화",
+      "fee": "",
+      "currency": "KRW",
+      "country": "중국",
+      "desc": "보스코 진행사항 팔로우",
+      "personIds": [],
+      "actions": [],
+      "timeline": [],
+      "docs": [],
+      "research": [],
+      "stageHistory": [],
+      "createdAt": "2026-06-13",
+      "updatedAt": "2026-06-13"
     }
   ],
   "people": [
