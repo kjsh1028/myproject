@@ -349,7 +349,7 @@ textarea { resize: none; line-height: 1.6; }
 </div>
 
 <script>
-var VER = '6.3';
+var VER = '6.4';
 var STAGES = ['발굴','검토','협의','구조화','실행','클로징','완료','중단'];
 var ASTAGES = ['발굴','검토','협의','구조화','실행','클로징'];
 var TYPES = ['M&A','자금조달','부동산','IPO·상장','무역','엔터테인먼트','기타'];
@@ -613,6 +613,59 @@ function pullGH(){
 }
 function setSM(m){ var el=document.getElementById('syncmsg'); if(el) el.textContent=m; }
 function exportData(){ var b=new Blob([JSON.stringify(DB,null,2)],{type:'application/json'}); var a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='myproject.json'; a.click(); }
+function showStorageInfo(){
+  var el = document.getElementById('storage-info');
+  if(!el) return;
+  var info = 'localStorage 키:
+';
+  var found = false;
+  var keys = ['mp5_db','mp4_db','mp2_db','myproject_db','mp5_set','mp4_set'];
+  for(var i=0;i<keys.length;i++){
+    var v = localStorage.getItem(keys[i]);
+    if(v){
+      found = true;
+      try{
+        var parsed = JSON.parse(v);
+        if(parsed.deals !== undefined){
+          info += '✅ '+keys[i]+': 딜 '+(parsed.deals||[]).length+'개, 관련자 '+(parsed.people||[]).length+'명
+';
+        } else {
+          info += '⚙️ '+keys[i]+': 설정
+';
+        }
+      } catch(e){
+        info += '⚠️ '+keys[i]+': '+v.slice(0,30)+'...
+';
+      }
+    }
+  }
+  if(!found) info += '(저장된 데이터 없음)';
+  el.textContent = info;
+  // Also try to find and use any data found
+  var bestDB = null;
+  var dataKeys = ['mp5_db','mp4_db','mp2_db','myproject_db'];
+  for(var i=0;i<dataKeys.length;i++){
+    try{
+      var raw = localStorage.getItem(dataKeys[i]);
+      if(raw){
+        var parsed = JSON.parse(raw);
+        if(parsed.deals && parsed.deals.length){
+          if(!bestDB || parsed.deals.length > bestDB.deals.length){
+            bestDB = parsed;
+          }
+        }
+      }
+    }catch(e){}
+  }
+  if(bestDB && bestDB.deals.length > 0){
+    DB = bestDB;
+    save();
+    switchTab(curTab);
+    el.textContent += '
+
+✅ 데이터 복구 완료! 딜 '+DB.deals.length+'개';
+  }
+}
 function clearAll(){ if(confirm('모든 데이터를 삭제합니까?')){ DB={deals:[],people:[]}; save(); switchTab(curTab); } }
 
 /* DEAL DETAIL */
