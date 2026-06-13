@@ -349,7 +349,7 @@ textarea { resize: none; line-height: 1.6; }
 </div>
 
 <script>
-var VER = '6.0';
+var VER = '6.1';
 var STAGES = ['발굴','검토','협의','구조화','실행','클로징','완료','중단'];
 var ASTAGES = ['발굴','검토','협의','구조화','실행','클로징'];
 var TYPES = ['M&A','자금조달','부동산','IPO·상장','무역','엔터테인먼트','기타'];
@@ -666,7 +666,7 @@ function renderDetail(){
 
   html+=makeSec('actions','✅','액션 아이템',acts.filter(function(a){ return !a.done; }).length,sec.actions,function(){
     var s='';
-    for(var i=0;i<acts.length;i++){ var a=acts[i],dl=dLeft(a.due),over=dl!==null&&dl<0&&!a.done; s+='<div class="act-item"><div class="acheck '+(a.done?'done':'')+'" onclick="togAct('+i+')"></div><div style="flex:1"><div class="atitle '+(a.done?'done':'')+'">'+a.title+'</div>'+(a.due?'<div class="adue '+(over?'over':'')+'">'+fmtDate(a.due)+(dl!==null&&!a.done?' (D'+(dl>=0?'-'+dl:'+'+Math.abs(dl))+')':'')+'</div>':'')+(a.note?'<div style="font-size:13px;color:var(--t3);margin-top:3px">'+a.note+'</div>':'')+'</div></div><div style="display:flex;gap:8px;padding:8px 0 2px"><button class="tl-del" onclick="editAct('+i+')">✏️ 수정</button><button class="tl-del" style="color:var(--red);border-color:rgba(224,104,104,.3)" onclick="delAct('+i+')">🗑 삭제</button></div>'; }
+    for(var i=0;i<acts.length;i++){ var a=acts[i],dl=dLeft(a.due),over=dl!==null&&dl<0&&!a.done; s+='<div class="act-item"><div class="acheck '+(a.done?'done':'')+'" onclick="togAct('+i+')"></div><div style="flex:1"><div class="atitle '+(a.done?'done':'')+'">'+a.title+'</div>'+(a.due?'<div class="adue '+(over?'over':'')+'">'+fmtDate(a.due)+(dl!==null&&!a.done?' (D'+(dl>=0?'-'+dl:'+'+Math.abs(dl))+')':'')+'</div>':'')+(a.note?'<div style="font-size:13px;color:var(--t3);margin-top:3px">'+a.note+'</div>':'')+'</div><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--t3);flex-shrink:0;cursor:pointer;margin-top:2px" onclick="openActDetail('+i+')"><path d="M9 18l6-6-6-6"/></svg></div>'; }
     s+='<button class="add-btn" onclick="openAddAct()">+ 액션 추가</button>';
     return s;
   });
