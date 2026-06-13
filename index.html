@@ -349,7 +349,7 @@ textarea { resize: none; line-height: 1.6; }
 </div>
 
 <script>
-var VER = '6.6';
+var VER = '6.7';
 var STAGES = ['발굴','검토','협의','구조화','실행','클로징','완료','중단'];
 var ASTAGES = ['발굴','검토','협의','구조화','실행','클로징'];
 var TYPES = ['M&A','자금조달','부동산','IPO·상장','무역','엔터테인먼트','기타'];
@@ -626,8 +626,7 @@ function exportData(){ var b=new Blob([JSON.stringify(DB,null,2)],{type:'applica
 function showStorageInfo(){
   var el = document.getElementById('storage-info');
   if(!el) return;
-  var info = 'localStorage 키:
-';
+  var info = 'localStorage 키: ';
   var found = false;
   var keys = ['mp5_db','mp4_db','mp2_db','myproject_db','mp5_set','mp4_set'];
   for(var i=0;i<keys.length;i++){
@@ -637,15 +636,12 @@ function showStorageInfo(){
       try{
         var parsed = JSON.parse(v);
         if(parsed.deals !== undefined){
-          info += '✅ '+keys[i]+': 딜 '+(parsed.deals||[]).length+'개, 관련자 '+(parsed.people||[]).length+'명
-';
+          info += ' | '+keys[i]+': 딜 '+(parsed.deals||[]).length+'개 관련자 '+(parsed.people||[]).length+'명';
         } else {
-          info += '⚙️ '+keys[i]+': 설정
-';
+          info += ' | '+keys[i]+': 설정';
         }
       } catch(e){
-        info += '⚠️ '+keys[i]+': '+v.slice(0,30)+'...
-';
+        info += ' | '+keys[i]+'...';
       }
     }
   }
@@ -671,9 +667,7 @@ function showStorageInfo(){
     DB = bestDB;
     save();
     switchTab(curTab);
-    el.textContent += '
-
-✅ 데이터 복구 완료! 딜 '+DB.deals.length+'개';
+    el.textContent += ' >> 복구완료! 딜 '+DB.deals.length+'개';
   }
 }
 function clearAll(){ if(confirm('모든 데이터를 삭제합니까?')){ DB={deals:[],people:[]}; save(); switchTab(curTab); } }
