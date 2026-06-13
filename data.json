@@ -73,6 +73,25 @@
       ],
       "createdAt": "2026-06-13",
       "updatedAt": "2026-06-13"
+    },
+    {
+      "id": "mqbwgr21ghi",
+      "name": "에이스병원 의료 소송",
+      "category": "important",
+      "type": "기타",
+      "stage": "실행",
+      "fee": "",
+      "currency": "KRW",
+      "country": "한국",
+      "desc": "",
+      "personIds": [],
+      "actions": [],
+      "timeline": [],
+      "docs": [],
+      "research": [],
+      "stageHistory": [],
+      "createdAt": "2026-06-13",
+      "updatedAt": "2026-06-13"
     }
   ],
   "people": [
