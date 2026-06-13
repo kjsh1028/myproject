@@ -52,11 +52,11 @@
     },
     {
       "id": "mqbvhvosrmn",
-      "name": "연습",
+      "name": "ATGC 수수료 소송",
       "category": "important",
-      "type": "M&A",
-      "stage": "발굴",
-      "fee": "",
+      "type": "자금조달",
+      "stage": "실행",
+      "fee": "1000000000",
       "country": "",
       "desc": "",
       "personIds": [],
@@ -64,7 +64,13 @@
       "timeline": [],
       "docs": [],
       "research": [],
-      "stageHistory": [],
+      "stageHistory": [
+        {
+          "from": "발굴",
+          "to": "실행",
+          "date": "2026-06-13"
+        }
+      ],
       "createdAt": "2026-06-13",
       "updatedAt": "2026-06-13"
     }
