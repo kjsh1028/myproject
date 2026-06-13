@@ -192,6 +192,25 @@
       "stageHistory": [],
       "createdAt": "2026-06-13",
       "updatedAt": "2026-06-13"
+    },
+    {
+      "id": "mqbxdjxuibn",
+      "name": "캐나다 광산 매각 자문",
+      "category": "hold",
+      "type": "자금조달",
+      "stage": "발굴",
+      "fee": "",
+      "currency": "KRW",
+      "country": "캐나다",
+      "desc": "",
+      "personIds": [],
+      "actions": [],
+      "timeline": [],
+      "docs": [],
+      "research": [],
+      "stageHistory": [],
+      "createdAt": "2026-06-13",
+      "updatedAt": "2026-06-13"
     }
   ],
   "people": [
