@@ -35,7 +35,15 @@
           "done": true
         }
       ],
-      "timeline": [],
+      "timeline": [
+        {
+          "id": "mqbufpdj0un",
+          "date": "2026-06-06",
+          "channel": "전화",
+          "who": "김계향",
+          "content": "프로젝트 소개"
+        }
+      ],
       "docs": [],
       "research": [],
       "stageHistory": [],
