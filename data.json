@@ -1,4 +1,23 @@
 {
-  "deals": [],
+  "deals": [
+    {
+      "id": "mqbucoxb1tt",
+      "name": "林清轩 매수 자문",
+      "category": "important",
+      "type": "M&A",
+      "stage": "협의",
+      "fee": "",
+      "country": "중국",
+      "desc": "",
+      "personIds": [],
+      "actions": [],
+      "timeline": [],
+      "docs": [],
+      "research": [],
+      "stageHistory": [],
+      "createdAt": "2026-06-13",
+      "updatedAt": "2026-06-13"
+    }
+  ],
   "people": []
 }
