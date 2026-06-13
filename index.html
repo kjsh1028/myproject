@@ -349,7 +349,7 @@ textarea { resize: none; line-height: 1.6; }
 </div>
 
 <script>
-var VER = '5.9';
+var VER = '6.0';
 var STAGES = ['발굴','검토','협의','구조화','실행','클로징','완료','중단'];
 var ASTAGES = ['발굴','검토','협의','구조화','실행','클로징'];
 var TYPES = ['M&A','자금조달','부동산','IPO·상장','무역','엔터테인먼트','기타'];
@@ -372,6 +372,27 @@ function fmtFee(n){ if(!n||isNaN(n)) return '미정'; n=parseInt(n); if(n>=10000
 function tclass(t){ var m={'M&A':'MA','자금조달':'fund','부동산':'re','IPO·상장':'ipo','무역':'trade','엔터테인먼트':'ent','기타':'etc'}; return 't-'+(m[t]||'etc'); }
 function sdotColor(s){ var m={'발굴':'#9898e8','검토':'#60b8f8','협의':'#d8b848','구조화':'#c868e8','실행':'#40c888','클로징':'#d4a84b','완료':'#50c080','중단':'#e06868'}; return m[s]||'#6070a0'; }
 
+function checkAndUpdate(){
+  var msg = document.getElementById('update-msg');
+  if(msg) msg.textContent = '확인 중...';
+  fetch('https://api.github.com/repos/kjsh1028/myproject/contents/index.html',{cache:'no-store'})
+  .then(function(r){ return r.ok?r.json():null; })
+  .then(function(j){
+    if(!j){ if(msg) msg.textContent = '확인 실패'; return; }
+    var raw=decodeURIComponent(escape(atob(j.content.replace(/\n/g,''))));
+    var m=raw.match(/var VER = '([^']+)'/);
+    if(!m){ if(msg) msg.textContent = '확인 실패'; return; }
+    if(m[1]===VER){
+      if(msg) msg.textContent = '✅ 최신 버전입니다 (v'+VER+')';
+    } else {
+      if(msg) msg.textContent = '🆕 v'+m[1]+' 새 버전 발견! 업데이트 중...';
+      setTimeout(function(){
+        window.location.href = window.location.pathname + '?_=' + Date.now();
+      }, 800);
+    }
+  })
+  .catch(function(){ if(msg) msg.textContent = '네트워크 오류'; });
+}
 function forceUpdate(){
   if('serviceWorker' in navigator){
     navigator.serviceWorker.getRegistrations().then(function(regs){
@@ -552,7 +573,11 @@ function renderSettings(){
     '<button class="btn" style="flex:1" onclick="pushGH()">GitHub에 저장</button>'+
     '<button class="btn-g" style="padding:13px 16px" onclick="pullGH()">불러오기</button></div>'+
     '<div class="syncmsg" id="syncmsg"></div></div>'+
-    '<div class="sset"><div class="stitle">앱 정보</div><div style="font-size:15px;color:var(--t2);line-height:2.2">My Project v5.0<br>딜 '+DB.deals.length+'개 · 관련자 '+DB.people.length+'명</div></div>'+
+    '<div class="sset"><div class="stitle">앱 정보</div>'+
+    '<div style="font-size:15px;color:var(--t2);line-height:2.2;margin-bottom:12px">My Project v'+VER+'<br>딜 '+DB.deals.length+'개 · 관련자 '+DB.people.length+'명</div>'+
+    '<button class="btn" style="width:100%;font-size:14px;padding:11px" onclick="checkAndUpdate()">🔄 업데이트 확인</button>'+
+    '<div id="update-msg" style="font-size:13px;color:var(--t3);margin-top:8px"></div>'+
+    '</div>'+
     '<div class="sset"><div class="stitle">데이터</div><div style="display:flex;gap:10px">'+
     '<button class="btn-g" onclick="exportData()">JSON 내보내기</button>'+
     '<button class="delbtn" onclick="clearAll()">초기화</button></div></div>';
@@ -873,8 +898,7 @@ function savePLog(){ var c=document.getElementById('fplx').value.trim(); if(!c){
 /* UPDATE CHECK */
 function showUpdateBanner(){
   var b=document.getElementById('update-banner');
-  b.style.display='block';
-  b.textContent='🔄 새 버전 있음 — 탭해서 업데이트';
+  if(b){ b.style.display='block'; b.textContent='🔄 새 버전 있음 — 탭해서 업데이트'; }
 }
 function checkUpdate(){
   fetch('https://api.github.com/repos/kjsh1028/myproject/contents/index.html',{cache:'no-store'})
