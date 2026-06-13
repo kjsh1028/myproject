@@ -49,6 +49,24 @@
       "stageHistory": [],
       "createdAt": "2026-06-13",
       "updatedAt": "2026-06-13"
+    },
+    {
+      "id": "mqbvhvosrmn",
+      "name": "연습",
+      "category": "important",
+      "type": "M&A",
+      "stage": "발굴",
+      "fee": "",
+      "country": "",
+      "desc": "",
+      "personIds": [],
+      "actions": [],
+      "timeline": [],
+      "docs": [],
+      "research": [],
+      "stageHistory": [],
+      "createdAt": "2026-06-13",
+      "updatedAt": "2026-06-13"
     }
   ],
   "people": [
