@@ -268,8 +268,14 @@ textarea { resize: none; line-height: 1.6; }
   <div class="cat-bar" id="cat-bar">
     <div class="cat-tab on" onclick="setCat('important')">⭐ 중요</div>
     <div class="cat-tab" onclick="setCat('normal')">일반</div>
-    <div class="cat-tab" onclick="setCat('hold')">보류</div>
-    <div class="cat-tab" onclick="setCat('drop')">폐기</div>
+    <div class="cat-tab" onclick="setCat('process')">처리</div>
+  </div>
+  <div id="process-bar" style="display:none;background:#e8ecf5;border-bottom:1px solid #d0d8ec;flex-shrink:0">
+    <div style="display:flex">
+      <div class="proc-tab" onclick="setProcCat('hold')" style="flex:1;padding:10px 4px;text-align:center;font-size:13px;font-weight:600;cursor:pointer;border-bottom:2px solid #2c3e6b;color:#2c3e6b">보류</div>
+      <div class="proc-tab" onclick="setProcCat('drop')" style="flex:1;padding:10px 4px;text-align:center;font-size:13px;font-weight:500;cursor:pointer;border-bottom:2px solid transparent;color:#8090b0">폐기</div>
+      <div class="proc-tab" onclick="setProcCat('closing')" style="flex:1;padding:10px 4px;text-align:center;font-size:13px;font-weight:500;cursor:pointer;border-bottom:2px solid transparent;color:#8090b0">클로징</div>
+    </div>
   </div>
 
   <!-- PAGES -->
@@ -349,7 +355,7 @@ textarea { resize: none; line-height: 1.6; }
 </div>
 
 <script>
-var VER = '7.7';
+var VER = '7.8';
 var STAGES = ['발굴','검토','협의','구조화','실행','클로징','완료','중단'];
 var ASTAGES = ['발굴','검토','협의','구조화','실행','클로징'];
 var TYPES = ['M&A','자금조달','부동산','IPO·상장','무역','엔터테인먼트','기타'];
