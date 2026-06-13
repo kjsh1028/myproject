@@ -349,7 +349,7 @@ textarea { resize: none; line-height: 1.6; }
 </div>
 
 <script>
-var VER = '7.6';
+var VER = '7.7';
 var STAGES = ['발굴','검토','협의','구조화','실행','클로징','완료','중단'];
 var ASTAGES = ['발굴','검토','협의','구조화','실행','클로징'];
 var TYPES = ['M&A','자금조달','부동산','IPO·상장','무역','엔터테인먼트','기타'];
@@ -489,18 +489,32 @@ function switchTab(tab){
   else if(tab==='settings') renderSettings();
 }
 
+var curProcCat = 'hold';
 function setCat(cat){
   curCat=cat;
-  document.querySelectorAll('.cat-tab').forEach(function(el,i){ el.classList.toggle('on',['important','normal','hold','drop'][i]===cat); });
+  document.querySelectorAll('.cat-tab').forEach(function(el,i){ el.classList.toggle('on',['important','normal','process'][i]===cat); });
+  var pb=document.getElementById('process-bar');
+  if(pb) pb.style.display=(cat==='process'?'block':'none');
+  renderDeals();
+}
+function setProcCat(cat){
+  curProcCat=cat;
+  document.querySelectorAll('.proc-tab').forEach(function(el,i){
+    var cats=['hold','drop','closing'];
+    el.style.borderBottomColor=(cats[i]===cat?'#2c3e6b':'transparent');
+    el.style.color=(cats[i]===cat?'#2c3e6b':'#8090b0');
+  });
   renderDeals();
 }
 
 /* RENDER DEALS */
 function renderDeals(){
-  var deals=DB.deals.filter(function(d){ return (d.category||'important')===curCat; });
+  var filterCat = curCat==='process' ? curProcCat : curCat;
+  var deals=DB.deals.filter(function(d){ return (d.category||'important')===filterCat; });
   deals.sort(function(a,b){ var si=function(d){ return STAGES.indexOf(d.stage); }; if(si(a)!==si(b)) return si(a)-si(b); return (b.updatedAt||'')>(a.updatedAt||'')?1:-1; });
   if(!deals.length){
-    document.getElementById('page-deals').innerHTML='<div class="empty"><div class="empty-icon">'+(curCat==='important'?'⭐':curCat==='normal'?'📋':curCat==='hold'?'⏸':'🗑')+'</div><p>딜이 없습니다<br>+ 버튼으로 추가하세요</p></div>';
+    var _ico=filterCat==='important'?'⭐':filterCat==='normal'?'📋':filterCat==='hold'?'⏸':filterCat==='closing'?'✅':'🗑';
+  document.getElementById('page-deals').innerHTML='<div class="empty"><div class="empty-icon">'+_ico+'</div><p>딜이 없습니다<br>+ 버튼으로 추가하세요</p></div>';
     return;
   }
   var html='';
@@ -976,7 +990,7 @@ function dealFormHTML(d){
   var to='',so='',co='';
   for(var i=0;i<TYPES.length;i++) to+='<option value="'+TYPES[i]+'"'+(d&&d.type===TYPES[i]?' selected':'')+'>'+TYPES[i]+'</option>';
   for(var i=0;i<STAGES.length;i++) so+='<option value="'+STAGES[i]+'"'+(d&&d.stage===STAGES[i]?' selected':'')+'>'+STAGES[i]+'</option>';
-  var cv=['important','normal','hold','drop'],cn=['⭐ 중요','일반','보류','폐기'];
+  var cv=['important','normal','hold','drop','closing'],cn=['⭐ 중요','일반','보류','폐기','✅ 클로징'];
   for(var i=0;i<cv.length;i++) co+='<option value="'+cv[i]+'"'+(d&&(d.category||'important')===cv[i]?' selected':'')+'>'+cn[i]+'</option>';
   return '<label>딜명 *</label><input id="fn" value="'+(d?d.name:'')+'" placeholder="딜 이름">'+
     '<label>분류</label><select id="fcat">'+co+'</select>'+
