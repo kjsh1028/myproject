@@ -349,7 +349,7 @@ textarea { resize: none; line-height: 1.6; }
 </div>
 
 <script>
-var VER = '6.4';
+var VER = '6.5';
 var STAGES = ['발굴','검토','협의','구조화','실행','클로징','완료','중단'];
 var ASTAGES = ['발굴','검토','협의','구조화','실행','클로징'];
 var TYPES = ['M&A','자금조달','부동산','IPO·상장','무역','엔터테인먼트','기타'];
@@ -404,8 +404,7 @@ function forceUpdate(){
   }
 }
 function load(){
-  // Try all known storage keys in order of preference
-  var keys = ['mp5_db','mp4_db','mp2_db','myproject_db'];
+  var keys = ['mpdb','mp5_db','mp4_db','mp2_db','myproject_db'];
   var bestDB = null;
   for(var ki=0;ki<keys.length;ki++){
     try{
@@ -413,22 +412,31 @@ function load(){
       if(raw){
         var parsed=JSON.parse(raw);
         if(parsed&&parsed.deals&&parsed.deals.length){
-          if(!bestDB||parsed.deals.length>bestDB.deals.length){
-            bestDB=parsed;
-          }
+          if(!bestDB||parsed.deals.length>=bestDB.deals.length) bestDB=parsed;
         }
       }
     }catch(e){}
   }
   if(bestDB) DB=bestDB;
   try{ var s=localStorage.getItem('mp5_set')||localStorage.getItem('mp4_set'); if(s) SETS=JSON.parse(s); }catch(e){}
-  // Always save to mp5_db so future loads work
-  if(DB.deals&&DB.deals.length) save();
   if(!DB.deals) DB.deals=[];
   if(!DB.people) DB.people=[];
-  DB.deals.forEach(function(d){ if(!d.category) d.category='important'; if(!d.timeline) d.timeline=[]; if(!d.docs) d.docs=[]; if(!d.research) d.research=[]; if(!d.actions) d.actions=[]; if(!d.personIds) d.personIds=[]; });
+  DB.deals.forEach(function(d){
+    if(!d.category) d.category='important';
+    if(!d.timeline) d.timeline=[];
+    if(!d.docs) d.docs=[];
+    if(!d.research) d.research=[];
+    if(!d.actions) d.actions=[];
+    if(!d.personIds) d.personIds=[];
+  });
+  if(DB.deals.length) save();
 }
-function save(){ localStorage.setItem('mp5_db',JSON.stringify(DB)); }
+
+function save(){
+  var data = JSON.stringify(DB);
+  localStorage.setItem('mpdb', data);
+  localStorage.setItem('mp5_db', data);
+}
 
 /* TABS */
 function switchTab(tab){
@@ -564,7 +572,9 @@ function renderDash(){
 
 /* SETTINGS */
 function renderSettings(){
-  document.getElementById('page-settings').innerHTML=
+  var el = document.getElementById('page-settings');
+  if(!el) return;
+  el.innerHTML =
     '<div class="sset"><div class="stitle">GitHub 동기화</div>'+
     '<label>GitHub Token</label><input type="text" id="s-tok" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" value="'+(SETS.tok||'')+'" placeholder="ghp_xxxx...">'+
     '<label>Repository</label><input type="text" id="s-repo" value="'+(SETS.repo||'kjsh1028/myproject')+'">'+
@@ -576,9 +586,9 @@ function renderSettings(){
     '<div class="sset"><div class="stitle">앱 정보</div>'+
     '<div style="font-size:15px;color:var(--t2);line-height:2.2;margin-bottom:12px">My Project v'+VER+'<br>딜 '+DB.deals.length+'개 · 관련자 '+DB.people.length+'명</div>'+
     '<button class="btn" style="width:100%;font-size:14px;padding:11px" onclick="checkAndUpdate()">🔄 업데이트 확인</button>'+
-    '<div id="update-msg" style="font-size:13px;color:var(--t3);margin-top:8px"></div>'+
-    '</div>'+
-    '<div class="sset"><div class="stitle">데이터</div><div style="display:flex;gap:10px">'+
+    '<div id="update-msg" style="font-size:13px;color:var(--t3);margin-top:8px"></div></div>'+
+    '<div class="sset"><div class="stitle">데이터</div>'+
+    '<div style="display:flex;gap:10px">'+
     '<button class="btn-g" onclick="exportData()">JSON 내보내기</button>'+
     '<button class="delbtn" onclick="clearAll()">초기화</button></div></div>';
 }
