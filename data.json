@@ -2,78 +2,22 @@
   "deals": [
     {
       "id": "mqbrydyoatt",
-      "name": "林清轩 매수 자문",
+      "name": "연습",
       "category": "important",
       "type": "M&A",
-      "stage": "협의",
+      "stage": "발굴",
       "fee": "",
-      "country": "중국",
-      "desc": "한국 화장품 회사를 인수 하고 싶어",
-      "personIds": [
-        "mqbs6xkya8q"
-      ],
-      "actions": [
-        {
-          "id": "mqbs8dcq1fq",
-          "title": "제안서 초안 제공",
-          "due": "2026-06-13",
-          "note": "",
-          "done": false
-        }
-      ],
-      "timeline": [
-        {
-          "id": "mqbs7shbgo6",
-          "date": "2026-06-06",
-          "channel": "전화",
-          "who": "김계향",
-          "content": "처음으로 프로젝트를 소개 받았음"
-        },
-        {
-          "id": "mqbsi7xv0xl",
-          "date": "2026-06-12",
-          "channel": "대면미팅",
-          "who": "김게향",
-          "content": "고객에게 보낼 조건에 대해서 다시 한번 논의를 하였음"
-        }
-      ],
-      "docs": [
-        {
-          "id": "mqbs9k0r5u1",
-          "name": "제안서 등 자료",
-          "url": "https://drive.google.com/drive/folders/1dqt08eFYBQdmaEnRCCyPC7qy2vKawOyt",
-          "docType": "NDA",
-          "type": "link"
-        }
-      ],
+      "country": "",
+      "desc": "",
+      "personIds": [],
+      "actions": [],
+      "timeline": [],
+      "docs": [],
       "research": [],
-      "stageHistory": [
-        {
-          "from": "발굴",
-          "to": "협의",
-          "date": "2026-06-13"
-        }
-      ],
+      "stageHistory": [],
       "createdAt": "2026-06-13",
       "updatedAt": "2026-06-13"
     }
   ],
-  "people": [
-    {
-      "id": "mqbs6xkya8q",
-      "name": "김계향",
-      "org": "대성 법무법인",
-      "title": "변호사",
-      "role": "파트너",
-      "phone": "",
-      "email": "",
-      "wechat": "",
-      "country": "",
-      "lang": "",
-      "rating": 0,
-      "memo": "",
-      "logs": [],
-      "createdAt": "2026-06-13"
-    }
-  ]
+  "people": []
 }
