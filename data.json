@@ -203,7 +203,9 @@
       "currency": "KRW",
       "country": "캐나다",
       "desc": "",
-      "personIds": [],
+      "personIds": [
+        "mqbwmr28n09"
+      ],
       "actions": [],
       "timeline": [],
       "docs": [],
