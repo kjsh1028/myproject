@@ -349,7 +349,7 @@ textarea { resize: none; line-height: 1.6; }
 </div>
 
 <script>
-var VER = '6.7';
+var VER = '7.0';
 var STAGES = ['발굴','검토','협의','구조화','실행','클로징','완료','중단'];
 var ASTAGES = ['발굴','검토','협의','구조화','실행','클로징'];
 var TYPES = ['M&A','자금조달','부동산','IPO·상장','무역','엔터테인먼트','기타'];
@@ -436,6 +436,32 @@ function save(){
   var data = JSON.stringify(DB);
   localStorage.setItem('mpdb', data);
   localStorage.setItem('mp5_db', data);
+  // Auto-backup to GitHub if token is set
+  autoBackup();
+}
+
+var backupTimer = null;
+function autoBackup(){
+  if(!SETS.tok||!SETS.repo||!SETS.file) return;
+  // Debounce - wait 2 seconds after last change before saving
+  if(backupTimer) clearTimeout(backupTimer);
+  backupTimer = setTimeout(function(){
+    var content = btoa(unescape(encodeURIComponent(JSON.stringify(DB,null,2))));
+    fetch('https://api.github.com/repos/'+SETS.repo+'/contents/'+SETS.file,{headers:{'Authorization':'token '+SETS.tok}})
+    .then(function(r){ return r.ok?r.json():null; })
+    .then(function(j){
+      var body={message:'auto-save '+new Date().toISOString(),content:content};
+      if(j&&j.sha) body.sha=j.sha;
+      return fetch('https://api.github.com/repos/'+SETS.repo+'/contents/'+SETS.file,{method:'PUT',headers:{'Authorization':'token '+SETS.tok,'Content-Type':'application/json'},body:JSON.stringify(body)});
+    })
+    .then(function(r){
+      if(r&&r.ok){
+        var el=document.getElementById('autosave-status');
+        if(el){ el.textContent='✅ 자동저장 '+new Date().toLocaleTimeString(); el.style.display='block'; setTimeout(function(){ el.style.display='none'; },3000); }
+      }
+    })
+    .catch(function(){});
+  }, 2000);
 }
 
 /* TABS */
@@ -973,7 +999,13 @@ function checkUpdate(){
 /* INIT */
 load();
 renderDeals();
-if(SETS.tok&&SETS.repo&&SETS.file){ pullGH(); }
+// Always pull from GitHub on startup if token is set
+if(SETS.tok&&SETS.repo&&SETS.file){
+  pullGH();
+} else {
+  // Show hint to set up GitHub sync
+  console.log('GitHub 토큰을 설정하면 자동 동기화됩니다');
+}
 // Register service worker for no-cache updates
 if('serviceWorker' in navigator){
   navigator.serviceWorker.register('sw.js').then(function(reg){
