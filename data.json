@@ -33,6 +33,13 @@
           "due": "2026-06-08",
           "note": "",
           "done": true
+        },
+        {
+          "id": "mqc3m17lyrr",
+          "title": "추가적인 매수 대상 리서치 하기",
+          "due": "2026-06-15",
+          "note": "",
+          "done": false
         }
       ],
       "timeline": [
