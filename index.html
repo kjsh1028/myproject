@@ -349,7 +349,7 @@ textarea { resize: none; line-height: 1.6; }
 </div>
 
 <script>
-var VER = '7.2';
+var VER = '7.3';
 var STAGES = ['발굴','검토','협의','구조화','실행','클로징','완료','중단'];
 var ASTAGES = ['발굴','검토','협의','구조화','실행','클로징'];
 var TYPES = ['M&A','자금조달','부동산','IPO·상장','무역','엔터테인먼트','기타'];
@@ -964,7 +964,7 @@ function dealFormHTML(d){
     '<label>분류</label><select id="fcat">'+co+'</select>'+
     '<label>타입</label><select id="ft">'+to+'</select>'+
     '<label>단계</label><select id="fs">'+so+'</select>'+
-    '<label>예상 성공보수 (원)</label><input id="ff" type="number" value="'+(d&&d.fee?d.fee:'')+'" placeholder="100000000">'+
+    '<label>예상 성공보수</label>'+'<div style="display:flex;gap:8px;margin-bottom:14px">'+'<select id="fcur" style="width:95px;flex-shrink:0">'+'<option value="KRW"'+(d&&d.currency==="KRW"?" selected":(!d||!d.currency)?" selected":"")+'>\u20a9 \uc6d0</option>'+'<option value="CNY"'+(d&&d.currency==="CNY"?" selected":"")+'>\u00a5 \uc704\uc548</option>'+'<option value="USD"'+(d&&d.currency==="USD"?" selected":"")+'>$ \ub2ec\ub7ec</option>'+'</select>'+'<input id="ff" type="text" inputmode="numeric" value="'+(d&&d.fee?parseInt(d.fee).toLocaleString():"")+' " placeholder="1,000,000" oninput="fmtInput(this)">'+'</div>'+
     '<label>국가/지역</label><input id="fc" value="'+(d&&d.country?d.country:'')+'" placeholder="한국, 중국...">'+
     '<label>설명</label><textarea id="fd" rows="3">'+(d&&d.desc?d.desc:'')+'</textarea>';
 }
