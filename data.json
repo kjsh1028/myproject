@@ -233,7 +233,9 @@
       "currency": "KRW",
       "country": "",
       "desc": "",
-      "personIds": [],
+      "personIds": [
+        "mqc1dtgr5tl"
+      ],
       "actions": [],
       "timeline": [],
       "docs": [],
