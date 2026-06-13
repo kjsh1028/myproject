@@ -44,7 +44,15 @@
           "content": "프로젝트 소개"
         }
       ],
-      "docs": [],
+      "docs": [
+        {
+          "id": "mqbwyk60kty",
+          "name": "관련 자료",
+          "url": "https://drive.google.com/drive/folders/1dqt08eFYBQdmaEnRCCyPC7qy2vKawOyt",
+          "docType": "NDA",
+          "type": "link"
+        }
+      ],
       "research": [],
       "stageHistory": [],
       "createdAt": "2026-06-13",
