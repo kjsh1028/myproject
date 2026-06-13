@@ -349,7 +349,7 @@ textarea { resize: none; line-height: 1.6; }
 </div>
 
 <script>
-var VER = '7.5';
+var VER = '7.6';
 var STAGES = ['발굴','검토','협의','구조화','실행','클로징','완료','중단'];
 var ASTAGES = ['발굴','검토','협의','구조화','실행','클로징'];
 var TYPES = ['M&A','자금조달','부동산','IPO·상장','무역','엔터테인먼트','기타'];
@@ -1053,6 +1053,32 @@ function checkUpdate(){
 load();
 renderDeals();
 if(SETS.tok&&SETS.repo&&SETS.file){ silentPull(); }
+
+// Swipe back gesture for detail pages
+function addSwipeBack(el, closeFn){
+  var sx=0, sy=0, swiping=false;
+  el.addEventListener('touchstart', function(e){
+    sx=e.touches[0].clientX;
+    sy=e.touches[0].clientY;
+    swiping = sx < 80;
+  }, {passive:true});
+  el.addEventListener('touchmove', function(e){
+    if(!swiping) return;
+    var dx=e.touches[0].clientX-sx;
+    var dy=Math.abs(e.touches[0].clientY-sy);
+    if(dy>40){ swiping=false; return; }
+    if(dx>0) el.style.transform='translateX('+dx+'px)';
+  }, {passive:true});
+  el.addEventListener('touchend', function(e){
+    if(!swiping) return;
+    var dx=e.changedTouches[0].clientX-sx;
+    el.style.transform='';
+    if(dx>60) closeFn();
+    swiping=false;
+  }, {passive:true});
+}
+addSwipeBack(document.getElementById('detail-page'), closeDetail);
+addSwipeBack(document.getElementById('person-page'), closePerson);
 // Register service worker for no-cache updates
 if('serviceWorker' in navigator){
   navigator.serviceWorker.register('sw.js').then(function(reg){
