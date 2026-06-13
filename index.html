@@ -140,7 +140,7 @@ html, body { height: 100%; background: var(--bg); color: var(--tx); font-family:
 .tl-date { font-size: 12px; color: var(--t3); margin-bottom: 4px; }
 .tl-text { font-size: 15px; color: var(--tx); line-height: 1.55; }
 .tl-who { font-size: 13px; color: var(--gold); margin-top: 4px; }
-.tl-del { background: none; border: none; color: var(--t3); font-size: 12px; cursor: pointer; margin-top: 4px; font-family: 'DM Sans', sans-serif; }
+.tl-del { background: var(--s3); border: 1px solid var(--bd); color: var(--t2); font-size: 13px; cursor: pointer; font-family: 'DM Sans', sans-serif; padding: 6px 16px; border-radius: 8px; }
 
 /* PEOPLE CHIPS */
 .pchips { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 10px; }
@@ -346,7 +346,7 @@ textarea { resize: none; line-height: 1.6; }
 </div>
 
 <script>
-var VER = '5.2';
+var VER = '5.3';
 var STAGES = ['발굴','검토','협의','구조화','실행','클로징','완료','중단'];
 var ASTAGES = ['발굴','검토','협의','구조화','실행','클로징'];
 var TYPES = ['M&A','자금조달','부동산','IPO·상장','무역','엔터테인먼트','기타'];
@@ -599,7 +599,7 @@ function renderDetail(){
 
   html+=makeSec('timeline','📅','미팅 타임라인',tl.length,sec.timeline,function(){
     var s=''; var rtl=[].concat(tl).reverse();
-    for(var i=0;i<rtl.length;i++){ var l=rtl[i],ri=tl.length-1-i; s+='<div class="tl-item"><div class="tl-dot"></div><div style="flex:1"><div class="tl-date">'+fmtDate(l.date)+(l.channel?' · '+l.channel:'')+'</div><div class="tl-text">'+l.content.replace(/\n/g,'<br>')+'</div>'+(l.who?'<div class="tl-who">참석: '+l.who+'</div>':'')+'<div style="display:flex;gap:12px;margin-top:4px"><button class="tl-del" onclick="editTL('+ri+')">수정</button><button class="tl-del" onclick="delTL('+ri+')">삭제</button></div></div></div>'; }
+    for(var i=0;i<rtl.length;i++){ var l=rtl[i],ri=tl.length-1-i; s+='<div class="tl-item"><div class="tl-dot"></div><div style="flex:1"><div class="tl-date">'+fmtDate(l.date)+(l.channel?' · '+l.channel:'')+'</div><div class="tl-text">'+l.content.replace(/\n/g,'<br>')+'</div>'+(l.who?'<div class="tl-who">참석: '+l.who+'</div>':'')+'<div style="display:flex;gap:8px;margin-top:10px"><button class="tl-del" onclick="editTL('+ri+')">✏️ 수정</button><button class="tl-del" style="color:var(--red);border-color:rgba(224,104,104,.3)" onclick="delTL('+ri+')">🗑 삭제</button></div></div></div>'; }
     s+='<button class="add-btn" onclick="openAddTL()">+ 미팅 / 로그 추가</button>';
     return s;
   });
@@ -613,7 +613,7 @@ function renderDetail(){
 
   html+=makeSec('actions','✅','액션 아이템',acts.filter(function(a){ return !a.done; }).length,sec.actions,function(){
     var s='';
-    for(var i=0;i<acts.length;i++){ var a=acts[i],dl=dLeft(a.due),over=dl!==null&&dl<0&&!a.done; s+='<div class="act-item"><div class="acheck '+(a.done?'done':'')+'" onclick="togAct('+i+')"></div><div style="flex:1"><div class="atitle '+(a.done?'done':'')+'">'+a.title+'</div>'+(a.due?'<div class="adue '+(over?'over':'')+'">'+fmtDate(a.due)+(dl!==null&&!a.done?' (D'+(dl>=0?'-'+dl:'+'+Math.abs(dl))+')':'')+'</div>':'')+(a.note?'<div style="font-size:13px;color:var(--t3);margin-top:3px">'+a.note+'</div>':'')+'</div><div style="display:flex;flex-direction:column;gap:4px;flex-shrink:0"><button class="tl-del" onclick="editAct('+i+')">수정</button><button class="xbtn" onclick="delAct('+i+')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div></div>'; }
+    for(var i=0;i<acts.length;i++){ var a=acts[i],dl=dLeft(a.due),over=dl!==null&&dl<0&&!a.done; s+='<div class="act-item"><div class="acheck '+(a.done?'done':'')+'" onclick="togAct('+i+')"></div><div style="flex:1"><div class="atitle '+(a.done?'done':'')+'">'+a.title+'</div>'+(a.due?'<div class="adue '+(over?'over':'')+'">'+fmtDate(a.due)+(dl!==null&&!a.done?' (D'+(dl>=0?'-'+dl:'+'+Math.abs(dl))+')':'')+'</div>':'')+(a.note?'<div style="font-size:13px;color:var(--t3);margin-top:3px">'+a.note+'</div>':'')+'</div></div><div style="display:flex;gap:8px;padding:8px 0 2px"><button class="tl-del" onclick="editAct('+i+')">✏️ 수정</button><button class="tl-del" style="color:var(--red);border-color:rgba(224,104,104,.3)" onclick="delAct('+i+')">🗑 삭제</button></div>'; }
     s+='<button class="add-btn" onclick="openAddAct()">+ 액션 추가</button>';
     return s;
   });
