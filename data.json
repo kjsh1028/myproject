@@ -9,7 +9,9 @@
       "fee": "",
       "country": "중국",
       "desc": "",
-      "personIds": [],
+      "personIds": [
+        "mqbuda6vrf7"
+      ],
       "actions": [],
       "timeline": [],
       "docs": [],
@@ -19,5 +21,22 @@
       "updatedAt": "2026-06-13"
     }
   ],
-  "people": []
+  "people": [
+    {
+      "id": "mqbuda6vrf7",
+      "name": "김계향",
+      "org": "대성 법무법인",
+      "title": "변호사",
+      "role": "파트너",
+      "phone": "",
+      "email": "",
+      "wechat": "",
+      "country": "",
+      "lang": "",
+      "rating": 0,
+      "memo": "",
+      "logs": [],
+      "createdAt": "2026-06-13"
+    }
+  ]
 }
