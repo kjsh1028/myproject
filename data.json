@@ -12,7 +12,15 @@
       "personIds": [
         "mqbuda6vrf7"
       ],
-      "actions": [],
+      "actions": [
+        {
+          "id": "mqbue14dkmc",
+          "title": "제안서 초안 작성",
+          "due": "2026-06-09",
+          "note": "",
+          "done": true
+        }
+      ],
       "timeline": [],
       "docs": [],
       "research": [],
