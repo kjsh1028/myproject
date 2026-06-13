@@ -346,7 +346,7 @@ textarea { resize: none; line-height: 1.6; }
 </div>
 
 <script>
-var VER = '5.1';
+var VER = '5.2';
 var STAGES = ['발굴','검토','협의','구조화','실행','클로징','완료','중단'];
 var ASTAGES = ['발굴','검토','협의','구조화','실행','클로징'];
 var TYPES = ['M&A','자금조달','부동산','IPO·상장','무역','엔터테인먼트','기타'];
@@ -599,7 +599,7 @@ function renderDetail(){
 
   html+=makeSec('timeline','📅','미팅 타임라인',tl.length,sec.timeline,function(){
     var s=''; var rtl=[].concat(tl).reverse();
-    for(var i=0;i<rtl.length;i++){ var l=rtl[i],ri=tl.length-1-i; s+='<div class="tl-item"><div class="tl-dot"></div><div style="flex:1"><div class="tl-date">'+fmtDate(l.date)+(l.channel?' · '+l.channel:'')+'</div><div class="tl-text">'+l.content.replace(/\n/g,'<br>')+'</div>'+(l.who?'<div class="tl-who">참석: '+l.who+'</div>':'')+'<button class="tl-del" onclick="delTL('+ri+')">삭제</button></div></div>'; }
+    for(var i=0;i<rtl.length;i++){ var l=rtl[i],ri=tl.length-1-i; s+='<div class="tl-item"><div class="tl-dot"></div><div style="flex:1"><div class="tl-date">'+fmtDate(l.date)+(l.channel?' · '+l.channel:'')+'</div><div class="tl-text">'+l.content.replace(/\n/g,'<br>')+'</div>'+(l.who?'<div class="tl-who">참석: '+l.who+'</div>':'')+'<div style="display:flex;gap:12px;margin-top:4px"><button class="tl-del" onclick="editTL('+ri+')">수정</button><button class="tl-del" onclick="delTL('+ri+')">삭제</button></div></div></div>'; }
     s+='<button class="add-btn" onclick="openAddTL()">+ 미팅 / 로그 추가</button>';
     return s;
   });
@@ -613,7 +613,7 @@ function renderDetail(){
 
   html+=makeSec('actions','✅','액션 아이템',acts.filter(function(a){ return !a.done; }).length,sec.actions,function(){
     var s='';
-    for(var i=0;i<acts.length;i++){ var a=acts[i],dl=dLeft(a.due),over=dl!==null&&dl<0&&!a.done; s+='<div class="act-item"><div class="acheck '+(a.done?'done':'')+'" onclick="togAct('+i+')"></div><div style="flex:1"><div class="atitle '+(a.done?'done':'')+'">'+a.title+'</div>'+(a.due?'<div class="adue '+(over?'over':'')+'">'+fmtDate(a.due)+(dl!==null&&!a.done?' (D'+(dl>=0?'-'+dl:'+'+Math.abs(dl))+')':'')+'</div>':'')+(a.note?'<div style="font-size:13px;color:var(--t3);margin-top:3px">'+a.note+'</div>':'')+'</div><button class="xbtn" onclick="delAct('+i+')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>'; }
+    for(var i=0;i<acts.length;i++){ var a=acts[i],dl=dLeft(a.due),over=dl!==null&&dl<0&&!a.done; s+='<div class="act-item"><div class="acheck '+(a.done?'done':'')+'" onclick="togAct('+i+')"></div><div style="flex:1"><div class="atitle '+(a.done?'done':'')+'">'+a.title+'</div>'+(a.due?'<div class="adue '+(over?'over':'')+'">'+fmtDate(a.due)+(dl!==null&&!a.done?' (D'+(dl>=0?'-'+dl:'+'+Math.abs(dl))+')':'')+'</div>':'')+(a.note?'<div style="font-size:13px;color:var(--t3);margin-top:3px">'+a.note+'</div>':'')+'</div><div style="display:flex;flex-direction:column;gap:4px;flex-shrink:0"><button class="tl-del" onclick="editAct('+i+')">수정</button><button class="xbtn" onclick="delAct('+i+')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div></div>'; }
     s+='<button class="add-btn" onclick="openAddAct()">+ 액션 추가</button>';
     return s;
   });
@@ -651,7 +651,45 @@ function toggleSec(k){ if(!openSec[curDeal]) openSec[curDeal]={}; openSec[curDea
 function chStage(s){ var d=DB.deals.find(function(x){ return x.id===curDeal; }); if(!d||d.stage===s) return; if(!d.stageHistory) d.stageHistory=[]; d.stageHistory.push({from:d.stage,to:s,date:today()}); d.stage=s; d.updatedAt=today(); save(); renderDetail(); }
 function delDeal(){ if(!confirm('딜을 삭제합니까?')) return; DB.deals=DB.deals.filter(function(d){ return d.id!==curDeal; }); save(); closeDetail(); }
 function togAct(i){ var d=DB.deals.find(function(x){ return x.id===curDeal; }); if(!d) return; d.actions[i].done=!d.actions[i].done; d.updatedAt=today(); save(); renderDetail(); }
+function editAct(i){
+  var d=DB.deals.find(function(x){ return x.id===curDeal; }); if(!d) return;
+  var a=d.actions[i];
+  showModal('액션 수정',
+    '<label>내용 *</label><input id="fan" value="'+(a.title||'')+'">'+
+    '<label>기한</label><input id="fad" type="date" value="'+(a.due||today())+'">'+
+    '<label>메모</label><input id="fam" value="'+(a.note||'')+'" placeholder="추가 메모...">',
+    [{label:'저장',fn:'saveActEdit('+i+')'},{label:'취소',fn:'closeModal()',g:true}]);
+}
+function saveActEdit(i){
+  var el=document.getElementById('fan'); var t=el?el.value.trim():'';
+  if(!t){ alert('내용을 입력하세요'); return; }
+  var d=DB.deals.find(function(x){ return x.id===curDeal; }); if(!d) return;
+  d.actions[i].title=t;
+  d.actions[i].due=document.getElementById('fad').value;
+  d.actions[i].note=document.getElementById('fam').value;
+  d.updatedAt=today(); save(); closeModal(); renderDetail();
+}
 function delAct(i){ var d=DB.deals.find(function(x){ return x.id===curDeal; }); if(!d) return; d.actions.splice(i,1); save(); renderDetail(); }
+function editTL(i){
+  var d=DB.deals.find(function(x){ return x.id===curDeal; }); if(!d) return;
+  var l=d.timeline[i];
+  showModal('미팅 로그 수정',
+    '<label>날짜</label><input id="fld" type="date" value="'+(l.date||today())+'">'+
+    '<label>채널</label><input id="flc" value="'+(l.channel||'')+'" placeholder="대면미팅, 전화, WeChat...">'+
+    '<label>참석자</label><input id="flw" value="'+(l.who||'')+'" placeholder="홍길동, 김철수...">'+
+    '<label>내용 *</label><textarea id="flx" rows="5">'+(l.content||'')+'</textarea>',
+    [{label:'저장',fn:'saveTLEdit('+i+')'},{label:'취소',fn:'closeModal()',g:true}]);
+}
+function saveTLEdit(i){
+  var c=document.getElementById('flx'); var content=c?c.value.trim():'';
+  if(!content){ alert('내용을 입력하세요'); return; }
+  var d=DB.deals.find(function(x){ return x.id===curDeal; }); if(!d) return;
+  d.timeline[i].date=document.getElementById('fld').value;
+  d.timeline[i].channel=document.getElementById('flc').value;
+  d.timeline[i].who=document.getElementById('flw').value;
+  d.timeline[i].content=content;
+  d.updatedAt=today(); save(); closeModal(); renderDetail();
+}
 function delTL(i){ var d=DB.deals.find(function(x){ return x.id===curDeal; }); if(!d) return; d.timeline.splice(i,1); save(); renderDetail(); }
 function delDoc(i){ var d=DB.deals.find(function(x){ return x.id===curDeal; }); if(!d) return; d.docs.splice(i,1); save(); renderDetail(); }
 function delRes(i){ var d=DB.deals.find(function(x){ return x.id===curDeal; }); if(!d) return; d.research.splice(i,1); save(); renderDetail(); }
