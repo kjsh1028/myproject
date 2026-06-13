@@ -85,7 +85,15 @@
       "country": "한국",
       "desc": "",
       "personIds": [],
-      "actions": [],
+      "actions": [
+        {
+          "id": "mqbwxiumcj4",
+          "title": "정중호 유상선 자료 율촌에 주기",
+          "due": "2026-06-16",
+          "note": "",
+          "done": false
+        }
+      ],
       "timeline": [],
       "docs": [],
       "research": [],
