@@ -144,7 +144,15 @@
         "mqbx90tnpuo"
       ],
       "actions": [],
-      "timeline": [],
+      "timeline": [
+        {
+          "id": "mqc19akb3v1",
+          "date": "2026-06-03",
+          "channel": "전화",
+          "who": "알렉스",
+          "content": "현재 진행 상황 보고"
+        }
+      ],
       "docs": [],
       "research": [],
       "stageHistory": [],
