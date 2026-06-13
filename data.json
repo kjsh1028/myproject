@@ -171,6 +171,25 @@
       "stageHistory": [],
       "createdAt": "2026-06-13",
       "updatedAt": "2026-06-13"
+    },
+    {
+      "id": "mqbxc8yyzj3",
+      "name": "장형식 엔터테인먼트",
+      "category": "normal",
+      "type": "엔터테인먼트",
+      "stage": "발굴",
+      "fee": "",
+      "currency": "KRW",
+      "country": "",
+      "desc": "",
+      "personIds": [],
+      "actions": [],
+      "timeline": [],
+      "docs": [],
+      "research": [],
+      "stageHistory": [],
+      "createdAt": "2026-06-13",
+      "updatedAt": "2026-06-13"
     }
   ],
   "people": [
