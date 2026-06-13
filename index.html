@@ -349,7 +349,7 @@ textarea { resize: none; line-height: 1.6; }
 </div>
 
 <script>
-var VER = '5.8';
+var VER = '5.9';
 var STAGES = ['발굴','검토','협의','구조화','실행','클로징','완료','중단'];
 var ASTAGES = ['발굴','검토','협의','구조화','실행','클로징'];
 var TYPES = ['M&A','자금조달','부동산','IPO·상장','무역','엔터테인먼트','기타'];
@@ -627,7 +627,7 @@ function renderDetail(){
 
   html+=makeSec('timeline','📅','미팅 타임라인',tl.length,sec.timeline,function(){
     var s=''; var rtl=[].concat(tl).reverse();
-    for(var i=0;i<rtl.length;i++){ var l=rtl[i],ri=tl.length-1-i; s+='<div class="tl-item"><div class="tl-dot"></div><div style="flex:1"><div class="tl-date">'+fmtDate(l.date)+(l.channel?' · '+l.channel:'')+'</div><div class="tl-text">'+l.content.replace(/\n/g,'<br>')+'</div>'+(l.who?'<div class="tl-who">참석: '+l.who+'</div>':'')+'<div style="display:flex;gap:8px;margin-top:10px"><button class="tl-del" onclick="editTL('+ri+')">✏️ 수정</button><button class="tl-del" style="color:var(--red);border-color:rgba(224,104,104,.3)" onclick="delTL('+ri+')">🗑 삭제</button></div></div></div>'; }
+    for(var i=0;i<rtl.length;i++){ var l=rtl[i],ri=tl.length-1-i; s+='<div class="tl-item" onclick="openTLDetail('+ri+')" style="cursor:pointer"><div class="tl-dot"></div><div style="flex:1"><div class="tl-date">'+fmtDate(l.date)+(l.channel?' · '+l.channel:'')+'</div><div class="tl-text">'+l.content.replace(/\n/g,'<br>')+'</div>'+(l.who?'<div class="tl-who">참석: '+l.who+'</div>':'')+'</div><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--t3);flex-shrink:0;margin-top:4px"><path d="M9 18l6-6-6-6"/></svg></div>'; }
     s+='<button class="add-btn" onclick="openAddTL()">+ 미팅 / 로그 추가</button>';
     return s;
   });
@@ -651,7 +651,7 @@ function renderDetail(){
     var links=docs.filter(function(x){ return x.type!=='photo'; });
     var s='';
     if(photos.length){ s+='<div class="photo-grid">'; for(var i=0;i<photos.length;i++){ var ph=photos[i],pi=docs.indexOf(ph); s+='<div class="photo-thumb" onclick="viewPhoto(\''+ph.data+'\')"><img src="'+ph.data+'" alt=""><button class="photo-del" onclick="event.stopPropagation();delDoc('+pi+')">✕</button></div>'; } s+='</div>'; }
-    for(var i=0;i<links.length;i++){ var lk=links[i],li=docs.indexOf(lk); s+='<div class="doc-item"><div class="doc-ico">📄</div><div class="doc-info"><div class="doc-name">'+lk.name+'</div><div class="doc-type">'+(lk.docType||'')+'</div></div><button class="doc-open" onclick="window.open(\''+lk.url+'\',\'_blank\')">열기</button><button class="xbtn" style="margin-left:6px" onclick="delDoc('+li+')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>'; }
+    for(var i=0;i<links.length;i++){ var lk=links[i],li=docs.indexOf(lk); s+='<div class="doc-item" onclick="openDocDetail('+li+')" style="cursor:pointer"><div class="doc-ico">📄</div><div class="doc-info"><div class="doc-name">'+lk.name+'</div><div class="doc-type">'+(lk.docType||'')+'</div></div><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--t3);flex-shrink:0"><path d="M9 18l6-6-6-6"/></svg></div>'; }
     s+='<div style="display:flex;gap:12px;margin-top:4px"><button class="add-btn" onclick="openAddDoc()">+ Drive 링크</button><button class="add-btn" onclick="openAddPhoto()">📷 사진</button></div>';
     return s;
   });
@@ -698,6 +698,32 @@ function saveActEdit(i){
   d.updatedAt=today(); save(); closeModal(); renderDetail();
 }
 function delAct(i){ var d=DB.deals.find(function(x){ return x.id===curDeal; }); if(!d) return; d.actions.splice(i,1); save(); renderDetail(); }
+function openTLDetail(i){
+  var d=DB.deals.find(function(x){ return x.id===curDeal; }); if(!d) return;
+  var l=d.timeline[i];
+  showModal(fmtDate(l.date)+' '+( l.channel||''),
+    '<div style="font-size:15px;color:var(--tx);line-height:1.6;margin-bottom:12px">'+l.content.replace(/\n/g,'<br>')+'</div>'+
+    (l.who?'<div style="font-size:13px;color:var(--t3);margin-bottom:12px">참석: '+l.who+'</div>':'')+
+    '<div style="display:flex;gap:10px">'+
+    '<button class="btn" style="flex:1" onclick="closeModal();editTL('+i+')">✏️ 수정</button>'+
+    '<button class="btn-g" style="color:var(--red);border-color:rgba(224,104,104,.3)" onclick="closeModal();delTL('+i+')">🗑 삭제</button>'+
+    '</div>',
+    [{label:'닫기',fn:'closeModal()',g:true}]);
+}
+function openActDetail(i){
+  var d=DB.deals.find(function(x){ return x.id===curDeal; }); if(!d) return;
+  var a=d.actions[i];
+  var dl=dLeft(a.due); var over=dl!==null&&dl<0&&!a.done;
+  showModal(a.title,
+    '<div style="font-size:15px;color:var(--tx);margin-bottom:8px">'+a.title+'</div>'+
+    (a.due?'<div style="font-size:14px;color:'+(over?'var(--red)':'var(--t3)')+';margin-bottom:8px">기한: '+fmtDate(a.due)+(dl!==null&&!a.done?' (D'+(dl>=0?'-'+dl:'+'+Math.abs(dl))+')':'')+'</div>':'')+
+    (a.note?'<div style="font-size:13px;color:var(--t3);margin-bottom:12px">'+a.note+'</div>':'')+
+    '<div style="display:flex;gap:10px">'+
+    '<button class="btn" style="flex:1" onclick="closeModal();editAct('+i+')">✏️ 수정</button>'+
+    '<button class="btn-g" style="color:var(--red);border-color:rgba(224,104,104,.3)" onclick="closeModal();delAct('+i+')">🗑 삭제</button>'+
+    '</div>',
+    [{label:'닫기',fn:'closeModal()',g:true}]);
+}
 function editTL(i){
   var d=DB.deals.find(function(x){ return x.id===curDeal; }); if(!d) return;
   var l=d.timeline[i];
@@ -719,6 +745,17 @@ function saveTLEdit(i){
   d.updatedAt=today(); save(); closeModal(); renderDetail();
 }
 function delTL(i){ var d=DB.deals.find(function(x){ return x.id===curDeal; }); if(!d) return; d.timeline.splice(i,1); save(); renderDetail(); }
+function openDocDetail(i){
+  var d=DB.deals.find(function(x){ return x.id===curDeal; }); if(!d) return;
+  var lk=d.docs[i];
+  showModal(lk.name,
+    '<div style="font-size:13px;color:var(--t3);margin-bottom:16px">'+(lk.docType||'문서')+'</div>'+
+    '<div style="display:flex;gap:10px">'+
+    '<button class="btn" style="flex:1" onclick="closeModal();window.open(\''+lk.url+'\',\'_blank\')">📂 Drive에서 열기</button>'+
+    '</div>'+
+    '<div style="margin-top:10px"><button class="btn-g" style="width:100%;color:var(--red)" onclick="closeModal();delDoc('+i+')">🗑 삭제</button></div>',
+    [{label:'닫기',fn:'closeModal()',g:true}]);
+}
 function delDoc(i){ var d=DB.deals.find(function(x){ return x.id===curDeal; }); if(!d) return; d.docs.splice(i,1); save(); renderDetail(); }
 function delRes(i){ var d=DB.deals.find(function(x){ return x.id===curDeal; }); if(!d) return; d.research.splice(i,1); save(); renderDetail(); }
 function viewPhoto(src){ document.getElementById('pvImg').src=src; document.getElementById('photoViewer').classList.add('show'); }
