@@ -349,7 +349,7 @@ textarea { resize: none; line-height: 1.6; }
 </div>
 
 <script>
-var VER = '7.1';
+var VER = '7.2';
 var STAGES = ['발굴','검토','협의','구조화','실행','클로징','완료','중단'];
 var ASTAGES = ['발굴','검토','협의','구조화','실행','클로징'];
 var TYPES = ['M&A','자금조달','부동산','IPO·상장','무역','엔터테인먼트','기타'];
@@ -393,6 +393,12 @@ function checkAndUpdate(){
   })
   .catch(function(){ if(msg) msg.textContent = '네트워크 오류'; });
 }
+function fmtInput(el){
+  var v = el.value.replace(/[^0-9]/g,'');
+  if(v) el.value = parseInt(v).toLocaleString();
+  else el.value = '';
+}
+
 function forceUpdate(){
   if('serviceWorker' in navigator){
     navigator.serviceWorker.getRegistrations().then(function(regs){
@@ -512,7 +518,7 @@ function renderDeals(){
     for(var k=0;k<ppl.length;k++) html+='<span style="font-size:13px;color:var(--t2)">'+ppl[k].name+'</span>';
     html+='</div><div class="pip-row">'+pips+'</div>';
     if(nextAct) html+='<div class="deal-next">'+nextAct.title+'</div>';
-    html+='</div><div class="deal-right"><div class="deal-fee">'+fmtFee(parseInt(d.fee)||0)+'</div>';
+    html+='</div><div class="deal-right"><div class="deal-fee">'+fmtFee(parseInt(d.fee)||0,d.currency)+'</div>';
     if(lastMtg) html+='<div class="deal-date">'+lastMtg+'</div>';
     html+='</div><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--t3);flex-shrink:0;margin-top:4px"><path d="M9 18l6-6-6-6"/></svg></div>';
   }
@@ -750,7 +756,7 @@ function renderDetail(){
   html+='<div class="hero-row"><span class="badge '+tclass(d.type)+'">'+d.type+'</span><span class="badge s-'+d.stage+'">'+d.stage+'</span>';
   if(d.country) html+='<span style="font-size:13px;color:var(--t3)">📍'+d.country+'</span>';
   html+='</div><div class="sdots">'+sdots+'</div>';
-  if(d.fee) html+='<div class="hero-fee">'+fmtFee(parseInt(d.fee))+'</div>';
+  if(d.fee) html+='<div class="hero-fee">'+fmtFee(parseInt(d.fee),d.currency)+'</div>';
   if(d.desc) html+='<div class="hero-desc">'+d.desc.replace(/\n/g,'<br>')+'</div>';
   html+='</div>';
 
@@ -966,8 +972,8 @@ function showAddDealForm(){ showModal('새 딜 추가',dealFormHTML(null),[{labe
 function openEditDeal(){ var d=DB.deals.find(function(x){ return x.id===curDeal; }); if(!d) return; showModal('딜 수정',dealFormHTML(d),[{label:'저장',fn:'saveDeal(true)'},{label:'취소',fn:'closeModal()',g:true}]); }
 function saveDeal(isEdit){
   var el=document.getElementById('fn'); var name=el?el.value.trim():''; if(!name||name==='딜 이름'){ alert('딜명을 입력하세요'); return; }
-  if(isEdit){ var d=DB.deals.find(function(x){ return x.id===curDeal; }); if(!d) return; var os=d.stage,ns=document.getElementById('fs').value; d.name=name; d.category=document.getElementById('fcat').value; d.type=document.getElementById('ft').value; d.stage=ns; d.fee=document.getElementById('ff').value; d.country=document.getElementById('fc').value; d.desc=document.getElementById('fd').value; d.updatedAt=today(); if(os!==ns){ if(!d.stageHistory) d.stageHistory=[]; d.stageHistory.push({from:os,to:ns,date:today()}); } }
-  else { DB.deals.push({id:uid(),name:name,category:document.getElementById('fcat').value,type:document.getElementById('ft').value,stage:document.getElementById('fs').value,fee:document.getElementById('ff').value,country:document.getElementById('fc').value,desc:document.getElementById('fd').value,personIds:[],actions:[],timeline:[],docs:[],research:[],stageHistory:[],createdAt:today(),updatedAt:today()}); }
+  if(isEdit){ var d=DB.deals.find(function(x){ return x.id===curDeal; }); if(!d) return; var os=d.stage,ns=document.getElementById('fs').value; d.name=name; d.category=document.getElementById('fcat').value; d.type=document.getElementById('ft').value; d.stage=ns; d.fee=document.getElementById('ff').value.replace(/[^0-9]/g,''); d.currency=document.getElementById('fcur').value; d.country=document.getElementById('fc').value; d.desc=document.getElementById('fd').value; d.updatedAt=today(); if(os!==ns){ if(!d.stageHistory) d.stageHistory=[]; d.stageHistory.push({from:os,to:ns,date:today()}); } }
+  else { DB.deals.push({id:uid(),name:name,category:document.getElementById('fcat').value,type:document.getElementById('ft').value,stage:document.getElementById('fs').value,fee:document.getElementById('ff').value.replace(/[^0-9]/g,''), currency:document.getElementById('fcur').value,country:document.getElementById('fc').value,desc:document.getElementById('fd').value,personIds:[],actions:[],timeline:[],docs:[],research:[],stageHistory:[],createdAt:today(),updatedAt:today()}); }
   save(); closeModal(); switchTab(curTab); if(isEdit) renderDetail();
 }
 
