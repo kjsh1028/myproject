@@ -323,6 +323,22 @@
       "memo": "",
       "logs": [],
       "createdAt": "2026-06-13"
+    },
+    {
+      "id": "mqc1dtgr5tl",
+      "logs": [],
+      "createdAt": "2026-06-13",
+      "name": "강병환",
+      "org": "HYB",
+      "title": "대표이사",
+      "role": "파트너",
+      "phone": "",
+      "email": "",
+      "wechat": "",
+      "country": "",
+      "lang": "",
+      "rating": 0,
+      "memo": ""
     }
   ]
 }
