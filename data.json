@@ -129,6 +129,25 @@
       "stageHistory": [],
       "createdAt": "2026-06-13",
       "updatedAt": "2026-06-13"
+    },
+    {
+      "id": "mqbx8hti70v",
+      "name": "알렉스 스펙 상장",
+      "category": "important",
+      "type": "IPO·상장",
+      "stage": "구조화",
+      "fee": "",
+      "currency": "KRW",
+      "country": "미국",
+      "desc": "",
+      "personIds": [],
+      "actions": [],
+      "timeline": [],
+      "docs": [],
+      "research": [],
+      "stageHistory": [],
+      "createdAt": "2026-06-13",
+      "updatedAt": "2026-06-13"
     }
   ],
   "people": [
