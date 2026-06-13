@@ -252,7 +252,7 @@ textarea { resize: none; line-height: 1.6; }
 
 <div id="app">
   <!-- UPDATE BANNER -->
-  <div id="update-banner" onclick="location.reload(true)">🔄 새 버전 있음 — 탭해서 업데이트</div>
+  <div id="update-banner" onclick="forceUpdate()">🔄 새 버전 있음 — 탭해서 업데이트</div>
 
   <!-- TOPBAR -->
   <div class="topbar" id="main-topbar">
@@ -349,7 +349,7 @@ textarea { resize: none; line-height: 1.6; }
 </div>
 
 <script>
-var VER = '5.6';
+var VER = '5.7';
 var STAGES = ['발굴','검토','협의','구조화','실행','클로징','완료','중단'];
 var ASTAGES = ['발굴','검토','협의','구조화','실행','클로징'];
 var TYPES = ['M&A','자금조달','부동산','IPO·상장','무역','엔터테인먼트','기타'];
@@ -372,6 +372,16 @@ function fmtFee(n){ if(!n||isNaN(n)) return '미정'; n=parseInt(n); if(n>=10000
 function tclass(t){ var m={'M&A':'MA','자금조달':'fund','부동산':'re','IPO·상장':'ipo','무역':'trade','엔터테인먼트':'ent','기타':'etc'}; return 't-'+(m[t]||'etc'); }
 function sdotColor(s){ var m={'발굴':'#9898e8','검토':'#60b8f8','협의':'#d8b848','구조화':'#c868e8','실행':'#40c888','클로징':'#d4a84b','완료':'#50c080','중단':'#e06868'}; return m[s]||'#6070a0'; }
 
+function forceUpdate(){
+  if('serviceWorker' in navigator){
+    navigator.serviceWorker.getRegistrations().then(function(regs){
+      regs.forEach(function(r){ r.unregister(); });
+      window.location.href = window.location.pathname + '?r=' + Date.now();
+    });
+  } else {
+    window.location.href = window.location.pathname + '?r=' + Date.now();
+  }
+}
 function load(){
   try{ var d=localStorage.getItem('mp5_db'); if(d) DB=JSON.parse(d); }catch(e){}
   try{ var s=localStorage.getItem('mp5_set'); if(s) SETS=JSON.parse(s); }catch(e){}
@@ -809,6 +819,11 @@ function openAddPLog(){ showModal('대화 로그','<label>날짜</label><input i
 function savePLog(){ var c=document.getElementById('fplx').value.trim(); if(!c){ alert('내용을 입력하세요'); return; } var p=DB.people.find(function(x){ return x.id===curPerson; }); if(!p) return; if(!p.logs) p.logs=[]; p.logs.push({id:uid(),date:document.getElementById('fpld').value,channel:document.getElementById('fplc').value,content:c}); save(); closeModal(); renderPersonDetail(); }
 
 /* UPDATE CHECK */
+function showUpdateBanner(){
+  var b=document.getElementById('update-banner');
+  b.style.display='block';
+  b.textContent='🔄 새 버전 있음 — 탭해서 업데이트';
+}
 function checkUpdate(){
   fetch('https://api.github.com/repos/kjsh1028/myproject/contents/index.html',{cache:'no-store'})
   .then(function(r){ return r.ok?r.json():null; })
@@ -816,7 +831,7 @@ function checkUpdate(){
     if(!j) return;
     var raw=decodeURIComponent(escape(atob(j.content.replace(/\n/g,''))));
     var m=raw.match(/var VER = '([^']+)'/);
-    if(m&&m[1]!==VER){ var b=document.getElementById('update-banner'); b.style.display='block'; b.textContent='🔄 v'+m[1]+' 업데이트 있음 — 탭해서 새로고침'; }
+    if(m&&m[1]!==VER){ showUpdateBanner(); }
   }).catch(function(){});
 }
 
@@ -824,6 +839,20 @@ function checkUpdate(){
 load();
 renderDeals();
 if(SETS.tok&&SETS.repo&&SETS.file){ pullGH(); }
+// Register service worker for no-cache updates
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('sw.js').then(function(reg){
+    reg.addEventListener('updatefound', function(){
+      var newSW = reg.installing;
+      newSW.addEventListener('statechange', function(){
+        if(newSW.state==='installed' && navigator.serviceWorker.controller){
+          showUpdateBanner();
+        }
+      });
+    });
+  });
+  navigator.serviceWorker.addEventListener('controllerchange', function(){ window.location.reload(); });
+}
 setTimeout(checkUpdate,3000);
 </script>
 </body>
