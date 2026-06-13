@@ -182,7 +182,9 @@
       "currency": "KRW",
       "country": "",
       "desc": "",
-      "personIds": [],
+      "personIds": [
+        "mqbxcis0vhg"
+      ],
       "actions": [],
       "timeline": [],
       "docs": [],
@@ -237,6 +239,22 @@
       "country": "",
       "lang": "",
       "rating": 5,
+      "memo": "",
+      "logs": [],
+      "createdAt": "2026-06-13"
+    },
+    {
+      "id": "mqbxcis0vhg",
+      "name": "장형식",
+      "org": "",
+      "title": "",
+      "role": "파트너",
+      "phone": "",
+      "email": "",
+      "wechat": "",
+      "country": "",
+      "lang": "",
+      "rating": 0,
       "memo": "",
       "logs": [],
       "createdAt": "2026-06-13"
