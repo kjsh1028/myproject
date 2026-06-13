@@ -51,6 +51,7 @@ html, body { height: 100%; background: var(--bg); color: var(--tx); font-family:
 .page { position: absolute; inset: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; display: none; padding-bottom: calc(68px + var(--SAB)); }
 .page.active { display: block; }
 .page::-webkit-scrollbar { display: none; }
+.page { background: var(--bg); }
 
 /* TABBAR */
 #tabbar { flex-shrink: 0; height: calc(68px + var(--SAB)); padding-bottom: var(--SAB); background: #ffffff; border-top: 1px solid #d0d8ec; display: flex; box-shadow: 0 -2px 12px rgba(44,62,107,0.08); }
@@ -355,7 +356,7 @@ textarea { resize: none; line-height: 1.6; }
 </div>
 
 <script>
-var VER = '8.3';
+var VER = '8.4';
 var STAGES = ['발굴','검토','협의','구조화','실행','클로징','완료','중단'];
 var ASTAGES = ['발굴','검토','협의','구조화','실행','클로징'];
 var TYPES = ['M&A','자금조달','부동산','IPO·상장','무역','엔터테인먼트','기타'];
@@ -524,34 +525,49 @@ function renderDeals(){
   var filterCat = curCat==='process' ? curProcCat : curCat;
   var deals=DB.deals.filter(function(d){ return (d.category||'important')===filterCat; });
   deals.sort(function(a,b){ var si=function(d){ return STAGES.indexOf(d.stage); }; if(si(a)!==si(b)) return si(a)-si(b); return (b.updatedAt||'')>(a.updatedAt||'')?1:-1; });
+  var _ico=filterCat==='important'?'⭐':filterCat==='normal'?'📋':filterCat==='hold'?'⏸':filterCat==='closing'?'✅':'🗑';
   if(!deals.length){
-    var _ico=filterCat==='important'?'⭐':filterCat==='normal'?'📋':filterCat==='hold'?'⏸':filterCat==='closing'?'✅':'🗑';
-  document.getElementById('page-deals').innerHTML='<div class="empty"><div class="empty-icon">'+_ico+'</div><p>딜이 없습니다<br>+ 버튼으로 추가하세요</p></div>';
+    document.getElementById('page-deals').innerHTML='<div class="empty"><div class="empty-icon">'+_ico+'</div><p>딜이 없습니다<br>+ 버튼으로 추가하세요</p></div>';
     return;
   }
-  var html='';
+  var html='<div style="padding:10px 14px;display:flex;flex-direction:column;gap:10px">';
   for(var i=0;i<deals.length;i++){
     var d=deals[i];
     var ppl=(d.personIds||[]).slice(0,2).map(function(pid){ return DB.people.find(function(p){ return p.id===pid; }); }).filter(Boolean);
-    var color=sdotColor(d.stage);
-    var si=ASTAGES.indexOf(d.stage);
-    var pips=''; for(var j=0;j<ASTAGES.length;j++) pips+='<div class="pip" style="background:'+(j<=si?color:'var(--s3)')+'"></div>';
+    var pplNames=ppl.map(function(p){ return p.name; }).join(' · ');
     var nextAct=(d.actions||[]).find(function(a){ return !a.done; });
-    var tl=d.timeline||[]; var lastMtg=tl.length?fmtDate(tl[tl.length-1].date):'';
-    html+='<div class="deal-card" onclick="openDeal(\''+d.id+'\')">';
-    html+='<div class="deal-left"><div class="deal-name">'+d.name+'</div>';
-    html+='<div class="deal-meta"><span class="badge '+tclass(d.type)+'">'+d.type+'</span><span class="badge s-'+d.stage+'">'+d.stage+'</span>';
-    for(var k=0;k<ppl.length;k++) html+='<span style="font-size:13px;color:var(--t2)">'+ppl[k].name+'</span>';
-    html+='</div><div class="pip-row">'+pips+'</div>';
-    if(nextAct) html+='<div class="deal-next">'+nextAct.title+'</div>';
-    html+='</div><div class="deal-right"><div class="deal-fee">'+fmtFee(parseInt(d.fee)||0,d.currency)+'</div>';
-    if(lastMtg) html+='<div class="deal-date">'+lastMtg+'</div>';
-    html+='</div><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--t3);flex-shrink:0;margin-top:4px"><path d="M9 18l6-6-6-6"/></svg></div>';
+    var stageColor=sdotColor(d.stage);
+    var feeStr=d.fee&&parseInt(d.fee)?fmtFee(parseInt(d.fee),d.currency||'KRW'):'';
+
+    html+='<div onclick="openDeal(\''+d.id+'\')" style="background:#fff;border-radius:14px;padding:16px;box-shadow:0 1px 6px rgba(44,62,107,0.10);border:1px solid #e8ecf5;cursor:pointer;">';
+
+    // Top row: name + fee
+    html+='<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px">';
+    html+='<div style="font-size:18px;font-weight:700;color:#1a2340;line-height:1.3;flex:1">'+d.name+'</div>';
+    if(feeStr) html+='<div style="font-size:16px;font-weight:700;color:#b8860b;flex-shrink:0">'+feeStr+'</div>';
+    html+='</div>';
+
+    // Sub info row
+    var subParts=[];
+    if(d.type) subParts.push(d.type);
+    if(pplNames) subParts.push(pplNames);
+    if(d.country) subParts.push('📍'+d.country);
+    if(subParts.length){
+      html+='<div style="font-size:13px;color:#6070a0;margin-bottom:8px">'+subParts.join(' · ')+'</div>';
+    }
+
+    // Stage badge + next action
+    html+='<div style="display:flex;align-items:center;justify-content:space-between">';
+    html+='<span style="font-size:12px;font-weight:600;padding:3px 10px;border-radius:20px;background:'+stageColor+'22;color:'+stageColor+';border:1px solid '+stageColor+'44">'+d.stage+'</span>';
+    if(nextAct) html+='<span style="font-size:13px;color:#4a5878">→ '+nextAct.title+'</span>';
+    html+='</div>';
+
+    html+='</div>';
   }
+  html+='</div>';
   document.getElementById('page-deals').innerHTML=html;
 }
 
-/* RENDER TODO */
 function renderTodo(){
   var all=[];
   DB.deals.forEach(function(d){ (d.actions||[]).forEach(function(a,i){ if(!a.done) all.push({a:a,i:i,dealName:d.name,dealId:d.id}); }); });
