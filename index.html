@@ -355,7 +355,7 @@ textarea { resize: none; line-height: 1.6; }
 </div>
 
 <script>
-var VER = '8.1';
+var VER = '8.2';
 var STAGES = ['발굴','검토','협의','구조화','실행','클로징','완료','중단'];
 var ASTAGES = ['발굴','검토','협의','구조화','실행','클로징'];
 var TYPES = ['M&A','자금조달','부동산','IPO·상장','무역','엔터테인먼트','기타'];
@@ -598,37 +598,101 @@ function renderPeople(){
 
 /* RENDER DASH */
 function renderDash(){
-  var active=DB.deals.filter(function(d){ return d.stage!=='완료'&&d.stage!=='중단'; });
-  var fee=active.reduce(function(a,d){ return a+(parseInt(d.fee)||0); },0);
-  var doneFee=DB.deals.filter(function(d){ return d.stage==='완료'; }).reduce(function(a,d){ return a+(parseInt(d.fee)||0); },0);
-  var html='<div class="dash-block"><div class="dash-label">예상 성공보수</div><div class="dash-val">'+(fee?fmtFee(fee):'—')+'</div>';
-  if(doneFee) html+='<div style="font-size:14px;color:var(--green);margin-top:6px">수령 완료 '+fmtFee(doneFee)+'</div>';
+  var active=DB.deals.filter(function(d){ return d.category==='important'||d.category==='normal'; });
+  var closingDeals=DB.deals.filter(function(d){ return d.category==='closing'; });
+  var activeFee=active.reduce(function(a,d){ return a+(parseInt(d.fee)||0); },0);
+  var closingFee=closingDeals.reduce(function(a,d){ return a+(parseInt(d.fee)||0); },0);
+  var html='';
+
+  // Pipeline
+  html+='<div style="background:#2c3e6b;padding:20px 16px 16px">';
+  html+='<div style="font-size:12px;color:rgba(255,255,255,0.6);letter-spacing:.07em;margin-bottom:12px">파이프라인</div>';
+  html+='<div style="display:flex;gap:12px">';
+  html+='<div style="flex:1;background:rgba(255,255,255,0.1);border-radius:12px;padding:14px">';
+  html+='<div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:6px">진행 중</div>';
+  html+='<div style="font-size:26px;font-weight:700;color:#fff">'+active.length+'<span style="font-size:14px;font-weight:400"> 건</span></div>';
+  html+='<div style="font-size:14px;color:#e8c96e;margin-top:4px">'+fmtFee(activeFee,'KRW')+'</div>';
   html+='</div>';
-  html+='<div style="padding:14px 16px 4px;font-size:12px;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;font-weight:600">단계별 현황</div>';
-  html+='<div style="padding:0 16px 14px">';
-  var maxN=1,cnts={};
-  for(var i=0;i<STAGES.length;i++) cnts[STAGES[i]]=DB.deals.filter(function(d){ return d.stage===STAGES[i]; }).length;
-  for(var s in cnts) if(cnts[s]>maxN) maxN=cnts[s];
-  for(var i=0;i<STAGES.length;i++){
-    var s=STAGES[i],n=cnts[s];
-    html+='<div class="sbar-row"><div class="sbar-label">'+s+'</div><div class="sbar-track"><div class="sbar-fill" style="width:'+Math.round(n/maxN*100)+'%"></div></div><div class="sbar-n">'+n+'</div></div>';
-  }
-  html+='</div>';
-  var recent=[].concat(DB.deals).sort(function(a,b){ return (b.updatedAt||'')>(a.updatedAt||'')?1:-1; }).slice(0,5);
-  if(recent.length){
-    html+='<div style="padding:14px 16px 4px;font-size:12px;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;font-weight:600">최근 딜</div>';
-    for(var i=0;i<recent.length;i++){
-      var d=recent[i];
-      html+='<div class="person-row" onclick="openDeal(\''+d.id+'\')" style="padding:13px 16px">';
-      html+='<div style="width:10px;height:10px;border-radius:50%;background:'+sdotColor(d.stage)+';flex-shrink:0"></div>';
-      html+='<div style="flex:1"><div style="font-size:16px;font-weight:500">'+d.name+'</div><div style="font-size:13px;color:var(--t2);margin-top:3px">'+d.type+' · '+d.stage+'</div></div>';
-      html+='<span class="badge s-'+d.stage+'">'+d.stage+'</span></div>';
+  html+='<div style="flex:1;background:rgba(255,255,255,0.1);border-radius:12px;padding:14px">';
+  html+='<div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:6px">클로징</div>';
+  html+='<div style="font-size:26px;font-weight:700;color:#fff">'+closingDeals.length+'<span style="font-size:14px;font-weight:400"> 건</span></div>';
+  html+='<div style="font-size:14px;color:#6dcf9e;margin-top:4px">'+(closingFee?fmtFee(closingFee,'KRW'):'—')+'</div>';
+  html+='</div></div></div>';
+
+  // Neglected deals
+  var neglected=active.filter(function(d){
+    if(!d.updatedAt) return true;
+    return Math.floor((new Date()-new Date(d.updatedAt))/86400000)>=30;
+  });
+  if(neglected.length){
+    html+='<div style="padding:14px 16px;border-bottom:1px solid var(--bd)">';
+    html+='<div style="font-size:12px;color:var(--red);letter-spacing:.07em;font-weight:600;margin-bottom:10px">⚠️ 장기 방치 딜 (30일+)</div>';
+    for(var i=0;i<neglected.length;i++){
+      var d=neglected[i];
+      var days=d.updatedAt?Math.floor((new Date()-new Date(d.updatedAt))/86400000):99;
+      var did=d.id;
+      html+='<div class="person-row" onclick="openDeal(\''+did+'\')" style="padding:10px 0;border-bottom:'+(i<neglected.length-1?'1px solid var(--bd)':'none')+'">';
+      html+='<div style="width:8px;height:8px;border-radius:50%;background:var(--red);flex-shrink:0;margin-top:4px"></div>';
+      html+='<div style="flex:1"><div style="font-size:15px;font-weight:500">'+d.name+'</div>';
+      html+='<div style="font-size:13px;color:var(--red);margin-top:2px">'+days+'일째 업데이트 없음</div></div>';
+      html+='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--t3)"><path d="M9 18l6-6-6-6"/></svg></div>';
     }
+    html+='</div>';
   }
+
+  // Urgent actions D-7
+  var urgent=[];
+  DB.deals.forEach(function(d){
+    (d.actions||[]).forEach(function(a,ai){
+      if(a.done) return;
+      var dl=dLeft(a.due);
+      if(dl!==null&&dl<=7) urgent.push({a:a,ai:ai,dealName:d.name,dealId:d.id,dl:dl});
+    });
+  });
+  urgent.sort(function(a,b){ return a.dl-b.dl; });
+  if(urgent.length){
+    html+='<div style="padding:14px 16px;border-bottom:1px solid var(--bd)">';
+    html+='<div style="font-size:12px;color:var(--t3);letter-spacing:.07em;font-weight:600;margin-bottom:10px">📅 기한 임박 (D-7)</div>';
+    for(var i=0;i<urgent.length;i++){
+      var item=urgent[i]; var dl=item.dl;
+      var dc=dl<0?'var(--red)':dl===0?'#b8860b':'var(--t3)';
+      var dt=dl<0?Math.abs(dl)+'일 초과':dl===0?'오늘':'D-'+dl;
+      var did2=item.dealId;
+      html+='<div class="person-row" onclick="openDealFromTodo(\''+did2+'\')" style="padding:10px 0;border-bottom:'+(i<urgent.length-1?'1px solid var(--bd)':'none')+'">';
+      html+='<div style="width:8px;height:8px;border-radius:50%;background:'+dc+';flex-shrink:0;margin-top:4px"></div>';
+      html+='<div style="flex:1"><div style="font-size:15px">'+item.a.title+'</div>';
+      html+='<div style="font-size:13px;color:var(--t2);margin-top:2px">'+item.dealName+'</div></div>';
+      html+='<div style="font-size:12px;font-weight:600;color:'+dc+'">'+dt+'</div></div>';
+    }
+    html+='</div>';
+  }
+
+  // Recent logs
+  var logs=[];
+  DB.deals.forEach(function(d){
+    (d.timeline||[]).forEach(function(l){
+      logs.push({l:l,dealName:d.name,dealId:d.id});
+    });
+  });
+  logs.sort(function(a,b){ return (b.l.date||'')>(a.l.date||'')?1:-1; });
+  logs=logs.slice(0,5);
+  if(logs.length){
+    html+='<div style="padding:14px 16px">';
+    html+='<div style="font-size:12px;color:var(--t3);letter-spacing:.07em;font-weight:600;margin-bottom:10px">🕐 최근 활동</div>';
+    for(var i=0;i<logs.length;i++){
+      var item=logs[i]; var did3=item.dealId;
+      html+='<div class="person-row" onclick="openDealFromTodo(\''+did3+'\')" style="padding:10px 0;border-bottom:'+(i<logs.length-1?'1px solid var(--bd)':'none')+'">';
+      html+='<div class="tl-dot" style="margin-top:4px;flex-shrink:0"></div>';
+      html+='<div style="flex:1"><div style="font-size:14px">'+item.l.content.slice(0,40)+(item.l.content.length>40?'...':'')+'</div>';
+      html+='<div style="font-size:12px;color:var(--t3);margin-top:2px">'+item.dealName+' · '+fmtDate(item.l.date)+'</div></div></div>';
+    }
+    html+='</div>';
+  }
+
+  if(!active.length&&!closingDeals.length) html+='<div class="empty"><div class="empty-icon">📊</div><p>딜을 추가하면<br>대시보드가 채워집니다</p></div>';
   document.getElementById('page-dash').innerHTML=html;
 }
 
-/* SETTINGS */
 function renderSettings(){
   var el = document.getElementById('page-settings');
   if(!el) return;
