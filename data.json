@@ -103,7 +103,9 @@
       "currency": "KRW",
       "country": "중국",
       "desc": "보스코 진행사항 팔로우",
-      "personIds": [],
+      "personIds": [
+        "mqbwmr28n09"
+      ],
       "actions": [],
       "timeline": [],
       "docs": [],
@@ -126,6 +128,22 @@
       "country": "",
       "lang": "",
       "rating": 5,
+      "memo": "",
+      "logs": [],
+      "createdAt": "2026-06-13"
+    },
+    {
+      "id": "mqbwmr28n09",
+      "name": "보스코 陈叶",
+      "org": "CNICC",
+      "title": "",
+      "role": "파트너",
+      "phone": "",
+      "email": "",
+      "wechat": "",
+      "country": "중국",
+      "lang": "",
+      "rating": 0,
       "memo": "",
       "logs": [],
       "createdAt": "2026-06-13"
