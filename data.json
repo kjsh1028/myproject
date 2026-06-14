@@ -32,7 +32,8 @@
           "title": "제인서 초안 작성",
           "due": "2026-06-08",
           "note": "",
-          "done": true
+          "done": true,
+          "doneAt": "2026-06-14"
         },
         {
           "id": "mqc3m17lyrr",
@@ -63,7 +64,7 @@
       "research": [],
       "stageHistory": [],
       "createdAt": "2026-06-13",
-      "updatedAt": "2026-06-13"
+      "updatedAt": "2026-06-14"
     },
     {
       "id": "mqbvhvosrmn",
