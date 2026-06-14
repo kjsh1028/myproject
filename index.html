@@ -356,7 +356,7 @@ textarea { resize: none; line-height: 1.6; }
 </div>
 
 <script>
-var VER = '9.0';
+var VER = '9.1';
 var STAGES = ['발굴','검토','협의','구조화','실행','클로징','완료','중단'];
 var ASTAGES = ['발굴','검토','협의','구조화','실행','클로징'];
 var TYPES = ['M&A','자금조달','부동산','IPO·상장','무역','엔터테인먼트','기타'];
@@ -615,7 +615,7 @@ function renderTodo(){
         var dTxt=dl===null?'':dl===0?'오늘':dl<0?Math.abs(dl)+'일 초과':'D-'+dl;
         var dCol=dl<0?'var(--red)':dl===0?'var(--gold)':'var(--t3)';
         html+='<div class="todo-row" onclick="openTodoItemEdit(\''+item.dealId+'\','+item.i+')">';
-        html+='<div class="acheck" onclick="event.stopPropagation();togActById(\''+item.dealId+'\','+item.i+')"></div>';
+        html+='<button onclick="event.stopPropagation();togActById(\''+item.dealId+'\','+item.i+')" style="width:28px;height:28px;border-radius:50%;border:2px solid var(--bd);background:none;flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0"></button>';
         html+='<div style="flex:1"><div style="font-size:15px">'+item.a.title+'</div>';
         html+='<div style="font-size:13px;color:var(--t2);margin-top:2px">'+item.dealName+(dTxt?' · <span style="color:'+dCol+'">'+dTxt+'</span>':'')+'</div></div>';
         html+='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--t3);flex-shrink:0"><path d="M9 18l6-6-6-6"/></svg></div>';
@@ -626,7 +626,7 @@ function renderTodo(){
     html+='<div class="todo-sec-title">완료 ('+showing.length+'개)</div>';
     showing.forEach(function(item){
       html+='<div class="todo-row" onclick="openTodoItemEdit(\''+item.dealId+'\','+item.i+')">';
-      html+='<div class="acheck done" onclick="event.stopPropagation();togActById(\''+item.dealId+'\','+item.i+')"></div>';
+      html+='<button onclick="event.stopPropagation();togActById(\''+item.dealId+'\','+item.i+')" style="width:28px;height:28px;border-radius:50%;border:2px solid var(--green);background:var(--green);flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;color:#fff;font-size:14px;font-weight:700">✓</button>';
       html+='<div style="flex:1"><div style="font-size:15px;text-decoration:line-through;color:var(--t3)">'+item.a.title+'</div>';
       html+='<div style="font-size:13px;color:var(--t3);margin-top:2px">'+item.dealName+(item.a.doneAt?' · 완료 '+fmtDate(item.a.doneAt):'')+'</div></div>';
       html+='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--t3);flex-shrink:0"><path d="M9 18l6-6-6-6"/></svg></div>';
