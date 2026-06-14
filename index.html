@@ -356,7 +356,7 @@ textarea { resize: none; line-height: 1.6; }
 </div>
 
 <script>
-var VER = '8.7';
+var VER = '8.8';
 var STAGES = ['발굴','검토','협의','구조화','실행','클로징','완료','중단'];
 var ASTAGES = ['발굴','검토','협의','구조화','실행','클로징'];
 var TYPES = ['M&A','자금조달','부동산','IPO·상장','무역','엔터테인먼트','기타'];
@@ -568,50 +568,75 @@ function renderDeals(){
 }
 
 function renderTodo(){
+  try{
   var all=[];
   DB.deals.forEach(function(d){
-    (d.actions||[]).forEach(function(a,i){ all.push({a:a,i:i,dealName:d.name,dealId:d.id}); });
+    (d.actions||[]).forEach(function(a,ai){ all.push({a:a,i:ai,dealName:d.name,dealId:d.id}); });
   });
-  var und=(todoStatus==='undone');
-  var AC='#2c3e6b';
-  var sH='<div style="display:flex;border-bottom:1px solid var(--bd)"><div onclick="setTodoStatus(\'undone\')" style="flex:1;padding:11px 0;text-align:center;font-size:14px;font-weight:600;cursor:pointer;border-bottom:2px solid '+(und?AC:'transparent')+';color:'+(und?AC:'#8090b0')+'">미완료</div><div onclick="setTodoStatus(\'done\')" style="flex:1;padding:11px 0;text-align:center;font-size:14px;font-weight:600;cursor:pointer;border-bottom:2px solid '+(und?'transparent':AC)+';color:'+(und?'#8090b0':AC)+'">완료</div></div>';
-  var fH='<div style="display:flex;gap:6px;padding:10px 16px;overflow-x:auto;-webkit-overflow-scrolling:touch;border-bottom:1px solid var(--bd)"><div onclick="setTodoFilter(\'all\')" style="padding:5px 14px;border-radius:20px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;background:'+(todoFilter==='all'?AC:'var(--s2)')+';color:'+(todoFilter==='all'?'#fff':'var(--t2)')+';border:1px solid '+(todoFilter==='all'?AC:'var(--bd)')+'">\uc804\uccb4</div>';
-  DB.deals.forEach(function(d){ var on=(todoFilter===d.id); fH+='<div onclick="setTodoFilter(\''+d.id+'\')" style="padding:5px 14px;border-radius:20px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;background:'+(on?AC:'var(--s2)')+';color:'+(on?'#fff':'var(--t2)')+';border:1px solid '+(on?AC:'var(--bd)')+'">'+d.name+'</div>'; });
-  fH+='</div>';
-  var filtered=(todoFilter==='all')?all:all.filter(function(x){ return x.dealId===todoFilter; });
-  var showing=und?filtered.filter(function(x){ return !x.done; }):filtered.filter(function(x){ return x.done; });
-  if(!showing.length){ document.getElementById('page-todo').innerHTML=sH+fH+'<div class="empty"><div class="empty-icon">'+(und?'📋':'✅')+'</div><p>'+(und?'할일이 없습니다':'완료된 항목이 없습니다')+'</p></div>'; return; }
-  var html=sH+fH;
+  var und = (todoStatus==='undone');
+  var html = '';
+
+  // Status toggle
+  html += '<div style="display:flex;border-bottom:1px solid var(--bd)">';
+  html += '<div onclick="setTodoStatus(\'undone\')" style="flex:1;padding:11px 0;text-align:center;font-size:14px;font-weight:600;cursor:pointer;border-bottom:2px solid '+(und?'#2c3e6b':'transparent')+';color:'+(und?'#2c3e6b':'#8090b0')+'">\uBBF8\uC644\uB8CC</div>';
+  html += '<div onclick="setTodoStatus(\'done\')" style="flex:1;padding:11px 0;text-align:center;font-size:14px;font-weight:600;cursor:pointer;border-bottom:2px solid '+(und?'transparent':'#2c3e6b')+';color:'+(und?'#8090b0':'#2c3e6b')+'">\uC644\uB8CC</div>';
+  html += '</div>';
+
+  // Project filter
+  html += '<div style="display:flex;gap:6px;padding:10px 16px;overflow-x:auto;border-bottom:1px solid var(--bd)">';
+  html += '<div onclick="setTodoFilter(\'all\')" style="padding:5px 14px;border-radius:20px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;flex-shrink:0;background:'+(todoFilter==='all'?'#2c3e6b':'var(--s2)')+';color:'+(todoFilter==='all'?'#fff':'var(--t2)')+';border:1px solid '+(todoFilter==='all'?'#2c3e6b':'var(--bd)')+'">' + '\uC804\uCCB4' + '</div>';
+  DB.deals.forEach(function(d){
+    var on=(todoFilter===d.id);
+    html += '<div onclick="setTodoFilter(\''+d.id+'\')" style="padding:5px 14px;border-radius:20px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;flex-shrink:0;background:'+(on?'#2c3e6b':'var(--s2)')+';color:'+(on?'#fff':'var(--t2)')+';border:1px solid '+(on?'#2c3e6b':'var(--bd)')+'">' + d.name + '</div>';
+  });
+  html += '</div>';
+
+  // Filter data
+  var filtered = (todoFilter==='all') ? all : all.filter(function(x){ return x.dealId===todoFilter; });
+  var showing = und ? filtered.filter(function(x){ return !x.done; }) : filtered.filter(function(x){ return x.done; });
+
+  if(!showing.length){
+    html += '<div class="empty"><div class="empty-icon">'+(und?'\uD83D\uDCCB':'\u2705')+'</div><p>'+(und?'\uD560\uC77C\uC774 \uC5C6\uC2B5\uB2C8\uB2E4':'\uC644\uB8CC\uB41C \uD56D\uBAA9\uC774 \uC5C6\uC2B5\uB2C8\uB2E4')+'</p></div>';
+    document.getElementById('page-todo').innerHTML = html;
+    return;
+  }
+
   if(und){
-    showing.sort(function(x,y){ return (x.a.due||'9')>(y.a.due||'9')?1:-1; });
+    showing.sort(function(a,b){ return (a.a.due||'9')>(b.a.due||'9')?1:-1; });
     var over=showing.filter(function(x){ var dl=dLeft(x.a.due); return dl!==null&&dl<0; });
     var tod=showing.filter(function(x){ return dLeft(x.a.due)===0; });
     var up=showing.filter(function(x){ var dl=dLeft(x.a.due); return dl===null||dl>0; });
-    var sections=[{t:'⚠️ 기한 초과',items:over},{t:'📅 오늘',items:tod},{t:'📋 예정',items:up}];
-    sections.forEach(function(sec){
+    var secs=[{t:'\u26A0\uFE0F \uAE30\uD55C \uCD08\uACFC',items:over},{t:'\uD83D\uDCC5 \uC624\uB298',items:tod},{t:'\uD83D\uDCCB \uC608\uC815',items:up}];
+    secs.forEach(function(sec){
       if(!sec.items.length) return;
-      html+='<div class="todo-sec-title">'+sec.t+'</div>';
+      html += '<div class="todo-sec-title">'+sec.t+'</div>';
       sec.items.forEach(function(item){
         var dl=dLeft(item.a.due);
-        var dTxt=dl===null?'':dl===0?'오늘':dl<0?Math.abs(dl)+'일 초과':'D-'+dl;
+        var dTxt=dl===null?'':dl===0?'\uC624\uB298':dl<0?Math.abs(dl)+'\uC77C \uCD08\uACFC':'D-'+dl;
         var dCol=dl<0?'var(--red)':dl===0?'var(--gold)':'var(--t3)';
-        html+='<div class="todo-row" onclick="openDealFromTodo(\''+item.dealId+'\')">';
-        html+='<div class="acheck" onclick="event.stopPropagation();togActById(\''+item.dealId+'\','+item.i+')"></div>';
-        html+='<div style="flex:1"><div style="font-size:15px">'+item.a.title+'</div><div style="font-size:13px;color:var(--t2);margin-top:2px">'+item.dealName+(dTxt?' · <span style="color:'+dCol+'">'+dTxt+'</span>':'')+'</div></div>';
-        html+='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--t3);flex-shrink:0"><path d="M9 18l6-6-6-6"/></svg></div>';
+        html += '<div class="todo-row" onclick="openDealFromTodo(\''+item.dealId+'\')">';
+        html += '<div class="acheck" onclick="event.stopPropagation();togActById(\''+item.dealId+'\','+item.i+')"></div>';
+        html += '<div style="flex:1"><div style="font-size:15px">'+item.a.title+'</div>';
+        html += '<div style="font-size:13px;color:var(--t2);margin-top:2px">'+item.dealName+(dTxt?' · <span style="color:'+dCol+'">'+dTxt+'</span>':'')+'</div></div>';
+        html += '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--t3);flex-shrink:0"><path d="M9 18l6-6-6-6"/></svg></div>';
       });
     });
   } else {
-    showing.sort(function(x,y){ return (y.a.doneAt||'')>(x.a.doneAt||'')?1:-1; });
-    html+='<div class="todo-sec-title">완료 ('+showing.length+'개)</div>';
+    showing.sort(function(a,b){ return (b.a.doneAt||'')>(a.a.doneAt||'')?1:-1; });
+    html += '<div class="todo-sec-title">\uC644\uB8CC ('+showing.length+'\uAC1C)</div>';
     showing.forEach(function(item){
-      html+='<div class="todo-row" onclick="openDealFromTodo(\''+item.dealId+'\')"><div class="acheck done" onclick="event.stopPropagation();togActById(\''+item.dealId+'\','+item.i+')"></div>';
-      html+='<div style="flex:1"><div style="font-size:15px;text-decoration:line-through;color:var(--t3)">'+item.a.title+'</div><div style="font-size:13px;color:var(--t3);margin-top:2px">'+item.dealName+(item.a.doneAt?' · 완료 '+fmtDate(item.a.doneAt):'')+'</div></div>';
-      html+='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--t3);flex-shrink:0"><path d="M9 18l6-6-6-6"/></svg></div>';
+      html += '<div class="todo-row" onclick="openDealFromTodo(\''+item.dealId+'\')">';
+      html += '<div class="acheck done" onclick="event.stopPropagation();togActById(\''+item.dealId+'\','+item.i+')"></div>';
+      html += '<div style="flex:1"><div style="font-size:15px;text-decoration:line-through;color:var(--t3)">'+item.a.title+'</div>';
+      html += '<div style="font-size:13px;color:var(--t3);margin-top:2px">'+item.dealName+(item.a.doneAt?' · \uC644\uB8CC '+fmtDate(item.a.doneAt):'')+'</div></div>';
+      html += '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--t3);flex-shrink:0"><path d="M9 18l6-6-6-6"/></svg></div>';
     });
   }
-  document.getElementById('page-todo').innerHTML=html;
+  document.getElementById('page-todo').innerHTML = html;
+  } catch(e){ document.getElementById('page-todo').innerHTML='<div class="empty"><p>\uC624\uB958: '+e.message+'</p></div>'; }
 }
+function setTodoStatus(s){ todoStatus=s; renderTodo(); }
+function setTodoFilter(f){ todoFilter=f; renderTodo(); }
 function setTodoStatus(s){ todoStatus=s; renderTodo(); }
 function setTodoFilter(f){ todoFilter=f; renderTodo(); }
 function renderPeople(){
