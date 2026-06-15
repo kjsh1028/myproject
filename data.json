@@ -108,7 +108,8 @@
           "title": "정중호 유상선 자료 율촌에 주기",
           "due": "2026-06-16",
           "note": "",
-          "done": false
+          "done": true,
+          "doneAt": "2026-06-15"
         }
       ],
       "timeline": [],
@@ -116,7 +117,7 @@
       "research": [],
       "stageHistory": [],
       "createdAt": "2026-06-13",
-      "updatedAt": "2026-06-13"
+      "updatedAt": "2026-06-15"
     },
     {
       "id": "mqbwlhn857o",
