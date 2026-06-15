@@ -299,6 +299,25 @@
       "stageHistory": [],
       "createdAt": "2026-06-15",
       "updatedAt": "2026-06-15"
+    },
+    {
+      "id": "mqfbkkv857n",
+      "name": "보스코 석유 무역",
+      "category": "important",
+      "type": "무역",
+      "stage": "협의",
+      "fee": "",
+      "currency": "KRW",
+      "country": "",
+      "desc": "",
+      "personIds": [],
+      "actions": [],
+      "timeline": [],
+      "docs": [],
+      "research": [],
+      "stageHistory": [],
+      "createdAt": "2026-06-15",
+      "updatedAt": "2026-06-15"
     }
   ],
   "people": [
