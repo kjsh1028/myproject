@@ -359,7 +359,7 @@ textarea { resize: none; line-height: 1.6; }
 var VER = '9.3';
 var STAGES = ['발굴','검토','협의','구조화','실행','클로징','완료','중단'];
 var ASTAGES = ['발굴','검토','협의','구조화','실행','클로징'];
-var TYPES = ['M&A','자금조달','부동산','IPO·상장','무역','엔터테인먼트','기타'];
+var TYPES = ['M&A','자금조달','부동산','IPO·상장','무역','엔터테인먼트','투자자문','법적분쟁','전략기획','마케팅','의료밸류체인','기타'];
 var ROLES = ['매수인','매도인','투자자','투자대상','FA','법무','회계','주관사','파트너','기타'];
 var DTYPES = ['NDA','IM','Term Sheet','계약서','보고서','재무제표','법인등기','리서치','기타'];
 
@@ -381,7 +381,7 @@ function today(){ return new Date().toISOString().slice(0,10); }
 function fmtDate(s){ if(!s) return ''; var d=new Date(s+'T12:00:00'); return d.getFullYear()+'.'+String(d.getMonth()+1).padStart(2,'0')+'.'+String(d.getDate()).padStart(2,'0'); }
 function dLeft(s){ if(!s) return null; return Math.ceil((new Date(s+'T12:00:00')-new Date())/86400000); }
 function fmtFee(n){ if(!n||isNaN(n)) return '미정'; n=parseInt(n); if(n>=100000000) return (n/100000000).toFixed(1).replace(/\.0$/,'')+'억'; if(n>=10000) return Math.round(n/10000)+'만'; return n.toLocaleString(); }
-function tclass(t){ var m={'M&A':'MA','자금조달':'fund','부동산':'re','IPO·상장':'ipo','무역':'trade','엔터테인먼트':'ent','기타':'etc'}; return 't-'+(m[t]||'etc'); }
+function tclass(t){ var m={'M&A':'MA','자금조달':'fund','부동산':'re','IPO·상장':'ipo','무역':'trade','엔터테인먼트':'ent','투자자문':'fund','법적분쟁':'MA','전략기획':'ipo','마케팅':'ent','의료밸류체인':'re','기타':'etc'}; return 't-'+(m[t]||'etc'); }
 function sdotColor(s){ var m={'발굴':'#9898e8','검토':'#60b8f8','협의':'#d8b848','구조화':'#c868e8','실행':'#40c888','클로징':'#d4a84b','완료':'#50c080','중단':'#e06868'}; return m[s]||'#6070a0'; }
 
 function checkAndUpdate(){
