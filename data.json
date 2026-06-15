@@ -271,6 +271,25 @@
       "stageHistory": [],
       "createdAt": "2026-06-15",
       "updatedAt": "2026-06-15"
+    },
+    {
+      "id": "mqf1uipv67t",
+      "name": "모다모다 청산",
+      "category": "normal",
+      "type": "IPO·상장",
+      "stage": "실행",
+      "fee": "",
+      "currency": "KRW",
+      "country": "",
+      "desc": "비용은 인민폐 1 만원",
+      "personIds": [],
+      "actions": [],
+      "timeline": [],
+      "docs": [],
+      "research": [],
+      "stageHistory": [],
+      "createdAt": "2026-06-15",
+      "updatedAt": "2026-06-15"
     }
   ],
   "people": [
