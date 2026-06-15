@@ -499,7 +499,7 @@ function switchTab(tab){
   var tabIdx={'deals':0,'todo':1,'people':2,'dash':3};
   if(tabIdx[tab]!==undefined) btns[tabIdx[tab]].classList.add('on');
   document.getElementById('cat-bar').style.display=(tab==='deals'?'flex':'none');
-  document.getElementById('fab').style.display=(tab==='deals'||tab==='people'?'flex':'none');
+  document.getElementById('fab').style.display=(tab==='deals'||tab==='people'||tab==='todo'?'flex':'none');
   if(tab==='deals') renderDeals();
   else if(tab==='todo') renderTodo();
   else if(tab==='people') renderPeople();
@@ -645,6 +645,28 @@ function openTodoProjectPicker(){
     h+='<div style="flex:1;font-size:16px;margin-left:12px">'+d.name+'</div></div>';
   });
   showModal('프로젝트 선택', h, [{label:'닫기',fn:'closeModal()',g:true}]);
+}
+function openAddTodoModal(){
+  var dealOpts='<option value="">— 딜 선택 —</option>';
+  DB.deals.filter(function(d){ return d.category!=='archived'; }).forEach(function(d){
+    dealOpts+='<option value="'+d.id+'">'+d.name+'</option>';
+  });
+  showModal('새 할일 추가',
+    '<label>딜 *</label><select id="fatDeal" style="width:100%;padding:10px;border:1px solid var(--bd);border-radius:10px;font-size:15px;margin-bottom:8px">'+dealOpts+'</select>'+
+    '<label>내용 *</label><input id="fatTitle" placeholder="할일 내용을 입력하세요">'+
+    '<label>기한</label><input id="fatDue" type="date" value="'+today()+'">'+
+    '<label>메모</label><input id="fatNote" placeholder="추가 메모...">',
+    [{label:'추가',fn:'saveNewTodo()'},{label:'취소',fn:'closeModal()',g:true}]);
+}
+function saveNewTodo(){
+  var dealId=document.getElementById('fatDeal').value;
+  var title=(document.getElementById('fatTitle').value||'').trim();
+  if(!dealId){ alert('딜을 선택하세요'); return; }
+  if(!title){ alert('내용을 입력하세요'); return; }
+  var d=DB.deals.find(function(x){ return x.id===dealId; }); if(!d) return;
+  if(!d.actions) d.actions=[];
+  d.actions.push({title:title,due:document.getElementById('fatDue').value,note:document.getElementById('fatNote').value,done:false});
+  d.updatedAt=today(); save(); closeModal(); renderTodo();
 }
 function openTodoItemEdit(dealId, idx){
   var d=DB.deals.find(function(x){ return x.id===dealId; }); if(!d) return;
@@ -1151,6 +1173,7 @@ function bgClick(e){ if(e.target===document.getElementById('moverlay')) closeMod
 
 function openAddModal(){
   if(curTab==='people'){ openAddPersonModal(); return; }
+  if(curTab==='todo'){ openAddTodoModal(); return; }
   showModal('새로 추가','<div style="display:flex;flex-direction:column;gap:10px"><button class="btn" onclick="closeModal();setTimeout(showAddDealForm,80)">📋 새 딜 추가</button><button class="btn-g" onclick="closeModal();setTimeout(openAddPersonModal,80)">👤 새 관련자 추가</button></div>',[{label:'취소',fn:'closeModal()',g:true}]);
 }
 
