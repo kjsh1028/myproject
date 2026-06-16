@@ -101,34 +101,6 @@
       "updatedAt": "2026-06-15"
     },
     {
-      "id": "mqbwgr21ghi",
-      "name": "에이스병원 의료 소송",
-      "category": "important",
-      "type": "기타",
-      "stage": "실행",
-      "fee": "",
-      "currency": "KRW",
-      "country": "한국",
-      "desc": "",
-      "personIds": [],
-      "actions": [
-        {
-          "id": "mqbwxiumcj4",
-          "title": "정중호 유상선 자료 율촌에 주기",
-          "due": "2026-06-16",
-          "note": "",
-          "done": true,
-          "doneAt": "2026-06-15"
-        }
-      ],
-      "timeline": [],
-      "docs": [],
-      "research": [],
-      "stageHistory": [],
-      "createdAt": "2026-06-13",
-      "updatedAt": "2026-06-15"
-    },
-    {
       "id": "mqbwlhn857o",
       "name": "보스코 엔터테인먼트",
       "category": "important",
