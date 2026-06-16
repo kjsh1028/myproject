@@ -26,7 +26,8 @@
           "title": "피드백 확인",
           "due": "2026-06-14",
           "note": "",
-          "done": false
+          "done": true,
+          "doneAt": "2026-06-16"
         },
         {
           "id": "mqbuf69l6th",
@@ -65,7 +66,7 @@
       "research": [],
       "stageHistory": [],
       "createdAt": "2026-06-13",
-      "updatedAt": "2026-06-14"
+      "updatedAt": "2026-06-16"
     },
     {
       "id": "mqbvhvosrmn",
