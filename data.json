@@ -18,29 +18,26 @@
           "title": "제안서 초안 작성",
           "due": "2026-06-09",
           "note": "",
-          "done": true,
-          "doneAt": "2026-06-14"
+          "done": true
         },
         {
           "id": "mqbuekiwl56",
           "title": "피드백 확인",
           "due": "2026-06-14",
           "note": "",
-          "done": true,
-          "doneAt": "2026-06-16"
+          "done": false
         },
         {
           "id": "mqbuf69l6th",
           "title": "제인서 초안 작성",
           "due": "2026-06-08",
           "note": "",
-          "done": true,
-          "doneAt": "2026-06-14"
+          "done": true
         },
         {
           "id": "mqc3m17lyrr",
           "title": "추가적인 매수 대상 리서치 하기",
-          "due": "2026-06-19",
+          "due": "2026-06-15",
           "note": "",
           "done": false
         }
@@ -66,7 +63,7 @@
       "research": [],
       "stageHistory": [],
       "createdAt": "2026-06-13",
-      "updatedAt": "2026-06-16"
+      "updatedAt": "2026-06-13"
     },
     {
       "id": "mqbvhvosrmn",
@@ -78,15 +75,7 @@
       "country": "",
       "desc": "",
       "personIds": [],
-      "actions": [
-        {
-          "id": "mqf7epu356o",
-          "title": "쉬린동 시아루 은행 계좌 변곁",
-          "due": "2026-07-07",
-          "note": "",
-          "done": false
-        }
-      ],
+      "actions": [],
       "timeline": [],
       "docs": [],
       "research": [],
@@ -98,7 +87,34 @@
         }
       ],
       "createdAt": "2026-06-13",
-      "updatedAt": "2026-06-15"
+      "updatedAt": "2026-06-13"
+    },
+    {
+      "id": "mqbwgr21ghi",
+      "name": "에이스병원 의료 소송",
+      "category": "important",
+      "type": "기타",
+      "stage": "실행",
+      "fee": "",
+      "currency": "KRW",
+      "country": "한국",
+      "desc": "",
+      "personIds": [],
+      "actions": [
+        {
+          "id": "mqbwxiumcj4",
+          "title": "정중호 유상선 자료 율촌에 주기",
+          "due": "2026-06-16",
+          "note": "",
+          "done": false
+        }
+      ],
+      "timeline": [],
+      "docs": [],
+      "research": [],
+      "stageHistory": [],
+      "createdAt": "2026-06-13",
+      "updatedAt": "2026-06-13"
     },
     {
       "id": "mqbwlhn857o",
@@ -234,128 +250,6 @@
       "stageHistory": [],
       "createdAt": "2026-06-13",
       "updatedAt": "2026-06-13"
-    },
-    {
-      "id": "mqelmj0rmia",
-      "name": "백현종 유학원 분쟁",
-      "category": "hold",
-      "type": "기타",
-      "stage": "클로징",
-      "fee": "",
-      "currency": "KRW",
-      "country": "베트남",
-      "desc": "",
-      "personIds": [],
-      "actions": [],
-      "timeline": [],
-      "docs": [],
-      "research": [],
-      "stageHistory": [
-        {
-          "from": "실행",
-          "to": "클로징",
-          "date": "2026-06-16"
-        },
-        {
-          "from": "클로징",
-          "to": "구조화",
-          "date": "2026-06-16"
-        },
-        {
-          "from": "구조화",
-          "to": "클로징",
-          "date": "2026-06-16"
-        }
-      ],
-      "createdAt": "2026-06-15",
-      "updatedAt": "2026-06-16"
-    },
-    {
-      "id": "mqf1uipv67t",
-      "name": "모다모다 청산",
-      "category": "normal",
-      "type": "IPO·상장",
-      "stage": "실행",
-      "fee": "",
-      "currency": "KRW",
-      "country": "",
-      "desc": "비용은 인민폐 1 만원",
-      "personIds": [],
-      "actions": [],
-      "timeline": [],
-      "docs": [],
-      "research": [],
-      "stageHistory": [],
-      "createdAt": "2026-06-15",
-      "updatedAt": "2026-06-15"
-    },
-    {
-      "id": "mqfbkkv857n",
-      "name": "보스코 석유 무역",
-      "category": "important",
-      "type": "무역",
-      "stage": "협의",
-      "fee": "",
-      "currency": "KRW",
-      "country": "",
-      "desc": "",
-      "personIds": [
-        "mqbwmr28n09"
-      ],
-      "actions": [],
-      "timeline": [],
-      "docs": [],
-      "research": [],
-      "stageHistory": [],
-      "createdAt": "2026-06-15",
-      "updatedAt": "2026-06-16"
-    },
-    {
-      "id": "mqfw3ui9dc6",
-      "name": "주식투자 프로그램 개발하기",
-      "category": "normal",
-      "type": "투자자문",
-      "stage": "구조화",
-      "fee": "",
-      "currency": "KRW",
-      "country": "",
-      "desc": "",
-      "personIds": [],
-      "actions": [
-        {
-          "title": "주식 투자 프로그램 개발 기획",
-          "due": "2026-06-30",
-          "note": "",
-          "done": false
-        }
-      ],
-      "timeline": [],
-      "docs": [],
-      "research": [],
-      "stageHistory": [],
-      "createdAt": "2026-06-16",
-      "updatedAt": "2026-06-16"
-    },
-    {
-      "id": "mqg110rnfm1",
-      "name": "마스톤 등 한국자산운영 인수",
-      "category": "normal",
-      "type": "M&A",
-      "stage": "협의",
-      "fee": "",
-      "currency": "KRW",
-      "country": "",
-      "desc": "",
-      "personIds": [
-        "mqbwmr28n09"
-      ],
-      "actions": [],
-      "timeline": [],
-      "docs": [],
-      "research": [],
-      "stageHistory": [],
-      "createdAt": "2026-06-16",
-      "updatedAt": "2026-06-16"
     }
   ],
   "people": [
