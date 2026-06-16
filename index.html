@@ -1024,7 +1024,7 @@ function makeSec(key,icon,title,cnt,isOpen,bodyFn){
   return h;
 }
 function toggleSec(k){ if(!openSec[curDeal]) openSec[curDeal]={}; openSec[curDeal][k]=!openSec[curDeal][k]; renderDetail(); }
-function chStage(s){ var d=DB.deals.find(function(x){ return x.id===curDeal; }); if(!d||d.stage===s) return; if(!d.stageHistory) d.stageHistory=[]; d.stageHistory.push({from:d.stage,to:s,date:today()}); d.stage=s; d.updatedAt=today(); save(); renderDetail(); }
+function chStage(s){ var d=DB.deals.find(function(x){ return x.id===curDeal; }); if(!d||d.stage===s) return; if(!d.stageHistory) d.stageHistory=[]; d.stageHistory.push({from:d.stage,to:s,date:today()}); d.stage=s; if(s==='클로징') d.category='closing'; else if(s==='완료') d.category='closing'; else if(s==='중단') d.category='drop'; else if(d.category==='closing'||d.category==='drop') d.category='important'; d.updatedAt=today(); save(); renderDetail(); }
 function delDeal(){ if(!confirm('딜을 삭제합니까?')) return; DB.deals=DB.deals.filter(function(d){ return d.id!==curDeal; }); save(); closeDetail(); }
 function togAct(i){ var d=DB.deals.find(function(x){ return x.id===curDeal; }); if(!d) return; var a=d.actions[i]; a.done=!a.done; if(a.done) a.doneAt=today(); else delete a.doneAt; d.updatedAt=today(); save(); renderDetail(); }
 function togActById(dealId,i){ var d=DB.deals.find(function(x){ return x.id===dealId; }); if(!d) return; var a=d.actions[i]; a.done=!a.done; if(a.done) a.doneAt=today(); else delete a.doneAt; d.updatedAt=today(); save(); renderTodo(); }
