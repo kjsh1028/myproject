@@ -332,7 +332,14 @@
       "country": "",
       "desc": "",
       "personIds": [],
-      "actions": [],
+      "actions": [
+        {
+          "title": "주식 투자 프로그램 개발 기획",
+          "due": "2026-06-30",
+          "note": "",
+          "done": false
+        }
+      ],
       "timeline": [],
       "docs": [],
       "research": [],
