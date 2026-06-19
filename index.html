@@ -687,35 +687,42 @@ function openTodoItemEdit(dealId, idx){
   window._editTodoDealId=dealId; window._editTodoIdx=idx;
   window._editTodoImgs=imgs.slice();
 }
-function addTodoImg(input){
-  var file=input.files[0]; if(!file) return;
-  var reader=new FileReader();
-  reader.onload=function(ev){
-    window._editTodoImgs=window._editTodoImgs||[];
-    window._editTodoImgs.push(ev.target.result);
-    var dealId=window._editTodoDealId, idx=window._editTodoIdx;
-    // re-render image list
-    var imgs=window._editTodoImgs;
-    var imgHtml='<div id="faimgs" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px">';
-    for(var ii=0;ii<imgs.length;ii++){
-      imgHtml+='<div style="position:relative"><img src="'+imgs[ii]+'" style="width:72px;height:72px;object-fit:cover;border-radius:8px;border:1px solid var(--bd)"><button type="button" onclick="removeTodoImg('+ii+')" style="position:absolute;top:-6px;right:-6px;background:#e74c3c;color:#fff;border:none;border-radius:50%;width:18px;height:18px;font-size:11px;cursor:pointer;padding:0">✕</button></div>';
-    }
-    imgHtml+='<label style="width:72px;height:72px;border:2px dashed var(--bd);border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:22px;flex-shrink:0"><input type="file" accept="image/*" style="display:none" onchange="addTodoImg(this)">📷</label></div>';
-    var el=document.getElementById('faimgs');
-    if(el) el.outerHTML=imgHtml;
+function compressImg(file, cb){
+  var img=new Image();
+  var url=URL.createObjectURL(file);
+  img.onload=function(){
+    var MAX=600;
+    var w=img.width, h=img.height;
+    if(w>h){ if(w>MAX){h=Math.round(h*MAX/w);w=MAX;} } else { if(h>MAX){w=Math.round(w*MAX/h);h=MAX;} }
+    var canvas=document.createElement('canvas');
+    canvas.width=w; canvas.height=h;
+    canvas.getContext('2d').drawImage(img,0,0,w,h);
+    cb(canvas.toDataURL('image/jpeg',0.7));
+    URL.revokeObjectURL(url);
   };
-  reader.readAsDataURL(file);
+  img.src=url;
 }
-function removeTodoImg(ii){
-  window._editTodoImgs.splice(ii,1);
-  var imgs=window._editTodoImgs;
+function refreshTodoImgList(){
+  var imgs=window._editTodoImgs||[];
   var imgHtml='<div id="faimgs" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px">';
-  for(var i=0;i<imgs.length;i++){
-    imgHtml+='<div style="position:relative"><img src="'+imgs[i]+'" style="width:72px;height:72px;object-fit:cover;border-radius:8px;border:1px solid var(--bd)"><button type="button" onclick="removeTodoImg('+i+')" style="position:absolute;top:-6px;right:-6px;background:#e74c3c;color:#fff;border:none;border-radius:50%;width:18px;height:18px;font-size:11px;cursor:pointer;padding:0">✕</button></div>';
+  for(var ii=0;ii<imgs.length;ii++){
+    imgHtml+='<div style="position:relative"><img src="'+imgs[ii]+'" style="width:72px;height:72px;object-fit:cover;border-radius:8px;border:1px solid var(--bd)"><button type="button" onclick="removeTodoImg('+ii+')" style="position:absolute;top:-6px;right:-6px;background:#e74c3c;color:#fff;border:none;border-radius:50%;width:18px;height:18px;font-size:11px;cursor:pointer;padding:0">✕</button></div>';
   }
   imgHtml+='<label style="width:72px;height:72px;border:2px dashed var(--bd);border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:22px;flex-shrink:0"><input type="file" accept="image/*" style="display:none" onchange="addTodoImg(this)">📷</label></div>';
   var el=document.getElementById('faimgs');
   if(el) el.outerHTML=imgHtml;
+}
+function addTodoImg(input){
+  var file=input.files[0]; if(!file) return;
+  compressImg(file, function(data){
+    window._editTodoImgs=window._editTodoImgs||[];
+    window._editTodoImgs.push(data);
+    refreshTodoImgList();
+  });
+}
+function removeTodoImg(ii){
+  window._editTodoImgs.splice(ii,1);
+  refreshTodoImgList();
 }
 function saveTodoEdit(dealId, idx){
   var el=document.getElementById('fan'); var t=el?el.value.trim():'';
