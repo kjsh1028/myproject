@@ -372,6 +372,25 @@
       "stageHistory": [],
       "createdAt": "2026-06-16",
       "updatedAt": "2026-06-16"
+    },
+    {
+      "id": "mqkk4lw1pv7",
+      "name": "시아루 외국인 등록",
+      "category": "important",
+      "type": "기타",
+      "stage": "발굴",
+      "fee": "",
+      "currency": "KRW",
+      "country": "",
+      "desc": "",
+      "personIds": [],
+      "actions": [],
+      "timeline": [],
+      "docs": [],
+      "research": [],
+      "stageHistory": [],
+      "createdAt": "2026-06-19",
+      "updatedAt": "2026-06-19"
     }
   ],
   "people": [
