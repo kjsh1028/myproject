@@ -671,11 +671,51 @@ function saveNewTodo(){
 function openTodoItemEdit(dealId, idx){
   var d=DB.deals.find(function(x){ return x.id===dealId; }); if(!d) return;
   var a=d.actions[idx];
+  var imgs=a.images||[];
+  var imgHtml='<div id="faimgs" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px">';
+  for(var ii=0;ii<imgs.length;ii++){
+    imgHtml+='<div style="position:relative"><img src="'+imgs[ii]+'" style="width:72px;height:72px;object-fit:cover;border-radius:8px;border:1px solid var(--bd)"><button type="button" onclick="removeTodoImg('+ii+')" style="position:absolute;top:-6px;right:-6px;background:#e74c3c;color:#fff;border:none;border-radius:50%;width:18px;height:18px;font-size:11px;cursor:pointer;padding:0">✕</button></div>';
+  }
+  imgHtml+='<label style="width:72px;height:72px;border:2px dashed var(--bd);border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:22px;flex-shrink:0"><input type="file" accept="image/*" style="display:none" onchange="addTodoImg(this)">📷</label></div>';
   showModal('할일 수정',
     '<label>내용 *</label><input id="fan" value="'+a.title+'">'+
     '<label>기한</label><input id="fad" type="date" value="'+(a.due||today())+'">'+
-    '<label>메모</label><input id="fam" value="'+(a.note||'')+'" placeholder="추가 메모...">',
+    '<label>메모</label><input id="fam" value="'+(a.note||'')+'" placeholder="추가 메모...">'+
+    '<label>📎 구글 드라이브 링크</label><input id="fadrive" value="'+(a.driveLink||'')+'" placeholder="https://drive.google.com/...">'+
+    '<label>🖼 사진</label>'+imgHtml,
     [{label:'저장',fn:'saveTodoEdit(\''+dealId+'\','+idx+')'},{label:'딜로 이동',fn:'closeModal();openDealFromTodo(\''+dealId+'\')'},{label:'취소',fn:'closeModal()',g:true}]);
+  window._editTodoDealId=dealId; window._editTodoIdx=idx;
+  window._editTodoImgs=imgs.slice();
+}
+function addTodoImg(input){
+  var file=input.files[0]; if(!file) return;
+  var reader=new FileReader();
+  reader.onload=function(ev){
+    window._editTodoImgs=window._editTodoImgs||[];
+    window._editTodoImgs.push(ev.target.result);
+    var dealId=window._editTodoDealId, idx=window._editTodoIdx;
+    // re-render image list
+    var imgs=window._editTodoImgs;
+    var imgHtml='<div id="faimgs" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px">';
+    for(var ii=0;ii<imgs.length;ii++){
+      imgHtml+='<div style="position:relative"><img src="'+imgs[ii]+'" style="width:72px;height:72px;object-fit:cover;border-radius:8px;border:1px solid var(--bd)"><button type="button" onclick="removeTodoImg('+ii+')" style="position:absolute;top:-6px;right:-6px;background:#e74c3c;color:#fff;border:none;border-radius:50%;width:18px;height:18px;font-size:11px;cursor:pointer;padding:0">✕</button></div>';
+    }
+    imgHtml+='<label style="width:72px;height:72px;border:2px dashed var(--bd);border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:22px;flex-shrink:0"><input type="file" accept="image/*" style="display:none" onchange="addTodoImg(this)">📷</label></div>';
+    var el=document.getElementById('faimgs');
+    if(el) el.outerHTML=imgHtml;
+  };
+  reader.readAsDataURL(file);
+}
+function removeTodoImg(ii){
+  window._editTodoImgs.splice(ii,1);
+  var imgs=window._editTodoImgs;
+  var imgHtml='<div id="faimgs" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px">';
+  for(var i=0;i<imgs.length;i++){
+    imgHtml+='<div style="position:relative"><img src="'+imgs[i]+'" style="width:72px;height:72px;object-fit:cover;border-radius:8px;border:1px solid var(--bd)"><button type="button" onclick="removeTodoImg('+i+')" style="position:absolute;top:-6px;right:-6px;background:#e74c3c;color:#fff;border:none;border-radius:50%;width:18px;height:18px;font-size:11px;cursor:pointer;padding:0">✕</button></div>';
+  }
+  imgHtml+='<label style="width:72px;height:72px;border:2px dashed var(--bd);border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:22px;flex-shrink:0"><input type="file" accept="image/*" style="display:none" onchange="addTodoImg(this)">📷</label></div>';
+  var el=document.getElementById('faimgs');
+  if(el) el.outerHTML=imgHtml;
 }
 function saveTodoEdit(dealId, idx){
   var el=document.getElementById('fan'); var t=el?el.value.trim():'';
@@ -684,6 +724,8 @@ function saveTodoEdit(dealId, idx){
   d.actions[idx].title=t;
   d.actions[idx].due=document.getElementById('fad').value;
   d.actions[idx].note=document.getElementById('fam').value;
+  d.actions[idx].driveLink=(document.getElementById('fadrive').value||'').trim();
+  d.actions[idx].images=window._editTodoImgs||d.actions[idx].images||[];
   d.updatedAt=today(); save(); closeModal(); renderTodo();
 }
 function setTodoStatus(s){ todoStatus=s; renderTodo(); }
