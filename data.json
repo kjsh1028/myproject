@@ -414,7 +414,14 @@
       "country": "",
       "desc": "",
       "personIds": [],
-      "actions": [],
+      "actions": [
+        {
+          "title": "이덕구 통지서에 답변주기",
+          "due": "2026-06-23",
+          "note": "",
+          "done": false
+        }
+      ],
       "timeline": [],
       "docs": [],
       "research": [],
