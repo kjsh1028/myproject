@@ -42,7 +42,8 @@
           "title": "추가적인 매수 대상 리서치 하기",
           "due": "2026-06-19",
           "note": "",
-          "done": false
+          "done": true,
+          "doneAt": "2026-06-19"
         }
       ],
       "timeline": [
@@ -66,7 +67,7 @@
       "research": [],
       "stageHistory": [],
       "createdAt": "2026-06-13",
-      "updatedAt": "2026-06-16"
+      "updatedAt": "2026-06-19"
     },
     {
       "id": "mqbvhvosrmn",
