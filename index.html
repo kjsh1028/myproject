@@ -808,6 +808,11 @@ function renderSettings(){
   var el = document.getElementById('page-settings');
   if(!el) return;
   el.innerHTML =
+    '<div class="sset"><div class="stitle">🤖 AI 명함 스캔 (Claude API)</div>'+
+    '<div style="font-size:13px;color:var(--t2);margin-bottom:10px">명함 사진을 AI로 자동 인식합니다. <a href="https://console.anthropic.com/settings/keys" target="_blank" style="color:var(--acc)">console.anthropic.com</a>에서 발급</div>'+
+    '<label>Anthropic API Key</label><input type="password" id="s-ant" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" value="'+(SETS.anthropicKey||'')+'" placeholder="sk-ant-...">'+
+    '<button class="btn" style="width:100%;margin-top:10px;font-size:14px;padding:11px" onclick="saveAntKey()">저장</button>'+
+    '<div id="ant-msg" style="font-size:13px;color:var(--t3);margin-top:6px"></div></div>'+
     '<div class="sset"><div class="stitle">GitHub 동기화</div>'+
     '<label>GitHub Token</label><input type="text" id="s-tok" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" value="'+(SETS.tok||'')+'" placeholder="ghp_xxxx...">'+
     '<label>Repository</label><input type="text" id="s-repo" value="'+(SETS.repo||'kjsh1028/myproject')+'">'+
@@ -824,6 +829,12 @@ function renderSettings(){
     '<div style="display:flex;gap:10px">'+
     '<button class="btn-g" onclick="exportData()">JSON 내보내기</button>'+
     '<button class="delbtn" onclick="clearAll()">초기화</button></div></div>';
+}
+function saveAntKey(){
+  var k=document.getElementById('s-ant').value.trim();
+  SETS.anthropicKey=k;
+  localStorage.setItem('mp5_set',JSON.stringify(SETS));
+  document.getElementById('ant-msg').textContent=k?'✅ API Key 저장됨':'Key가 비어있습니다';
 }
 
 function silentPull(){
@@ -1203,7 +1214,9 @@ function saveDeal(isEdit){
 function personFormHTML(p){
   var ro=''; for(var i=0;i<ROLES.length;i++) ro+='<option value="'+ROLES[i]+'"'+(p&&p.role===ROLES[i]?' selected':'')+'>'+ROLES[i]+'</option>';
   var st='<div class="stars" id="fpstars" style="justify-content:flex-start;margin-top:8px">'; for(var i=1;i<=5;i++) st+='<span class="star '+((p&&(p.rating||0)>=i)?'on':'')+'" onclick="setStar('+i+')">★</span>'; st+='</div><input type="hidden" id="fprat" value="'+(p?p.rating||0:0)+'">';
-  return '<label>이름 *</label><input id="fpn" value="'+(p?p.name:'')+'" placeholder="홍길동">'+
+  var scanBtn='<div style="margin-bottom:12px"><button type="button" onclick="triggerCardScan()" style="width:100%;padding:11px;background:#1a2a5e;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer">📷 명함 스캔으로 자동입력</button><input type="file" id="cardFileInput" accept="image/*" capture="environment" style="display:none" onchange="doCardScan(this)"><div id="cardScanStatus" style="font-size:12px;color:#888;text-align:center;margin-top:6px"></div></div>';
+  return scanBtn+
+    '<label>이름 *</label><input id="fpn" value="'+(p?p.name:'')+'" placeholder="홍길동">'+
     '<label>소속/회사</label><input id="fpo" value="'+(p&&p.org?p.org:'')+'" placeholder="ABC 코리아">'+
     '<label>직함</label><input id="fpt" value="'+(p&&p.title?p.title:'')+'" placeholder="대표이사">'+
     '<label>역할</label><select id="fpr">'+ro+'</select>'+
@@ -1214,6 +1227,45 @@ function personFormHTML(p){
     '<label>언어</label><input id="fpl" value="'+(p&&p.lang?p.lang:'')+'" placeholder="한국어, 중국어...">'+
     '<label>중요도</label>'+st+
     '<label>메모</label><textarea id="fpm" rows="3">'+(p&&p.memo?p.memo:'')+'</textarea>';
+}
+function triggerCardScan(){
+  if(!SETS.anthropicKey){ alert('설정에서 Anthropic API Key를 먼저 입력해주세요'); return; }
+  document.getElementById('cardFileInput').click();
+}
+function doCardScan(input){
+  var file=input.files[0]; if(!file) return;
+  var st=document.getElementById('cardScanStatus');
+  st.textContent='🔍 명함 인식 중...';
+  var reader=new FileReader();
+  reader.onload=function(ev){
+    var b64=ev.target.result.split(',')[1];
+    var mt=file.type||'image/jpeg';
+    fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':SETS.anthropicKey,'anthropic-version':'2023-06-01'},
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:500,messages:[{role:'user',content:[
+        {type:'image',source:{type:'base64',media_type:mt,data:b64}},
+        {type:'text',text:'이 명함에서 정보를 추출해서 JSON으로만 응답하세요. 다른 텍스트 없이 JSON만: {"name":"","org":"","title":"","phone":"","email":"","wechat":"","country":"","lang":""}'}
+      ]}]})
+    }).then(function(r){ return r.json(); }).then(function(d){
+      var txt=d.content&&d.content[0]&&d.content[0].text;
+      if(!txt){ st.textContent='❌ 인식 실패'; return; }
+      try{
+        var clean=txt.replace(/```json|```/g,'').trim();
+        var info=JSON.parse(clean);
+        if(info.name) document.getElementById('fpn').value=info.name;
+        if(info.org) document.getElementById('fpo').value=info.org;
+        if(info.title) document.getElementById('fpt').value=info.title;
+        if(info.phone) document.getElementById('fpph').value=info.phone;
+        if(info.email) document.getElementById('fpe').value=info.email;
+        if(info.wechat) document.getElementById('fpw').value=info.wechat;
+        if(info.country) document.getElementById('fpco').value=info.country;
+        if(info.lang) document.getElementById('fpl').value=info.lang;
+        st.textContent='✅ 자동입력 완료! 확인 후 저장하세요';
+      }catch(e){ st.textContent='❌ 파싱 오류: '+e.message; }
+    }).catch(function(e){ st.textContent='❌ API 오류: '+e.message; });
+  };
+  reader.readAsDataURL(file);
 }
 function setStar(n){ document.getElementById('fprat').value=n; var ss=document.querySelectorAll('#fpstars .star'); for(var i=0;i<ss.length;i++) ss[i].classList.toggle('on',i<n); }
 function openAddPersonModal(){ showModal('새 관련자',personFormHTML(null),[{label:'추가',fn:'savePerson(false)'},{label:'취소',fn:'closeModal()',g:true}]); }
