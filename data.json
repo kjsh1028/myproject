@@ -430,6 +430,25 @@
       "stageHistory": [],
       "createdAt": "2026-06-19",
       "updatedAt": "2026-06-19"
+    },
+    {
+      "id": "mqlobezusft",
+      "name": "정상훈 개인 일",
+      "category": "normal",
+      "type": "기타",
+      "stage": "실행",
+      "fee": "",
+      "currency": "KRW",
+      "country": "",
+      "desc": "",
+      "personIds": [],
+      "actions": [],
+      "timeline": [],
+      "docs": [],
+      "research": [],
+      "stageHistory": [],
+      "createdAt": "2026-06-20",
+      "updatedAt": "2026-06-20"
     }
   ],
   "people": [
