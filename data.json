@@ -442,7 +442,14 @@
       "country": "",
       "desc": "",
       "personIds": [],
-      "actions": [],
+      "actions": [
+        {
+          "title": "이동훈 책 선물 카톡 받기",
+          "due": "2026-06-20",
+          "note": "",
+          "done": false
+        }
+      ],
       "timeline": [],
       "docs": [],
       "research": [],
