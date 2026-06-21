@@ -450,6 +450,13 @@
           "done": false,
           "driveLink": "",
           "images": []
+        },
+        {
+          "id": "mqnpdlfg12z",
+          "title": "정석영에게 1 억 6 천 주기",
+          "due": "2026-06-30",
+          "note": "JEONG EDWARD KB국민 387202-01-139529",
+          "done": false
         }
       ],
       "timeline": [],
@@ -457,7 +464,7 @@
       "research": [],
       "stageHistory": [],
       "createdAt": "2026-06-20",
-      "updatedAt": "2026-06-20"
+      "updatedAt": "2026-06-21"
     }
   ],
   "people": [
