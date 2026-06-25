@@ -453,9 +453,10 @@
           "title": "이동훈 책 선물 카톡 받기",
           "due": "2026-06-22",
           "note": "",
-          "done": false,
+          "done": true,
           "driveLink": "",
-          "images": []
+          "images": [],
+          "doneAt": "2026-06-25"
         },
         {
           "id": "mqnpdlfg12z",
@@ -470,7 +471,7 @@
       "research": [],
       "stageHistory": [],
       "createdAt": "2026-06-20",
-      "updatedAt": "2026-06-21"
+      "updatedAt": "2026-06-25"
     }
   ],
   "people": [
