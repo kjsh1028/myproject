@@ -98,7 +98,8 @@
           "title": "쉬린동 은행 거래내역 정중호 주기",
           "due": "2026-06-25",
           "note": "",
-          "done": false
+          "done": true,
+          "doneAt": "2026-06-26"
         }
       ],
       "timeline": [],
@@ -120,7 +121,7 @@
         }
       ],
       "createdAt": "2026-06-13",
-      "updatedAt": "2026-06-25"
+      "updatedAt": "2026-06-26"
     },
     {
       "id": "mqbwlhn857o",
