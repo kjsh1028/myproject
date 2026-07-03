@@ -481,6 +481,25 @@
       "stageHistory": [],
       "createdAt": "2026-06-20",
       "updatedAt": "2026-07-01"
+    },
+    {
+      "id": "mr4arb7jbxh",
+      "name": "긴촌 복합 개발",
+      "category": "important",
+      "type": "부동산",
+      "stage": "검토",
+      "fee": "",
+      "currency": "KRW",
+      "country": "",
+      "desc": "",
+      "personIds": [],
+      "actions": [],
+      "timeline": [],
+      "docs": [],
+      "research": [],
+      "stageHistory": [],
+      "createdAt": "2026-07-03",
+      "updatedAt": "2026-07-03"
     }
   ],
   "people": [
