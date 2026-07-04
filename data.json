@@ -432,7 +432,7 @@
     {
       "id": "mqko4skh80h",
       "name": "이덕구 건물 지분 정리",
-      "category": "important",
+      "category": "normal",
       "type": "부동산",
       "stage": "실행",
       "fee": "",
@@ -455,7 +455,7 @@
       "research": [],
       "stageHistory": [],
       "createdAt": "2026-06-19",
-      "updatedAt": "2026-06-19"
+      "updatedAt": "2026-07-04"
     },
     {
       "id": "mqlobezusft",
