@@ -3,9 +3,9 @@
     {
       "id": "mqbucoxb1tt",
       "name": "林清轩 매수 자문",
-      "category": "closing",
+      "category": "drop",
       "type": "M&A",
-      "stage": "클로징",
+      "stage": "중단",
       "fee": "",
       "country": "중국",
       "desc": "",
@@ -74,6 +74,11 @@
         {
           "from": "중단",
           "to": "클로징",
+          "date": "2026-07-04"
+        },
+        {
+          "from": "클로징",
+          "to": "중단",
           "date": "2026-07-04"
         }
       ],
