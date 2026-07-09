@@ -505,7 +505,7 @@
     {
       "id": "mr4arb7jbxh",
       "name": "신촌 복합 개발",
-      "category": "important",
+      "category": "drop",
       "type": "부동산",
       "stage": "검토",
       "fee": "",
@@ -519,7 +519,7 @@
       "research": [],
       "stageHistory": [],
       "createdAt": "2026-07-03",
-      "updatedAt": "2026-07-03"
+      "updatedAt": "2026-07-09"
     }
   ],
   "people": [
