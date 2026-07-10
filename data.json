@@ -499,6 +499,12 @@
           "due": "2026-07-11",
           "note": "",
           "done": false
+        },
+        {
+          "title": "가족관계증명서 SK 줘서 할인",
+          "due": "2026-07-10",
+          "note": "",
+          "done": false
         }
       ],
       "timeline": [],
@@ -506,7 +512,7 @@
       "research": [],
       "stageHistory": [],
       "createdAt": "2026-06-20",
-      "updatedAt": "2026-07-09"
+      "updatedAt": "2026-07-10"
     },
     {
       "id": "mr4arb7jbxh",
