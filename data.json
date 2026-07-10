@@ -412,7 +412,7 @@
       "personIds": [],
       "actions": [
         {
-          "title": "주민증록 등본 올리기. 조기적응프로그램 듣기",
+          "title": "주민증록 등본 은행  조기적응프로그램 듣기",
           "due": "2026-07-10",
           "note": "모바일 신분. 의료보험",
           "done": false,
@@ -427,7 +427,7 @@
       "research": [],
       "stageHistory": [],
       "createdAt": "2026-06-19",
-      "updatedAt": "2026-06-19"
+      "updatedAt": "2026-07-10"
     },
     {
       "id": "mqko4skh80h",
