@@ -481,10 +481,12 @@
         },
         {
           "id": "mqnpdlfg12z",
-          "title": "정석영에게 1 억 6 천 주기",
+          "title": "정석영에게 1 억 2 천 주기(7.14 4천 보냈음)",
           "due": "2026-06-30",
           "note": "JEONG EDWARD KB국민 387202-01-139529",
-          "done": false
+          "done": false,
+          "driveLink": "",
+          "images": []
         },
         {
           "title": "쿠팡 와우 회원 등록 시아루 등록하기",
@@ -515,7 +517,7 @@
       "research": [],
       "stageHistory": [],
       "createdAt": "2026-06-20",
-      "updatedAt": "2026-07-12"
+      "updatedAt": "2026-07-14"
     },
     {
       "id": "mr4arb7jbxh",
