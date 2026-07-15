@@ -537,6 +537,25 @@
       "stageHistory": [],
       "createdAt": "2026-07-03",
       "updatedAt": "2026-07-09"
+    },
+    {
+      "id": "mrm41dse4oe",
+      "name": "의료 밸류 체인",
+      "category": "important",
+      "type": "의료밸류체인",
+      "stage": "실행",
+      "fee": "",
+      "currency": "KRW",
+      "country": "",
+      "desc": "",
+      "personIds": [],
+      "actions": [],
+      "timeline": [],
+      "docs": [],
+      "research": [],
+      "stageHistory": [],
+      "createdAt": "2026-07-15",
+      "updatedAt": "2026-07-15"
     }
   ],
   "people": [
