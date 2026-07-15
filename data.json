@@ -549,7 +549,14 @@
       "country": "",
       "desc": "",
       "personIds": [],
-      "actions": [],
+      "actions": [
+        {
+          "title": "안세영 정재훈 소개",
+          "due": "2026-07-22",
+          "note": "",
+          "done": false
+        }
+      ],
       "timeline": [],
       "docs": [],
       "research": [],
