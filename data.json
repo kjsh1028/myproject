@@ -543,7 +543,7 @@
     {
       "id": "mrm41dse4oe",
       "name": "의료 밸류 체인",
-      "category": "important",
+      "category": "normal",
       "type": "의료밸류체인",
       "stage": "실행",
       "fee": "",
@@ -564,7 +564,7 @@
       "research": [],
       "stageHistory": [],
       "createdAt": "2026-07-15",
-      "updatedAt": "2026-07-15"
+      "updatedAt": "2026-07-17"
     },
     {
       "id": "mro780krqbt",
