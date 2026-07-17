@@ -579,10 +579,12 @@
       "personIds": [],
       "actions": [
         {
-          "title": "보고서 검토하고 현장 가보기",
+          "title": "광진구 보고서 검토하고 현장 가보기",
           "due": "2026-07-17",
           "note": "",
-          "done": false
+          "done": false,
+          "driveLink": "",
+          "images": []
         }
       ],
       "timeline": [],
