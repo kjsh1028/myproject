@@ -575,7 +575,14 @@
       "country": "",
       "desc": "이상만이 소개",
       "personIds": [],
-      "actions": [],
+      "actions": [
+        {
+          "title": "보고서 검토하고 현장 가보기",
+          "due": "2026-07-17",
+          "note": "",
+          "done": false
+        }
+      ],
       "timeline": [],
       "docs": [
         {
