@@ -402,7 +402,7 @@
     {
       "id": "mqkk4lw1pv7",
       "name": "시아루 외국인 등록",
-      "category": "important",
+      "category": "closing",
       "type": "기타",
       "stage": "발굴",
       "fee": "",
@@ -427,7 +427,7 @@
       "research": [],
       "stageHistory": [],
       "createdAt": "2026-06-19",
-      "updatedAt": "2026-07-10"
+      "updatedAt": "2026-07-17"
     },
     {
       "id": "mqko4skh80h",
