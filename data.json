@@ -563,6 +563,25 @@
       "stageHistory": [],
       "createdAt": "2026-07-15",
       "updatedAt": "2026-07-15"
+    },
+    {
+      "id": "mro780krqbt",
+      "name": "광진구 건국대 아파트 이상만",
+      "category": "important",
+      "type": "부동산",
+      "stage": "협의",
+      "fee": "",
+      "currency": "KRW",
+      "country": "",
+      "desc": "이상만이 소개",
+      "personIds": [],
+      "actions": [],
+      "timeline": [],
+      "docs": [],
+      "research": [],
+      "stageHistory": [],
+      "createdAt": "2026-07-17",
+      "updatedAt": "2026-07-17"
     }
   ],
   "people": [
