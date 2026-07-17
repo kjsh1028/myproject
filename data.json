@@ -636,6 +636,25 @@
       "stageHistory": [],
       "createdAt": "2026-07-17",
       "updatedAt": "2026-07-17"
+    },
+    {
+      "id": "mrpkvru9wqv",
+      "name": "Gilicinski 폴란드 프로젝트",
+      "category": "normal",
+      "type": "M&A",
+      "stage": "발굴",
+      "fee": "",
+      "currency": "KRW",
+      "country": "",
+      "desc": "",
+      "personIds": [],
+      "actions": [],
+      "timeline": [],
+      "docs": [],
+      "research": [],
+      "stageHistory": [],
+      "createdAt": "2026-07-17",
+      "updatedAt": "2026-07-17"
     }
   ],
   "people": [
