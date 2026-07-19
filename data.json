@@ -369,7 +369,8 @@
           "title": "주식 투자 프로그램 개발 기획",
           "due": "2026-06-30",
           "note": "",
-          "done": false
+          "done": true,
+          "doneAt": "2026-07-19"
         }
       ],
       "timeline": [],
@@ -377,7 +378,7 @@
       "research": [],
       "stageHistory": [],
       "createdAt": "2026-06-16",
-      "updatedAt": "2026-06-16"
+      "updatedAt": "2026-07-19"
     },
     {
       "id": "mqg110rnfm1",
