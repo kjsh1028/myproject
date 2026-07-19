@@ -625,7 +625,7 @@
       "personIds": [],
       "actions": [
         {
-          "title": "일본 법인 설립 얄아 보기",
+          "title": "일본 법인 설립 알아보기",
           "due": "2026-07-21",
           "note": "",
           "done": false,
@@ -638,7 +638,7 @@
       "research": [],
       "stageHistory": [],
       "createdAt": "2026-07-17",
-      "updatedAt": "2026-07-17"
+      "updatedAt": "2026-07-19"
     },
     {
       "id": "mrpkvru9wqv",
