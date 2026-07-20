@@ -1021,6 +1021,8 @@ function renderDetail(){
   html+='</div><div class="sdots">'+sdots+'</div>';
   if(d.fee) html+='<div class="hero-fee">'+fmtFee(parseInt(d.fee),d.currency)+'</div>';
   if(d.desc) html+='<div class="hero-desc">'+d.desc.replace(/\n/g,'<br>')+'</div>';
+  if(d.link) html+='<a href="'+d.link+'" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.15);border-radius:8px;padding:6px 12px;margin-top:6px;margin-bottom:2px;text-decoration:none;color:#fff;font-size:13px">🔗 '+(d.linkLabel||d.link)+'</a>';
+  if(d.contact) html+='<div style="font-size:13px;color:rgba(255,255,255,0.75);margin-top:6px">👤 '+d.contact+'</div>';
   html+='</div>';
 
   html+=makeSec('stage','🚦','단계 변경','',sec.stage,function(){
@@ -1249,14 +1251,17 @@ function dealFormHTML(d){
     '<label>단계</label><select id="fs">'+so+'</select>'+
     '<label>예상 성공보수</label>'+'<div style="display:flex;gap:8px;margin-bottom:14px">'+'<select id="fcur" style="width:95px;flex-shrink:0">'+'<option value="KRW"'+(d&&d.currency==="KRW"?" selected":(!d||!d.currency)?" selected":"")+'>\u20a9 \uc6d0</option>'+'<option value="CNY"'+(d&&d.currency==="CNY"?" selected":"")+'>\u00a5 \uc704\uc548</option>'+'<option value="USD"'+(d&&d.currency==="USD"?" selected":"")+'>$ \ub2ec\ub7ec</option>'+'</select>'+'<input id="ff" type="text" inputmode="numeric" value="'+(d&&d.fee?parseInt(d.fee).toLocaleString():"")+' " placeholder="1,000,000" oninput="fmtInput(this)">'+'</div>'+
     '<label>국가/지역</label><input id="fc" value="'+(d&&d.country?d.country:'')+'" placeholder="한국, 중국...">'+
-    '<label>설명</label><textarea id="fd" rows="3">'+(d&&d.desc?d.desc:'')+'</textarea>';
+    '<label>설명</label><textarea id="fd" rows="3">'+(d&&d.desc?d.desc:'')+'</textarea>'+
+    '<label>🔗 링크 (홈페이지 / 구글드라이브 등)</label><input id="fdlink" value="'+(d&&d.link?d.link:'')+'" placeholder="https://...">'+
+    '<label>링크 이름</label><input id="fdlinklabel" value="'+(d&&d.linkLabel?d.linkLabel:'')+'" placeholder="회사 홈페이지, 계약서 폴더 등">'+
+    '<label>👤 연락 담당자</label><input id="fdcontact" value="'+(d&&d.contact?d.contact:'')+'" placeholder="홍길동 / +82-10-1234-5678 / WeChat">';
 }
 function showAddDealForm(){ showModal('새 딜 추가',dealFormHTML(null),[{label:'추가',fn:'saveDeal(false)'},{label:'취소',fn:'closeModal()',g:true}]); }
 function openEditDeal(){ var d=DB.deals.find(function(x){ return x.id===curDeal; }); if(!d) return; showModal('딜 수정',dealFormHTML(d),[{label:'저장',fn:'saveDeal(true)'},{label:'취소',fn:'closeModal()',g:true}]); }
 function saveDeal(isEdit){
   var el=document.getElementById('fn'); var name=el?el.value.trim():''; if(!name||name==='딜 이름'){ alert('딜명을 입력하세요'); return; }
-  if(isEdit){ var d=DB.deals.find(function(x){ return x.id===curDeal; }); if(!d) return; var os=d.stage,ns=document.getElementById('fs').value; d.name=name; d.category=document.getElementById('fcat').value; d.type=document.getElementById('ft').value; d.stage=ns; d.fee=document.getElementById('ff').value.replace(/[^0-9]/g,''); d.currency=document.getElementById('fcur').value; d.country=document.getElementById('fc').value; d.desc=document.getElementById('fd').value; d.updatedAt=today(); if(os!==ns){ if(!d.stageHistory) d.stageHistory=[]; d.stageHistory.push({from:os,to:ns,date:today()}); } }
-  else { DB.deals.push({id:uid(),name:name,category:document.getElementById('fcat').value,type:document.getElementById('ft').value,stage:document.getElementById('fs').value,fee:document.getElementById('ff').value.replace(/[^0-9]/g,''), currency:document.getElementById('fcur').value,country:document.getElementById('fc').value,desc:document.getElementById('fd').value,personIds:[],actions:[],timeline:[],docs:[],research:[],stageHistory:[],createdAt:today(),updatedAt:today()}); }
+  if(isEdit){ var d=DB.deals.find(function(x){ return x.id===curDeal; }); if(!d) return; var os=d.stage,ns=document.getElementById('fs').value; d.name=name; d.category=document.getElementById('fcat').value; d.type=document.getElementById('ft').value; d.stage=ns; d.fee=document.getElementById('ff').value.replace(/[^0-9]/g,''); d.currency=document.getElementById('fcur').value; d.country=document.getElementById('fc').value; d.desc=document.getElementById('fd').value; d.link=(document.getElementById('fdlink').value||'').trim(); d.linkLabel=(document.getElementById('fdlinklabel').value||'').trim(); d.contact=(document.getElementById('fdcontact').value||'').trim(); d.updatedAt=today(); if(os!==ns){ if(!d.stageHistory) d.stageHistory=[]; d.stageHistory.push({from:os,to:ns,date:today()}); } }
+  else { DB.deals.push({id:uid(),name:name,category:document.getElementById('fcat').value,type:document.getElementById('ft').value,stage:document.getElementById('fs').value,fee:document.getElementById('ff').value.replace(/[^0-9]/g,''), currency:document.getElementById('fcur').value,country:document.getElementById('fc').value,desc:document.getElementById('fd').value,link:(document.getElementById('fdlink').value||'').trim(),linkLabel:(document.getElementById('fdlinklabel').value||'').trim(),contact:(document.getElementById('fdcontact').value||'').trim(),personIds:[],actions:[],timeline:[],docs:[],research:[],stageHistory:[],createdAt:today(),updatedAt:today()}); }
   save(); closeModal(); switchTab(curTab); if(isEdit) renderDetail();
 }
 
