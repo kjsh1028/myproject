@@ -668,7 +668,7 @@
       "fee": "",
       "currency": "KRW",
       "country": "미국",
-      "desc": "https://drive.google.com/drive/folders/1EyjaMRi7pzFlXgOozeOzVxeB7RSUpnTh",
+      "desc": "",
       "personIds": [],
       "actions": [],
       "timeline": [],
@@ -676,7 +676,10 @@
       "research": [],
       "stageHistory": [],
       "createdAt": "2026-07-20",
-      "updatedAt": "2026-07-20"
+      "updatedAt": "2026-07-20",
+      "link": "https://drive.google.com/drive/folders/1EyjaMRi7pzFlXgOozeOzVxeB7RSUpnTh",
+      "linkLabel": "",
+      "contact": ""
     }
   ],
   "people": [
