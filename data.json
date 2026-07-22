@@ -585,10 +585,9 @@
           "title": "광진구 보고서 검토하고 현장 가보기",
           "due": "2026-07-17",
           "note": "",
-          "done": true,
+          "done": false,
           "driveLink": "https://drive.google.com/drive/folders/1b_JWP4M0HUGLWEpkUxaRvBXjZJzY31ye",
-          "images": [],
-          "doneAt": "2026-07-21"
+          "images": []
         }
       ],
       "timeline": [],
@@ -611,7 +610,7 @@
       "research": [],
       "stageHistory": [],
       "createdAt": "2026-07-17",
-      "updatedAt": "2026-07-21"
+      "updatedAt": "2026-07-17"
     },
     {
       "id": "mrodkshzn9h",
