@@ -582,8 +582,8 @@
       "personIds": [],
       "actions": [
         {
-          "title": "광진구 보고서 검토하고 현장 가보기",
-          "due": "2026-07-17",
+          "title": "광진구 보고서 검토하고 현장 가보기 계약하기",
+          "due": "2026-07-24",
           "note": "",
           "done": false,
           "driveLink": "https://drive.google.com/drive/folders/1b_JWP4M0HUGLWEpkUxaRvBXjZJzY31ye",
@@ -610,7 +610,7 @@
       "research": [],
       "stageHistory": [],
       "createdAt": "2026-07-17",
-      "updatedAt": "2026-07-17"
+      "updatedAt": "2026-07-23"
     },
     {
       "id": "mrodkshzn9h",
