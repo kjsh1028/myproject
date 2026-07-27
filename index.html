@@ -259,10 +259,25 @@ textarea { resize: none; line-height: 1.6; }
   <div class="topbar" id="main-topbar">
     <div class="topbar-inner">
       <h1>My Project</h1>
-      <button class="icon-btn" onclick="switchTab('settings')">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-      </button>
+      <div style="display:flex;gap:4px;align-items:center">
+        <button class="icon-btn" onclick="toggleSearch()" id="search-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </button>
+        <button class="icon-btn" onclick="switchTab('settings')">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        </button>
+      </div>
     </div>
+  </div>
+
+  <!-- SEARCH OVERLAY -->
+  <div id="search-overlay" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(10,18,40,0.92);z-index:2000;flex-direction:column">
+    <div style="padding:16px 14px 10px;display:flex;gap:10px;align-items:center">
+      <input id="search-input" placeholder="딜, 관련자, 할일 검색..." oninput="doSearch(this.value)"
+        style="flex:1;padding:12px 16px;border-radius:12px;border:none;font-size:16px;background:rgba(255,255,255,0.12);color:#fff;outline:none" autofocus>
+      <button onclick="closeSearch()" style="background:none;border:none;color:rgba(255,255,255,0.7);font-size:16px;padding:8px;cursor:pointer">닫기</button>
+    </div>
+    <div id="search-results" style="flex:1;overflow-y:auto;padding:0 14px 20px"></div>
   </div>
 
   <!-- CATEGORY BAR (deals only) -->
@@ -526,16 +541,83 @@ function setProcCat(cat){
 }
 
 /* RENDER DEALS */
+function toggleSearch(){
+  var o=document.getElementById('search-overlay');
+  o.style.display=(o.style.display==='none'||!o.style.display)?'flex':'none';
+  if(o.style.display==='flex') setTimeout(function(){ var i=document.getElementById('search-input'); if(i){i.value='';i.focus();doSearch('');} },50);
+}
+function closeSearch(){
+  var o=document.getElementById('search-overlay'); if(o) o.style.display='none';
+}
+function doSearch(q){
+  var res=document.getElementById('search-results'); if(!res) return;
+  q=(q||'').trim();
+  if(!q){ res.innerHTML='<div style="color:rgba(255,255,255,0.4);text-align:center;padding:40px 0;font-size:15px">딜명, 관련자, 할일 내용으로 검색</div>'; return; }
+  var ql=q.toLowerCase();
+  var out='';
+  // Deals
+  var deals=DB.deals.filter(function(d){
+    return (d.name||'').toLowerCase().includes(ql)||(d.type||'').toLowerCase().includes(ql)||(d.desc||'').toLowerCase().includes(ql)||(d.contact||'').toLowerCase().includes(ql);
+  });
+  if(deals.length){
+    out+='<div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.4);letter-spacing:1px;padding:16px 0 8px">딜 ('+deals.length+')</div>';
+    deals.forEach(function(d){
+      var catLabel={'important':'⭐ 중요','normal':'일반','hold':'보류','drop':'폐기','closing':'클로징'}[d.category||'important']||'';
+      out+='<div onclick="closeSearch();openDeal(\''+d.id+'\')" style="background:rgba(255,255,255,0.08);border-radius:12px;padding:13px 16px;margin-bottom:8px;cursor:pointer">';
+      out+='<div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:4px">'+d.name+'</div>';
+      out+='<div style="font-size:12px;color:rgba(255,255,255,0.5)">'+[d.type,catLabel,d.country].filter(Boolean).join(' · ')+'</div>';
+      out+='</div>';
+    });
+  }
+  // People
+  var people=DB.people.filter(function(p){
+    return (p.name||'').toLowerCase().includes(ql)||(p.org||'').toLowerCase().includes(ql)||(p.title||'').toLowerCase().includes(ql)||(p.phone||'').toLowerCase().includes(ql);
+  });
+  if(people.length){
+    out+='<div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.4);letter-spacing:1px;padding:16px 0 8px">관련자 ('+people.length+')</div>';
+    people.forEach(function(p){
+      out+='<div onclick="closeSearch();switchTab(\'people\');setTimeout(function(){openPerson(\''+p.id+'\')},100)" style="background:rgba(255,255,255,0.08);border-radius:12px;padding:13px 16px;margin-bottom:8px;cursor:pointer">';
+      out+='<div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:4px">'+p.name+'</div>';
+      out+='<div style="font-size:12px;color:rgba(255,255,255,0.5)">'+[p.org,p.title,p.phone].filter(Boolean).join(' · ')+'</div>';
+      out+='</div>';
+    });
+  }
+  // Todos
+  var todos=[];
+  DB.deals.forEach(function(d){
+    (d.actions||[]).forEach(function(a,i){
+      if(!a.done&&(a.title||'').toLowerCase().includes(ql)) todos.push({deal:d,action:a,idx:i});
+    });
+  });
+  if(todos.length){
+    out+='<div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.4);letter-spacing:1px;padding:16px 0 8px">할일 ('+todos.length+')</div>';
+    todos.forEach(function(t){
+      out+='<div onclick="closeSearch();openDeal(\''+t.deal.id+'\')" style="background:rgba(255,255,255,0.08);border-radius:12px;padding:13px 16px;margin-bottom:8px;cursor:pointer">';
+      out+='<div style="font-size:14px;color:#fff;margin-bottom:4px">'+t.action.title+'</div>';
+      out+='<div style="font-size:12px;color:rgba(255,255,255,0.5)">'+t.deal.name+(t.action.due?' · '+t.action.due:'')+'</div>';
+      out+='</div>';
+    });
+  }
+  if(!out) out='<div style="color:rgba(255,255,255,0.4);text-align:center;padding:40px 0;font-size:15px">"'+q+'" 검색 결과 없음</div>';
+  res.innerHTML=out;
+}
 function renderDeals(){
   var filterCat = curCat==='process' ? curProcCat : curCat;
-  var deals=DB.deals.filter(function(d){ return (d.category||'important')===filterCat; });
+  var dealQ=(window._dealSearchQ||'').toLowerCase();
+  var deals=DB.deals.filter(function(d){
+    if((d.category||'important')!==filterCat) return false;
+    if(!dealQ) return true;
+    var pnames=(d.personIds||[]).map(function(pid){ var p=DB.people.find(function(x){return x.id===pid;}); return p?p.name:''; }).join(' ');
+    return (d.name||'').toLowerCase().includes(dealQ)||(d.type||'').toLowerCase().includes(dealQ)||(d.desc||'').toLowerCase().includes(dealQ)||pnames.toLowerCase().includes(dealQ);
+  });
   deals.sort(function(a,b){ var si=function(d){ return STAGES.indexOf(d.stage); }; if(si(a)!==si(b)) return si(a)-si(b); return (b.updatedAt||'')>(a.updatedAt||'')?1:-1; });
   var _ico=filterCat==='important'?'⭐':filterCat==='normal'?'📋':filterCat==='hold'?'⏸':filterCat==='closing'?'✅':'🗑';
+  var searchBar='<div style="padding:10px 14px 4px"><div style="display:flex;align-items:center;background:#fff;border-radius:12px;border:1px solid #dce4f0;padding:8px 12px;gap:8px"><span style="color:#8090b0;font-size:16px">🔍</span><input id="deal-search-bar" value="'+(window._dealSearchQ||'')+'" placeholder="딜 검색..." oninput="window._dealSearchQ=this.value;renderDeals()" style="border:none;outline:none;flex:1;font-size:15px;color:#1a2340;background:transparent">'+(window._dealSearchQ?'<button onclick="window._dealSearchQ=\'\';renderDeals()" style="background:none;border:none;color:#8090b0;font-size:18px;cursor:pointer;padding:0">✕</button>':'')+'</div></div>';
   if(!deals.length){
-    document.getElementById('page-deals').innerHTML='<div class="empty"><div class="empty-icon">'+_ico+'</div><p>딜이 없습니다<br>+ 버튼으로 추가하세요</p></div>';
+    document.getElementById('page-deals').innerHTML=searchBar+'<div class="empty"><div class="empty-icon">'+_ico+'</div><p>'+(window._dealSearchQ?'"'+window._dealSearchQ+'" 검색 결과 없음':'딜이 없습니다<br>+ 버튼으로 추가하세요')+'</p></div>';
     return;
   }
-  var html='<div style="padding:10px 14px;display:flex;flex-direction:column;gap:10px">';
+  var html=searchBar+'<div style="padding:6px 14px;display:flex;flex-direction:column;gap:10px">';
   for(var i=0;i<deals.length;i++){
     var d=deals[i];
     var ppl=(d.personIds||[]).slice(0,2).map(function(pid){ return DB.people.find(function(p){ return p.id===pid; }); }).filter(Boolean);
@@ -647,19 +729,39 @@ function openTodoProjectPicker(){
   showModal('프로젝트 선택', h, [{label:'닫기',fn:'closeModal()',g:true}]);
 }
 function openAddTodoModal(){
-  var dealOpts='<option value="">— 딜 선택 —</option>';
-  DB.deals.filter(function(d){ return d.category!=='archived'; }).forEach(function(d){
-    dealOpts+='<option value="'+d.id+'">'+d.name+'</option>';
-  });
+  window._todoDeals=DB.deals.filter(function(d){ return d.category!=='archived'&&d.category!=='drop'; });
+  window._selectedTodoDealId='';
   showModal('새 할일 추가',
-    '<label>딜 *</label><select id="fatDeal" style="width:100%;padding:10px;border:1px solid var(--bd);border-radius:10px;font-size:15px;margin-bottom:8px">'+dealOpts+'</select>'+
+    '<label>딜 *</label>'+
+    '<div style="position:relative;margin-bottom:8px">'+
+    '<input id="fatDealSearch" placeholder="딜 이름 검색..." oninput="filterTodoDealList(this.value)" autocomplete="off"'+
+    ' style="width:100%;padding:10px 12px;border:1px solid var(--bd);border-radius:10px;font-size:15px;box-sizing:border-box">'+
+    '<div id="fatDealList" style="background:#fff;border:1px solid var(--bd);border-radius:10px;margin-top:4px;max-height:180px;overflow-y:auto;display:none"></div>'+
+    '<div id="fatDealSelected" style="font-size:13px;color:#2c3e6b;padding:4px 2px;min-height:20px"></div>'+
+    '</div>'+
     '<label>내용 *</label><input id="fatTitle" placeholder="할일 내용을 입력하세요">'+
     '<label>기한</label><input id="fatDue" type="date" value="'+today()+'">'+
     '<label>메모</label><input id="fatNote" placeholder="추가 메모...">',
     [{label:'추가',fn:'saveNewTodo()'},{label:'취소',fn:'closeModal()',g:true}]);
+  setTimeout(function(){ filterTodoDealList(''); },50);
+}
+function filterTodoDealList(q){
+  var list=document.getElementById('fatDealList'); if(!list) return;
+  var deals=window._todoDeals||[];
+  var filtered=q?deals.filter(function(d){ return d.name.toLowerCase().includes(q.toLowerCase()); }):deals;
+  list.style.display=filtered.length?'block':'none';
+  list.innerHTML=filtered.slice(0,8).map(function(d){
+    return '<div onclick="selectTodoDeal(\''+d.id+'\',\''+d.name.replace(/'/g,"\'")+'\')" style="padding:10px 12px;font-size:14px;cursor:pointer;border-bottom:1px solid #f0f3f8;color:#1a2340" onmouseover="this.style.background=\'#f0f3f8\'" onmouseout="this.style.background=\'\'">'+(d.name)+'</div>';
+  }).join('');
+}
+function selectTodoDeal(id, name){
+  window._selectedTodoDealId=id;
+  var inp=document.getElementById('fatDealSearch'); if(inp) inp.value=name;
+  var list=document.getElementById('fatDealList'); if(list) list.style.display='none';
+  var sel=document.getElementById('fatDealSelected'); if(sel) sel.textContent='✅ '+name;
 }
 function saveNewTodo(){
-  var dealId=document.getElementById('fatDeal').value;
+  var dealId=window._selectedTodoDealId||'';
   var title=(document.getElementById('fatTitle').value||'').trim();
   if(!dealId){ alert('딜을 선택하세요'); return; }
   if(!title){ alert('내용을 입력하세요'); return; }
