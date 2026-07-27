@@ -559,7 +559,8 @@
           "title": "안세영 정재훈 소개",
           "due": "2026-07-22",
           "note": "",
-          "done": false
+          "done": true,
+          "doneAt": "2026-07-27"
         }
       ],
       "timeline": [],
@@ -567,7 +568,7 @@
       "research": [],
       "stageHistory": [],
       "createdAt": "2026-07-15",
-      "updatedAt": "2026-07-17"
+      "updatedAt": "2026-07-27"
     },
     {
       "id": "mro780krqbt",
