@@ -515,6 +515,12 @@
           "note": "",
           "done": true,
           "doneAt": "2026-07-19"
+        },
+        {
+          "title": "개인인감증명서 2통, 주민등록등본 혹은 초본 1통 장형식에게",
+          "due": "2026-07-30",
+          "note": "",
+          "done": false
         }
       ],
       "timeline": [],
@@ -522,7 +528,7 @@
       "research": [],
       "stageHistory": [],
       "createdAt": "2026-06-20",
-      "updatedAt": "2026-07-19"
+      "updatedAt": "2026-07-28"
     },
     {
       "id": "mr4arb7jbxh",
