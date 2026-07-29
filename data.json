@@ -607,7 +607,8 @@
           "title": "조합 가입 서류와 인감 도장 김경옥 주기",
           "due": "2026-07-30",
           "note": "",
-          "done": false
+          "done": true,
+          "doneAt": "2026-07-29"
         }
       ],
       "timeline": [],
@@ -630,7 +631,7 @@
       "research": [],
       "stageHistory": [],
       "createdAt": "2026-07-17",
-      "updatedAt": "2026-07-27"
+      "updatedAt": "2026-07-29"
     },
     {
       "id": "mrodkshzn9h",
