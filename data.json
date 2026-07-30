@@ -356,7 +356,7 @@
     {
       "id": "mqfw3ui9dc6",
       "name": "주식투자 프로그램 개발하기",
-      "category": "normal",
+      "category": "closing",
       "type": "투자자문",
       "stage": "구조화",
       "fee": "",
@@ -378,7 +378,10 @@
       "research": [],
       "stageHistory": [],
       "createdAt": "2026-06-16",
-      "updatedAt": "2026-07-19"
+      "updatedAt": "2026-07-30",
+      "link": "",
+      "linkLabel": "",
+      "contact": ""
     },
     {
       "id": "mqg110rnfm1",
