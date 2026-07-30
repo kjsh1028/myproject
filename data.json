@@ -585,7 +585,7 @@
     {
       "id": "mro780krqbt",
       "name": "광진구 건국대 화양 그랜드파크 아파트 이상만",
-      "category": "important",
+      "category": "normal",
       "type": "부동산",
       "stage": "협의",
       "fee": "",
@@ -631,7 +631,10 @@
       "research": [],
       "stageHistory": [],
       "createdAt": "2026-07-17",
-      "updatedAt": "2026-07-29"
+      "updatedAt": "2026-07-30",
+      "link": "",
+      "linkLabel": "",
+      "contact": ""
     },
     {
       "id": "mrodkshzn9h",
