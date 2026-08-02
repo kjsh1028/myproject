@@ -707,6 +707,28 @@
       "link": "https://drive.google.com/drive/folders/1EyjaMRi7pzFlXgOozeOzVxeB7RSUpnTh",
       "linkLabel": "",
       "contact": ""
+    },
+    {
+      "id": "msbfk4c69p9",
+      "name": "아시아장학회 결성",
+      "category": "important",
+      "type": "의료밸류체인",
+      "stage": "발굴",
+      "fee": "",
+      "currency": "KRW",
+      "country": "",
+      "desc": "",
+      "link": "",
+      "linkLabel": "",
+      "contact": "",
+      "personIds": [],
+      "actions": [],
+      "timeline": [],
+      "docs": [],
+      "research": [],
+      "stageHistory": [],
+      "createdAt": "2026-08-02",
+      "updatedAt": "2026-08-02"
     }
   ],
   "people": [
