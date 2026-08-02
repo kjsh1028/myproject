@@ -722,7 +722,14 @@
       "linkLabel": "",
       "contact": "",
       "personIds": [],
-      "actions": [],
+      "actions": [
+        {
+          "title": "정재훈 논의. 6 백만원 장학금",
+          "due": "2026-08-02",
+          "note": "",
+          "done": false
+        }
+      ],
       "timeline": [],
       "docs": [],
       "research": [],
