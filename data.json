@@ -733,7 +733,8 @@
           "title": "정재훈 논의 장학회 6 백만원",
           "due": "2026-08-02",
           "note": "",
-          "done": false
+          "done": true,
+          "doneAt": "2026-08-02"
         }
       ],
       "timeline": [],
