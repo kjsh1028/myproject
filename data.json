@@ -529,7 +529,8 @@
           "title": "김계향 사업자 임대차 계약",
           "due": "2026-08-05",
           "note": "",
-          "done": false
+          "done": true,
+          "doneAt": "2026-08-08"
         }
       ],
       "timeline": [],
@@ -537,7 +538,7 @@
       "research": [],
       "stageHistory": [],
       "createdAt": "2026-06-20",
-      "updatedAt": "2026-08-05"
+      "updatedAt": "2026-08-08"
     },
     {
       "id": "mr4arb7jbxh",
