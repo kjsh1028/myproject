@@ -531,6 +531,12 @@
           "note": "",
           "done": true,
           "doneAt": "2026-08-08"
+        },
+        {
+          "title": "전용길 두산 전자 소개",
+          "due": "2026-08-10",
+          "note": "두산전자 창수 중국법인 양정근 법인 15150397622",
+          "done": false
         }
       ],
       "timeline": [],
@@ -538,7 +544,7 @@
       "research": [],
       "stageHistory": [],
       "createdAt": "2026-06-20",
-      "updatedAt": "2026-08-08"
+      "updatedAt": "2026-08-10"
     },
     {
       "id": "mr4arb7jbxh",
