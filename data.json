@@ -756,6 +756,28 @@
       "stageHistory": [],
       "createdAt": "2026-08-02",
       "updatedAt": "2026-08-02"
+    },
+    {
+      "id": "msnwf7jawac",
+      "name": "알렉스 one centum 해운대",
+      "category": "important",
+      "type": "부동산",
+      "stage": "검토",
+      "fee": "",
+      "currency": "KRW",
+      "country": "",
+      "desc": "",
+      "link": "https://drive.google.com/drive/folders/1JAs8mZyI4X0klophQnn07eEpg0NrZZTk",
+      "linkLabel": "",
+      "contact": "",
+      "personIds": [],
+      "actions": [],
+      "timeline": [],
+      "docs": [],
+      "research": [],
+      "stageHistory": [],
+      "createdAt": "2026-08-11",
+      "updatedAt": "2026-08-11"
     }
   ],
   "people": [
