@@ -582,6 +582,13 @@
           "due": "2026-08-04",
           "note": "",
           "done": false
+        },
+        {
+          "id": "mspe5tfy2yo",
+          "title": "간납회사 인수 검토",
+          "due": "2026-08-12",
+          "note": "https://www.hankyung.com/article/2026072200391",
+          "done": false
         }
       ],
       "timeline": [],
@@ -589,7 +596,7 @@
       "research": [],
       "stageHistory": [],
       "createdAt": "2026-07-15",
-      "updatedAt": "2026-07-27"
+      "updatedAt": "2026-08-12"
     },
     {
       "id": "mro780krqbt",
