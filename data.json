@@ -539,6 +539,12 @@
           "note": "두산전자 창수 중국법인 양정근 법인 15150397622",
           "done": true,
           "doneAt": "2026-08-17"
+        },
+        {
+          "title": "이종산 강승수 미팅",
+          "due": "2026-08-19",
+          "note": "",
+          "done": false
         }
       ],
       "timeline": [],
@@ -546,7 +552,7 @@
       "research": [],
       "stageHistory": [],
       "createdAt": "2026-06-20",
-      "updatedAt": "2026-08-17"
+      "updatedAt": "2026-08-19"
     },
     {
       "id": "mr4arb7jbxh",
