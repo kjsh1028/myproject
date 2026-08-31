@@ -793,6 +793,28 @@
       "stageHistory": [],
       "createdAt": "2026-08-11",
       "updatedAt": "2026-08-11"
+    },
+    {
+      "id": "mth2xt6k17f",
+      "name": "이지케이틱 에이스 EMR",
+      "category": "important",
+      "type": "M&A",
+      "stage": "실행",
+      "fee": "",
+      "currency": "KRW",
+      "country": "",
+      "desc": "",
+      "link": "",
+      "linkLabel": "",
+      "contact": "",
+      "personIds": [],
+      "actions": [],
+      "timeline": [],
+      "docs": [],
+      "research": [],
+      "stageHistory": [],
+      "createdAt": "2026-08-31",
+      "updatedAt": "2026-08-31"
     }
   ],
   "people": [
