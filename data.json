@@ -546,6 +546,12 @@
           "note": "",
           "done": true,
           "doneAt": "2026-08-22"
+        },
+        {
+          "title": "이태경 5 천만원 회수",
+          "due": "2026-09-30",
+          "note": "",
+          "done": false
         }
       ],
       "timeline": [],
@@ -553,7 +559,7 @@
       "research": [],
       "stageHistory": [],
       "createdAt": "2026-06-20",
-      "updatedAt": "2026-08-22"
+      "updatedAt": "2026-08-29"
     },
     {
       "id": "mr4arb7jbxh",
