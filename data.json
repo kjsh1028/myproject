@@ -177,7 +177,14 @@
       "personIds": [
         "mqbx90tnpuo"
       ],
-      "actions": [],
+      "actions": [
+        {
+          "title": "KQC 자료 검토",
+          "due": "2026-09-11",
+          "note": "",
+          "done": false
+        }
+      ],
       "timeline": [
         {
           "id": "mqc19akb3v1",
@@ -191,7 +198,7 @@
       "research": [],
       "stageHistory": [],
       "createdAt": "2026-06-13",
-      "updatedAt": "2026-06-13"
+      "updatedAt": "2026-09-09"
     },
     {
       "id": "mqbxatexhj3",
