@@ -828,6 +828,28 @@
       "stageHistory": [],
       "createdAt": "2026-08-31",
       "updatedAt": "2026-08-31"
+    },
+    {
+      "id": "munubv95ftn",
+      "name": "모다모다 투자 유치",
+      "category": "important",
+      "type": "M&A",
+      "stage": "발굴",
+      "fee": "",
+      "currency": "KRW",
+      "country": "",
+      "desc": "",
+      "link": "",
+      "linkLabel": "",
+      "contact": "",
+      "personIds": [],
+      "actions": [],
+      "timeline": [],
+      "docs": [],
+      "research": [],
+      "stageHistory": [],
+      "createdAt": "2026-09-30",
+      "updatedAt": "2026-09-30"
     }
   ],
   "people": [
