@@ -819,9 +819,9 @@
     {
       "id": "mth2xt6k17f",
       "name": "이지케이틱 에이스 EMR",
-      "category": "important",
+      "category": "closing",
       "type": "M&A",
-      "stage": "실행",
+      "stage": "완료",
       "fee": "",
       "currency": "KRW",
       "country": "",
@@ -834,9 +834,15 @@
       "timeline": [],
       "docs": [],
       "research": [],
-      "stageHistory": [],
+      "stageHistory": [
+        {
+          "from": "실행",
+          "to": "완료",
+          "date": "2026-10-10"
+        }
+      ],
       "createdAt": "2026-08-31",
-      "updatedAt": "2026-08-31"
+      "updatedAt": "2026-10-10"
     },
     {
       "id": "munubv95ftn",
