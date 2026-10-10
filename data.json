@@ -205,7 +205,7 @@
       "name": "보스코 캐나다 더원 프로젝트",
       "category": "normal",
       "type": "부동산",
-      "stage": "실행",
+      "stage": "중단",
       "fee": "",
       "currency": "KRW",
       "country": "",
@@ -217,7 +217,13 @@
       "timeline": [],
       "docs": [],
       "research": [],
-      "stageHistory": [],
+      "stageHistory": [
+        {
+          "from": "실행",
+          "to": "중단",
+          "date": "2026-10-10"
+        }
+      ],
       "createdAt": "2026-06-13",
       "updatedAt": "2026-10-10",
       "link": "",
