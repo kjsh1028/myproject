@@ -726,7 +726,7 @@
     {
       "id": "mrpkvru9wqv",
       "name": "Gilicinski 폴란드 프로젝트",
-      "category": "normal",
+      "category": "drop",
       "type": "M&A",
       "stage": "발굴",
       "fee": "",
@@ -740,7 +740,10 @@
       "research": [],
       "stageHistory": [],
       "createdAt": "2026-07-17",
-      "updatedAt": "2026-07-17"
+      "updatedAt": "2026-10-10",
+      "link": "",
+      "linkLabel": "",
+      "contact": ""
     },
     {
       "id": "mrsh3pg7q0d",
