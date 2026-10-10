@@ -202,7 +202,7 @@
     },
     {
       "id": "mqbxatexhj3",
-      "name": "캐나다 더원 프로젝트",
+      "name": "보스코 캐나다 더원 프로젝트",
       "category": "normal",
       "type": "부동산",
       "stage": "실행",
@@ -219,7 +219,10 @@
       "research": [],
       "stageHistory": [],
       "createdAt": "2026-06-13",
-      "updatedAt": "2026-06-13"
+      "updatedAt": "2026-10-10",
+      "link": "",
+      "linkLabel": "",
+      "contact": ""
     },
     {
       "id": "mqbxc8yyzj3",
