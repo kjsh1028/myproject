@@ -897,6 +897,28 @@
       "stageHistory": [],
       "createdAt": "2026-11-07",
       "updatedAt": "2026-11-07"
+    },
+    {
+      "id": "mw6hearv5tu",
+      "name": "삼성공조·그리너지 LTO 배터리 ESS·BSS STO 알렉스",
+      "category": "important",
+      "type": "M&A",
+      "stage": "발굴",
+      "fee": "",
+      "currency": "KRW",
+      "country": "",
+      "desc": "",
+      "link": "",
+      "linkLabel": "",
+      "contact": "",
+      "personIds": [],
+      "actions": [],
+      "timeline": [],
+      "docs": [],
+      "research": [],
+      "stageHistory": [],
+      "createdAt": "2026-11-07",
+      "updatedAt": "2026-11-07"
     }
   ],
   "people": [
