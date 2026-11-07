@@ -875,6 +875,28 @@
       "stageHistory": [],
       "createdAt": "2026-09-30",
       "updatedAt": "2026-09-30"
+    },
+    {
+      "id": "mw5rk93bxsa",
+      "name": "PartexAI(파텍스AI) 프리IPO·한국 사업권 (알렉스)",
+      "category": "important",
+      "type": "M&A",
+      "stage": "발굴",
+      "fee": "",
+      "currency": "KRW",
+      "country": "",
+      "desc": "",
+      "link": "",
+      "linkLabel": "",
+      "contact": "",
+      "personIds": [],
+      "actions": [],
+      "timeline": [],
+      "docs": [],
+      "research": [],
+      "stageHistory": [],
+      "createdAt": "2026-11-07",
+      "updatedAt": "2026-11-07"
     }
   ],
   "people": [
