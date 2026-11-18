@@ -919,6 +919,28 @@
       "stageHistory": [],
       "createdAt": "2026-11-07",
       "updatedAt": "2026-11-07"
+    },
+    {
+      "id": "mwlphrn0q5c",
+      "name": "김유석 미국 증권업 등록(RIA·사모펀드·Broker-Dealer) 알렉스",
+      "category": "important",
+      "type": "투자자문",
+      "stage": "발굴",
+      "fee": "",
+      "currency": "KRW",
+      "country": "",
+      "desc": "",
+      "link": "",
+      "linkLabel": "",
+      "contact": "",
+      "personIds": [],
+      "actions": [],
+      "timeline": [],
+      "docs": [],
+      "research": [],
+      "stageHistory": [],
+      "createdAt": "2026-11-18",
+      "updatedAt": "2026-11-18"
     }
   ],
   "people": [
