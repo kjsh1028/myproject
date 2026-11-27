@@ -371,7 +371,7 @@ textarea { resize: none; line-height: 1.6; }
 </div>
 
 <script>
-var VER = '9.3';
+var VER = '9.4';
 var STAGES = ['발굴','검토','협의','구조화','실행','클로징','완료','중단'];
 var ASTAGES = ['발굴','검토','협의','구조화','실행','클로징'];
 var TYPES = ['M&A','자금조달','부동산','IPO·상장','무역','엔터테인먼트','투자자문','법적분쟁','전략기획','마케팅','의료밸류체인','기타'];
@@ -972,6 +972,11 @@ function renderSettings(){
     '<button class="btn" style="flex:1" onclick="pushGH()">GitHub에 저장</button>'+
     '<button class="btn-g" style="padding:13px 16px" onclick="pullGH()">불러오기</button></div>'+
     '<div class="syncmsg" id="syncmsg"></div></div>'+
+    '<div class="sset"><div class="stitle">📁 구글 드라이브 연동</div>'+
+    '<div style="font-size:13px;color:var(--t2);margin-bottom:10px">진행 중인 딜(중요·일반 탭, 완료·중단 제외)의 폴더 바로가기를 드라이브 「01_현재 검토 중 프로젝트」에 자동으로 넣고 뺍니다. 폴더 자체는 옮기지 않습니다.</div>'+
+    '<label>드라이브 동기화 주소</label><input type="text" id="s-drive" autocomplete="off" autocapitalize="off" spellcheck="false" value="'+(SETS.driveSyncUrl||'')+'" placeholder="https://script.google.com/macros/s/.../exec?key=...">'+
+    '<button class="btn" style="width:100%;margin-top:10px;font-size:14px;padding:11px" onclick="saveDriveSync()">저장</button>'+
+    '<div id="drive-msg" style="font-size:13px;color:var(--t3);margin-top:6px"></div></div>'+
     '<div class="sset"><div class="stitle">앱 정보</div>'+
     '<div style="font-size:15px;color:var(--t2);line-height:2.2;margin-bottom:12px">My Project v'+VER+'<br>딜 '+DB.deals.length+'개 · 관련자 '+DB.people.length+'명</div>'+
     '<button class="btn" style="width:100%;font-size:14px;padding:11px" onclick="checkAndUpdate()">🔄 업데이트 확인</button>'+
@@ -999,22 +1004,72 @@ function silentPull(){
       var ghData=JSON.parse(raw);
       if(!ghData.deals) ghData.deals=[];
       if(!ghData.people) ghData.people=[];
-      if(ghData.deals.length>=DB.deals.length){
-        DB=ghData;
-        DB.deals.forEach(function(d){
-          if(!d.category) d.category='important';
-          if(!d.timeline) d.timeline=[];
-          if(!d.docs) d.docs=[];
-          if(!d.research) d.research=[];
-          if(!d.actions) d.actions=[];
-          if(!d.personIds) d.personIds=[];
-        });
-        save();
-        renderDeals();
-      }
+      var mg=mergeDB(DB,ghData);
+      DB=mg.db;
+      normDeals();
+      var data=JSON.stringify(DB);
+      localStorage.setItem('mpdb',data); localStorage.setItem('mp5_db',data);
+      if(mg.localWins) autoBackup();
+      switchTab(curTab);
     }catch(e){}
   })
   .catch(function(){});
+}
+
+
+/* GitHub 데이터와 기기 데이터를 id 기준으로 합친다.
+   같은 id는 updatedAt이 더 늦은 쪽, 같으면 GitHub 쪽을 쓴다. 기기에만 있는 항목은 남긴다. */
+function mergeList(local,gh){
+  var out=[], seen={}, localWins=false;
+  var lm={}; (local||[]).forEach(function(x){ if(x&&x.id) lm[x.id]=x; });
+  (gh||[]).forEach(function(g){
+    if(!g||!g.id) return; seen[g.id]=1;
+    var l=lm[g.id];
+    if(l&&(l.updatedAt||'')>(g.updatedAt||'')){ out.push(l); localWins=true; } else out.push(g);
+  });
+  (local||[]).forEach(function(l){ if(l&&l.id&&!seen[l.id]){ out.push(l); localWins=true; } });
+  return {list:out, localWins:localWins};
+}
+function mergeDB(local,gh){
+  var d=mergeList(local.deals,gh.deals), p=mergeList(local.people,gh.people);
+  var db={}; Object.keys(gh).forEach(function(k){ db[k]=gh[k]; });
+  db.deals=d.list; db.people=p.list;
+  return {db:db, localWins:d.localWins||p.localWins};
+}
+function normDeals(){
+  if(!DB.deals) DB.deals=[]; if(!DB.people) DB.people=[];
+  DB.deals.forEach(function(d){
+    if(!d.category) d.category='important';
+    if(!d.timeline) d.timeline=[]; if(!d.docs) d.docs=[]; if(!d.research) d.research=[];
+    if(!d.actions) d.actions=[]; if(!d.personIds) d.personIds=[];
+  });
+}
+
+/* 구글 드라이브 연동: 진행 중인 딜의 폴더 바로가기를 「01_현재 검토 중 프로젝트」에 자동으로 넣고 뺀다
+   (Apps Script 웹 앱 호출, 폴더 자체는 옮기지 않음) */
+function folderIdOf(link){ var g=/folders\/([\w-]+)/.exec(link||'')||/[?&]id=([\w-]+)/.exec(link||''); return g?g[1]:null; }
+function isActiveDeal(d){ return (d.category==='important'||d.category==='normal')&&d.stage!=='완료'&&d.stage!=='중단'; }
+var _driveQ={}, _driveTimer=null;
+function queueDrive(d){
+  if(!SETS.driveSyncUrl||!d) return;
+  var f=folderIdOf(d.driveLink); if(!f) return;
+  _driveQ[f]=isActiveDeal(d)?1:0;
+  if(_driveTimer) clearTimeout(_driveTimer);
+  _driveTimer=setTimeout(flushDrive,1500);
+}
+function flushDrive(){
+  var keys=Object.keys(_driveQ); if(!SETS.driveSyncUrl||!keys.length) return;
+  var items=keys.map(function(k){ return k+':'+_driveQ[k]; }).join(','); _driveQ={};
+  var u=SETS.driveSyncUrl+(SETS.driveSyncUrl.indexOf('?')>=0?'&':'?')+'items='+encodeURIComponent(items);
+  fetch(u).then(function(r){ return r.json(); }).then(function(j){
+    var el=document.getElementById('autosave-status');
+    if(el&&j&&j.changed&&j.changed.length){ el.textContent='📁 '+j.changed.join(', '); el.style.display='block'; setTimeout(function(){ el.style.display='none'; },4000); }
+  }).catch(function(){});
+}
+function saveDriveSync(){
+  SETS.driveSyncUrl=(document.getElementById('s-drive').value||'').trim();
+  localStorage.setItem('mp5_set',JSON.stringify(SETS));
+  document.getElementById('drive-msg').textContent=SETS.driveSyncUrl?'✅ 저장됨':'주소가 비어 있습니다';
 }
 
 function pushGH(){
@@ -1124,6 +1179,7 @@ function renderDetail(){
   if(d.fee) html+='<div class="hero-fee">'+fmtFee(parseInt(d.fee),d.currency)+'</div>';
   if(d.desc) html+='<div class="hero-desc">'+d.desc.replace(/\n/g,'<br>')+'</div>';
   if(d.link) html+='<a href="'+d.link+'" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.15);border-radius:8px;padding:6px 12px;margin-top:6px;margin-bottom:2px;text-decoration:none;color:#fff;font-size:13px">🔗 '+(d.linkLabel||d.link)+'</a>';
+  if(d.driveLink) html+='<a href="'+d.driveLink+'" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.15);border-radius:8px;padding:6px 12px;margin-top:6px;margin-bottom:2px;margin-right:6px;text-decoration:none;color:#fff;font-size:13px">📁 '+(d.driveLinkLabel||'드라이브 폴더')+'</a>';
   if(d.contact) html+='<div style="font-size:13px;color:rgba(255,255,255,0.75);margin-top:6px">👤 '+d.contact+'</div>';
   html+='</div>';
 
@@ -1188,7 +1244,7 @@ function makeSec(key,icon,title,cnt,isOpen,bodyFn){
   return h;
 }
 function toggleSec(k){ if(!openSec[curDeal]) openSec[curDeal]={}; openSec[curDeal][k]=!openSec[curDeal][k]; renderDetail(); }
-function chStage(s){ var d=DB.deals.find(function(x){ return x.id===curDeal; }); if(!d||d.stage===s) return; if(!d.stageHistory) d.stageHistory=[]; d.stageHistory.push({from:d.stage,to:s,date:today()}); d.stage=s; if(s==='클로징') d.category='closing'; else if(s==='완료') d.category='closing'; else if(s==='중단') d.category='drop'; else if(d.category==='closing'||d.category==='drop') d.category='important'; d.updatedAt=today(); save(); renderDetail(); }
+function chStage(s){ var d=DB.deals.find(function(x){ return x.id===curDeal; }); if(!d||d.stage===s) return; if(!d.stageHistory) d.stageHistory=[]; d.stageHistory.push({from:d.stage,to:s,date:today()}); d.stage=s; if(s==='클로징') d.category='closing'; else if(s==='완료') d.category='closing'; else if(s==='중단') d.category='drop'; else if(d.category==='closing'||d.category==='drop') d.category='important'; d.updatedAt=today(); queueDrive(d); save(); renderDetail(); }
 function delDeal(){ if(!confirm('딜을 삭제합니까?')) return; DB.deals=DB.deals.filter(function(d){ return d.id!==curDeal; }); save(); closeDetail(); }
 function togAct(i){ var d=DB.deals.find(function(x){ return x.id===curDeal; }); if(!d) return; var a=d.actions[i]; a.done=!a.done; if(a.done) a.doneAt=today(); else delete a.doneAt; d.updatedAt=today(); save(); renderDetail(); }
 function togActById(dealId,i){ var d=DB.deals.find(function(x){ return x.id===dealId; }); if(!d) return; var a=d.actions[i]; a.done=!a.done; if(a.done) a.doneAt=today(); else delete a.doneAt; d.updatedAt=today(); save(); renderTodo(); }
@@ -1356,14 +1412,15 @@ function dealFormHTML(d){
     '<label>설명</label><textarea id="fd" rows="3">'+(d&&d.desc?d.desc:'')+'</textarea>'+
     '<label>🔗 링크 (홈페이지 / 구글드라이브 등)</label><input id="fdlink" value="'+(d&&d.link?d.link:'')+'" placeholder="https://...">'+
     '<label>링크 이름</label><input id="fdlinklabel" value="'+(d&&d.linkLabel?d.linkLabel:'')+'" placeholder="회사 홈페이지, 계약서 폴더 등">'+
+    '<label>📁 구글 드라이브 폴더 주소</label><input id="fddrive" value="'+(d&&d.driveLink?d.driveLink:'')+'" placeholder="https://drive.google.com/drive/folders/...">'+
     '<label>👤 연락 담당자</label><input id="fdcontact" value="'+(d&&d.contact?d.contact:'')+'" placeholder="홍길동 / +82-10-1234-5678 / WeChat">';
 }
 function showAddDealForm(){ showModal('새 딜 추가',dealFormHTML(null),[{label:'추가',fn:'saveDeal(false)'},{label:'취소',fn:'closeModal()',g:true}]); }
 function openEditDeal(){ var d=DB.deals.find(function(x){ return x.id===curDeal; }); if(!d) return; showModal('딜 수정',dealFormHTML(d),[{label:'저장',fn:'saveDeal(true)'},{label:'취소',fn:'closeModal()',g:true}]); }
 function saveDeal(isEdit){
   var el=document.getElementById('fn'); var name=el?el.value.trim():''; if(!name||name==='딜 이름'){ alert('딜명을 입력하세요'); return; }
-  if(isEdit){ var d=DB.deals.find(function(x){ return x.id===curDeal; }); if(!d) return; var os=d.stage,ns=document.getElementById('fs').value; d.name=name; d.category=document.getElementById('fcat').value; d.type=document.getElementById('ft').value; d.stage=ns; d.fee=document.getElementById('ff').value.replace(/[^0-9]/g,''); d.currency=document.getElementById('fcur').value; d.country=document.getElementById('fc').value; d.desc=document.getElementById('fd').value; d.link=(document.getElementById('fdlink').value||'').trim(); d.linkLabel=(document.getElementById('fdlinklabel').value||'').trim(); d.contact=(document.getElementById('fdcontact').value||'').trim(); d.updatedAt=today(); if(os!==ns){ if(!d.stageHistory) d.stageHistory=[]; d.stageHistory.push({from:os,to:ns,date:today()}); } }
-  else { DB.deals.push({id:uid(),name:name,category:document.getElementById('fcat').value,type:document.getElementById('ft').value,stage:document.getElementById('fs').value,fee:document.getElementById('ff').value.replace(/[^0-9]/g,''), currency:document.getElementById('fcur').value,country:document.getElementById('fc').value,desc:document.getElementById('fd').value,link:(document.getElementById('fdlink').value||'').trim(),linkLabel:(document.getElementById('fdlinklabel').value||'').trim(),contact:(document.getElementById('fdcontact').value||'').trim(),personIds:[],actions:[],timeline:[],docs:[],research:[],stageHistory:[],createdAt:today(),updatedAt:today()}); }
+  if(isEdit){ var d=DB.deals.find(function(x){ return x.id===curDeal; }); if(!d) return; var os=d.stage,ns=document.getElementById('fs').value; d.name=name; d.category=document.getElementById('fcat').value; d.type=document.getElementById('ft').value; d.stage=ns; d.fee=document.getElementById('ff').value.replace(/[^0-9]/g,''); d.currency=document.getElementById('fcur').value; d.country=document.getElementById('fc').value; d.desc=document.getElementById('fd').value; d.link=(document.getElementById('fdlink').value||'').trim(); d.linkLabel=(document.getElementById('fdlinklabel').value||'').trim(); d.contact=(document.getElementById('fdcontact').value||'').trim(); d.driveLink=(document.getElementById('fddrive').value||'').trim(); d.updatedAt=today(); queueDrive(d); if(os!==ns){ if(!d.stageHistory) d.stageHistory=[]; d.stageHistory.push({from:os,to:ns,date:today()}); } }
+  else { DB.deals.push({id:uid(),name:name,category:document.getElementById('fcat').value,type:document.getElementById('ft').value,stage:document.getElementById('fs').value,fee:document.getElementById('ff').value.replace(/[^0-9]/g,''), currency:document.getElementById('fcur').value,country:document.getElementById('fc').value,desc:document.getElementById('fd').value,link:(document.getElementById('fdlink').value||'').trim(),linkLabel:(document.getElementById('fdlinklabel').value||'').trim(),contact:(document.getElementById('fdcontact').value||'').trim(),driveLink:(document.getElementById('fddrive').value||'').trim(),personIds:[],actions:[],timeline:[],docs:[],research:[],stageHistory:[],createdAt:today(),updatedAt:today()}); queueDrive(DB.deals[DB.deals.length-1]); }
   save(); closeModal(); switchTab(curTab); if(isEdit) renderDetail();
 }
 
