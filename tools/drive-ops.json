@@ -1,5 +1,13 @@
 {
   "ops": [
-    {"id": "test-20261128", "op": "mkdir", "parent": "1z5_HGDBzXP1VLNpEaoULeTV0yuiqVJXy", "name": "알렉스_SPAC·순돌이드론_미국상장", "note": "설치 확인용: 이미 있는 폴더라 아무것도 바꾸지 않고 '건너뜀'만 기록됨"}
+    {"id": "test-20261128", "op": "mkdir", "parent": "1z5_HGDBzXP1VLNpEaoULeTV0yuiqVJXy", "name": "알렉스_SPAC·순돌이드론_미국상장", "note": "설치 확인용: 이미 있는 폴더라 아무것도 바꾸지 않고 '건너뜀'만 기록됨"},
+    {"id": "sdr-mv-1", "op": "move", "target": "1lS49rv72EeeW9ToKAxuFE1vi5NsAhKKV", "to": "1t1QHTyz8nCqVE4V9l__qKqlxd4P5QQKy", "note": "AIONBLUE_KQC_구조검토의견_KO.pdf (하위 폴더에만 있음)"},
+    {"id": "sdr-mv-2", "op": "move", "target": "1A-o__mPdtJgYISdwljKATyUIeJgLi823", "to": "1t1QHTyz8nCqVE4V9l__qKqlxd4P5QQKy", "note": "IMG_9842.PNG (하위 폴더에만 있음)"},
+    {"id": "sdr-mv-3", "op": "move", "target": "1FaM15Ay_NiyMZNJaOmsuMFQ5WmAybcpG", "to": "1t1QHTyz8nCqVE4V9l__qKqlxd4P5QQKy", "note": "IMG_9841.PNG (하위 폴더에만 있음)"},
+    {"id": "sdr-tr-1", "op": "trash", "target": "1A7TqrPiAX8yxpq3oCo4TySfuJ9Fuxd1f", "note": "21_구조검토의견 중복 (상위 18_Fz5… 와 같은 크기)"},
+    {"id": "sdr-tr-2", "op": "trash", "target": "1OofFsZUG0ZlzWAcmvaLZigM0jtwJgd7r", "note": "협업제안 검토보고서 중복 (상위 1XTir… 와 같은 크기)"},
+    {"id": "sdr-tr-3", "op": "trash", "target": "1exYqStR4gbNV_uQ9Tt9ImsqO5Y4Y4r4Z", "note": "IMG_0072.PNG 중복 (상위 260721_알렉스카톡_SDCO주가.png 와 같은 크기)"},
+    {"id": "sdr-tr-4", "op": "trash", "target": "1Ina0R74-Z2Ih8f7jScmvn9iBTiZJXCwX", "note": "빈 하위 폴더 「알렉스 순돌이 드론」 (위 이동·휴지통 뒤)"},
+    {"id": "sdr-tr-5", "op": "trash", "target": "1A8-ub1PdY1LtHzgD3QdAf5qQd7mN99lm", "note": "빈 하위 폴더 「알렉스 SDR drone 상장」 (위 이동·휴지통 뒤)"}
   ]
 }
