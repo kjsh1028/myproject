@@ -172,3 +172,41 @@ function log_(rows) {
   const now = Utilities.formatDate(new Date(), 'Asia/Shanghai', 'yyyy-MM-dd HH:mm');
   rows.forEach(r => sh.appendRow([now].concat(r)));
 }
+
+/* ── 1회용 폴더 정리: 스크립트 편집기에서 함수를 골라 한 번 실행한다 ──
+ * 폴더를 옮기고 이름을 바꾼다(휴지통으로 보내거나 지우지 않음). 이미 옮겨져 있으면 건너뛴다.
+ * 결과는 실행 로그와 '_My Project 동기화 기록' 시트에 남는다.
+ */
+
+// 2026-11-28: 알렉스 스펙 상장 + SDR 드론 상장 → 「10_진행중/알렉스_SPAC·순돌이드론_미국상장」
+function moveAlexSpacDrone() {
+  moveFolders_('1FUK5oWXhsY_-BcwAvF0b2D3kNExqVjx6', [
+    { id: '1hplu8PKozH7skREql8zb_EJc3XA5HhGk', name: '01_SPAC_Charlton Aria' },
+    { id: '1t1QHTyz8nCqVE4V9l__qKqlxd4P5QQKy', name: '02_순돌이(SDR드론)' },
+  ]);
+}
+
+/** destId 폴더 안으로 items[{id, name}]를 옮기고 이름을 바꾼다. */
+function moveFolders_(destId, items) {
+  const dest = DriveApp.getFolderById(destId);
+  const rows = [];
+  items.forEach(it => {
+    let f;
+    try { f = DriveApp.getFolderById(it.id); } catch (e) { rows.push(['건너뜀', it.id, '폴더를 열 수 없음: ' + e.message]); return; }
+    const before = f.getName();
+    const parents = f.getParents();
+    const from = parents.hasNext() ? parents.next() : null;
+    if (from && from.getId() === destId) {
+      rows.push(['건너뜀', before, '이미 ' + dest.getName() + ' 안에 있음']);
+    } else {
+      f.moveTo(dest);
+      rows.push(['이동', before, (from ? from.getName() : '?') + ' → ' + dest.getName()]);
+    }
+    if (it.name && f.getName() !== it.name) {
+      f.setName(it.name);
+      rows.push(['이름 변경', before, '→ ' + it.name]);
+    }
+  });
+  rows.forEach(r => Logger.log(r.join(' | ')));
+  log_(rows);
+}
