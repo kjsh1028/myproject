@@ -172,14 +172,14 @@
     },
     {
       "id": "mqbx8hti70v",
-      "name": "알렉스 스펙 상장",
+      "name": "알렉스 SPAC(Charlton Aria) × 순돌이 SDR드론 미국상장",
       "category": "important",
       "type": "IPO·상장",
       "stage": "구조화",
       "fee": "",
       "currency": "KRW",
       "country": "미국",
-      "desc": "",
+      "desc": "알렉스 측 미국 SPAC(Charlton Aria Acquisition Corporation)을 통한 순돌이(SDR 드론) 미국 상장 프로젝트. 기존 「알렉스 스펙 상장」과 「알렉스 SDR drone 상장」 두 딜을 하나로 합침(2026-11-28).",
       "personIds": [
         "mqbx90tnpuo"
       ],
@@ -205,8 +205,21 @@
       "stageHistory": [],
       "createdAt": "2026-06-13",
       "updatedAt": "2026-11-28",
-      "driveLink": "https://drive.google.com/drive/folders/1hplu8PKozH7skREql8zb_EJc3XA5HhGk",
-      "progress": []
+      "driveLink": "https://drive.google.com/drive/folders/1FUK5oWXhsY_-BcwAvF0b2D3kNExqVjx6",
+      "progress": [
+        {
+          "id": "mrg20261128",
+          "date": "2026-11-28",
+          "content": "「알렉스 스펙 상장」과 「알렉스 SDR drone 상장」 딜을 하나로 합침. 드라이브 「10_진행중/알렉스_SPAC·순돌이드론_미국상장」 상위 폴더 생성, 안내 문서 작성.",
+          "next": "SPAC 폴더(60_투자딜·펀드·금융)와 순돌이 폴더(10_진행중)를 새 상위 폴더 안으로 옮기기, 순돌이 폴더 안 중복 하위 폴더 정리",
+          "status": "진행중",
+          "by": "Claude"
+        }
+      ],
+      "memo": "",
+      "driveLinkLabel": "드라이브 폴더 (SPAC·드론 통합)",
+      "link": "https://drive.google.com/drive/folders/1EyjaMRi7pzFlXgOozeOzVxeB7RSUpnTh",
+      "linkLabel": "이전 드론 링크"
     },
     {
       "id": "mqbxatexhj3",
@@ -789,30 +802,6 @@
       "progress": []
     },
     {
-      "id": "mrsh3pg7q0d",
-      "name": "알렉스 SDR drone 상장",
-      "category": "important",
-      "type": "IPO·상장",
-      "stage": "발굴",
-      "fee": "",
-      "currency": "KRW",
-      "country": "미국",
-      "desc": "",
-      "personIds": [],
-      "actions": [],
-      "timeline": [],
-      "docs": [],
-      "research": [],
-      "stageHistory": [],
-      "createdAt": "2026-07-20",
-      "updatedAt": "2026-11-28",
-      "link": "https://drive.google.com/drive/folders/1EyjaMRi7pzFlXgOozeOzVxeB7RSUpnTh",
-      "linkLabel": "",
-      "contact": "",
-      "driveLink": "https://drive.google.com/drive/folders/1t1QHTyz8nCqVE4V9l__qKqlxd4P5QQKy",
-      "progress": []
-    },
-    {
       "id": "msbfk4c69p9",
       "name": "아시아장학회 결성",
       "category": "important",
@@ -1121,5 +1110,7 @@
       "memo": ""
     }
   ],
-  "deleted": []
+  "deleted": [
+    "mrsh3pg7q0d"
+  ]
 }
