@@ -8,11 +8,11 @@
  * 진행 중 = 앱의 중요·일반 탭(category important/normal)에 있고 단계가 완료·중단이 아닌 딜
  *
  * 1) 즉시 반영: 앱에서 단계·분류·폴더 주소를 바꾸면 앱이 이 웹 앱을 불러 바로 반영한다.
- * 2) 하루 1회 점검: 매일 새벽 3시 30분(상해 시간)에 data.json 전체와 다시 대조한다.
+ * 2) 주 1회 점검: 매주 월요일 새벽 3시 30분(상해 시간)에 data.json 전체와 다시 대조한다.
  *
  * 설치 순서 (LegalTrack 드라이브 연동과 같은 방식, 별도 Apps Script 프로젝트로 만든다)
  *  ① script.google.com → 새 프로젝트 → 이 파일 내용을 붙여 넣고 저장
- *  ② setup 실행 → 권한 허용 (하루 1회 예약 + 비밀 키 생성 + 1회 전체 정리)
+ *  ② setup 실행 → 권한 허용 (주 1회 예약 + 비밀 키 생성 + 1회 전체 정리)
  *  ③ 배포 → 새 배포 → 유형: 웹 앱 / 다음 사용자로 실행: 나 / 액세스 권한: 모든 사용자 → 배포
  *  ④ showAppLink 실행 → 실행 로그의 주소를 My Project 앱 설정 「드라이브 동기화 주소」에 붙여 넣기
  * 중지하려면: removeTriggers 실행 + 배포 관리에서 웹 앱 보관(삭제)
@@ -34,7 +34,7 @@ const MARK = '[myproject-sync]';
 function setup() {
   removeTriggers();
   ScriptApp.newTrigger('syncAll').timeBased()
-    .everyDays(1).atHour(3).nearMinute(30).inTimezone('Asia/Shanghai').create();
+    .everyWeeks(1).onWeekDay(ScriptApp.WeekDay.MONDAY).atHour(3).nearMinute(30).inTimezone('Asia/Shanghai').create();
   getKey_();
   syncAll();
 }
@@ -75,7 +75,7 @@ function doGet(e) {
   return json_({ ok: true, changed: changed });
 }
 
-/* ── 2) 하루 1회 전체 점검 ── */
+/* ── 2) 주 1회 전체 점검 ── */
 function syncAll() {
   const res = UrlFetchApp.fetch(DATA_URL + '?t=' + Date.now(), { muteHttpExceptions: true });
   if (res.getResponseCode() !== 200) {
