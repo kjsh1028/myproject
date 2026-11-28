@@ -8,6 +8,22 @@
     {"id": "sdr-tr-2", "op": "trash", "target": "1OofFsZUG0ZlzWAcmvaLZigM0jtwJgd7r", "note": "협업제안 검토보고서 중복 (상위 1XTir… 와 같은 크기)"},
     {"id": "sdr-tr-3", "op": "trash", "target": "1exYqStR4gbNV_uQ9Tt9ImsqO5Y4Y4r4Z", "note": "IMG_0072.PNG 중복 (상위 260721_알렉스카톡_SDCO주가.png 와 같은 크기)"},
     {"id": "sdr-tr-4", "op": "trash", "target": "1Ina0R74-Z2Ih8f7jScmvn9iBTiZJXCwX", "note": "빈 하위 폴더 「알렉스 순돌이 드론」 (위 이동·휴지통 뒤)"},
-    {"id": "sdr-tr-5", "op": "trash", "target": "1A8-ub1PdY1LtHzgD3QdAf5qQd7mN99lm", "note": "빈 하위 폴더 「알렉스 SDR drone 상장」 (위 이동·휴지통 뒤)"}
+    {"id": "sdr-tr-5", "op": "trash", "target": "1A8-ub1PdY1LtHzgD3QdAf5qQd7mN99lm", "note": "빈 하위 폴더 「알렉스 SDR drone 상장」 (위 이동·휴지통 뒤)"},
+    {"id": "hy-mv-01", "op": "move", "target": "1hm3V6XQleliyXysak3It1skXQyYnhMcU", "to": "1QTPPV-N8132BeEBEJ335JObthzsDLlvD", "note": "관련 사진 (현장 사진 25개, 김명진 폴더에만 있음)"},
+    {"id": "hy-mv-02", "op": "move", "target": "1QwQEVRcrsiz-SczlyO9-oCBvR1gai_ry", "to": "1QTPPV-N8132BeEBEJ335JObthzsDLlvD", "note": "07_사진·영상 (IMG_9643.MOV)"},
+    {"id": "hy-mv-03", "op": "move", "target": "1lIFILE_pb8txgrIEIBtO1lixyol3UNST", "to": "1vQ4IOdf5W_1OBkhw3N0Rxatp7hFLkR29", "note": "김경옥 gaia 대표 건대 화양 이상만 소개.PNG"},
+    {"id": "hy-mv-04", "op": "move", "target": "1-7DKhU2sViag5txfAPfXGqcNnBFOnhe0", "to": "1vQ4IOdf5W_1OBkhw3N0Rxatp7hFLkR29", "note": "IMG_2772.PNG (카톡)"},
+    {"id": "hy-mv-05", "op": "move", "target": "1xVI-pYe4B-qDo_UoQAWnm1iNtEpaAqVl", "to": "1vQ4IOdf5W_1OBkhw3N0Rxatp7hFLkR29", "note": "IMG_2771.PNG (카톡)"},
+    {"id": "hy-mv-06", "op": "move", "target": "1byGFFHvGN0KM-0Zp4N_HMommKREpuhg-", "to": "1vQ4IOdf5W_1OBkhw3N0Rxatp7hFLkR29", "note": "IMG_9601.PNG (카톡)"},
+    {"id": "hy-mv-07", "op": "move", "target": "12BFJVcfRJQWmjc_o18HeKz6eU98f2aPP", "to": "1vQ4IOdf5W_1OBkhw3N0Rxatp7hFLkR29", "note": "IMG_9600.PNG (카톡)"},
+    {"id": "hy-mv-08", "op": "move", "target": "157PLiWIU07_VT7Vg-UChhZF10X9PK1uwnJc8ESdHpuc", "to": "1-k9KnC_Q5dSAdVBmvWSFuO_Ez_Hiof1e", "note": "_정리 기록 (2026-11-26, 김명진 폴더에서 옮김)"},
+    {"id": "hy-mv-09", "op": "move", "target": "1y6NvSWptt8dcWW1m7FC7V-hAdADt3EJD", "to": "1vQ4IOdf5W_1OBkhw3N0Rxatp7hFLkR29", "note": "IMG_2657.PNG (01_이상만 폴더에만 있음)"},
+    {"id": "hy-mv-10", "op": "move", "target": "1x8jqfOMb2FAwByLcUjTjgkaGPyiLvEgQ", "to": "1QTPPV-N8132BeEBEJ335JObthzsDLlvD", "name": "IMG_0215_31KB.PNG", "note": "IMG_0215.PNG 31KB판 (통합관리의 7KB판과 다름)"},
+    {"id": "hy-mv-11", "op": "move", "target": "1kY1M3x4gEQ3e_qAK2v7XoG9EH6wUCm90", "to": "1vxYd3UsgFDxnUw0RYa7CspBAPA2jCLLq", "note": "지역주택조합 투자 분석 및 리스크 검토.docx (2026-02)"},
+    {"id": "hy-tr-01", "op": "trash", "target": "1b_JWP4M0HUGLWEpkUxaRvBXjZJzY31ye", "note": "재산관리 > 광진구 건국대 아파트 지역주택조합_김명진 (남은 가입서류·리서치·카톡·계약금·대출 파일은 통합관리에 사본 있음, 03_토지담보대출 검토자료는 빈 폴더)"},
+    {"id": "hy-tr-02", "op": "trash", "target": "1SYW0M3lhJbL7K9x_NnqcfeUPwaH17t0o", "note": "이상만 > 01_광진구 건국대 화양그랜드파크 아파트 이상만 (중복)"},
+    {"id": "hy-tr-03", "op": "trash", "target": "1ewxZGrC0McLw-7Es1OmOPvTaXs2v8zws", "note": "이상만 > 02_광진구 화양 조합 구입 분양 (김명진 폴더의 사본)"},
+    {"id": "hy-tr-04", "op": "trash", "target": "1jF5y7Vt_yaouepUUGa7qcW9J92X6jEvS", "note": "이상만 > 05_화양동 그랜드 파크 지역사업 이상만 (260205 키움 pdf·docx는 04_키움 대출검토에 사본)"},
+    {"id": "hy-tr-05", "op": "trash", "target": "1awnc3xAp7o7mRH9Wl5saKzGassJFHs9H", "note": "통합관리 > 99_중복·정리대기 (빈 폴더, 위 정리로 필요 없어짐)"}
   ]
 }
