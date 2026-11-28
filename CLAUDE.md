@@ -17,7 +17,7 @@
 - "○○ 진행 기록에 적어 줘" → 그 딜의 `progress`에 `{id, date, content, next, status(진행중·완료·대기·참고), by:"Claude"}` 한 줄 추가.
 
 ## 드라이브 연동 (`tools/drive-sync.gs`, Apps Script)
-- 진행 중 딜(완료·중단 제외)의 폴더 바로가기를 「01_현재 검토 중 프로젝트」에 자동으로 넣고 뺀다(앱 즉시 호출 + 매일 점검). 폴더 자체는 옮기지 않는다.
+- 진행 중 딜(분류 중요·일반)의 폴더 바로가기를 「01_현재 검토 중 프로젝트」에 자동으로 넣고 뺀다(앱 즉시 호출 + 매일 점검). 폴더 자체는 옮기지 않는다.
 - Claude의 드라이브 커넥터는 Claude가 만들지 않은 항목을 옮기거나 지울 수 없다 → **드라이브 정리 작업함** 사용: `tools/drive-ops.json`의 `ops`에 작업을 추가하면 `runDriveOps`가 매일 1회(상해 04:15 = 한국 05:15) 실행한다. 급하면 사용자가 편집기에서 `runDriveOps` 직접 실행.
   - 작업 형식: `{"id","op":"mkdir","parent","name"}`, `{"id","op":"move","target","to","name"?}`, `{"id","op":"rename","target","name"}`, `{"id","op":"trash","target"}`. `note`는 설명용.
   - `id`는 한 번 실행되면 다시 실행되지 않으므로 새 작업에는 새 id를 쓴다. 기존 항목은 지우지 않는다.
