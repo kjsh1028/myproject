@@ -188,7 +188,8 @@
           "title": "KQC 자료 검토",
           "due": "2026-09-11",
           "note": "",
-          "done": false
+          "done": true,
+          "doneAt": "2026-11-28"
         }
       ],
       "timeline": [
