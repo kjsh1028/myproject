@@ -211,6 +211,12 @@ html, body { height: 100%; background: var(--bg); color: var(--tx); font-family:
 .photo-del { position: absolute; top: 4px; right: 4px; width: 22px; height: 22px; border-radius: 50%; background: rgba(0,0,0,.65); border: none; color: white; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
 
 /* STAGE BTNS */
+.cat-seg { display:flex; gap:6px; margin-top:12px; flex-wrap:wrap; }
+.cat-seg button { flex:1; min-width:58px; padding:8px 4px; border-radius:10px; border:1px solid rgba(255,255,255,0.35); background:transparent; color:rgba(255,255,255,0.85); font-size:13px; font-weight:600; font-family:inherit; cursor:pointer; white-space:nowrap; }
+.cat-seg button.cur { background:#fff; color:#1a2340; border-color:#fff; }
+.dc-cat { font-weight:700; }
+#cat-toast { position:fixed; left:50%; bottom:90px; transform:translateX(-50%); background:#1a2340; color:#fff; padding:10px 14px; border-radius:12px; font-size:14px; z-index:3000; display:none; align-items:center; gap:12px; box-shadow:0 4px 14px rgba(0,0,0,0.25); white-space:nowrap; }
+#cat-toast button { background:none; border:none; color:#f0c860; font-weight:700; font-size:14px; cursor:pointer; font-family:inherit; }
 .stage-btns { display: flex; flex-wrap: wrap; gap: 8px; padding: 10px 0; }
 .sbtn { padding: 9px 16px; border-radius: 20px; font-size: 14px; font-weight: 500; background: var(--s2); border: 1px solid var(--bd); color: var(--t2); cursor: pointer; font-family: 'DM Sans', sans-serif; }
 .sbtn.cur { background: var(--gdim); border-color: var(--gold); color: var(--gold); }
@@ -402,7 +408,7 @@ textarea { resize: none; line-height: 1.6; }
 </div>
 
 <script>
-var VER = '9.7';
+var VER = '9.8';
 var STAGES = ['발굴','검토','협의','구조화','실행','클로징','완료','중단'];
 var ASTAGES = ['발굴','검토','협의','구조화','실행','클로징'];
 var TYPES = ['M&A','자금조달','부동산','IPO·상장','무역','엔터테인먼트','투자자문','법적분쟁','전략기획','마케팅','의료밸류체인','기타'];
@@ -430,6 +436,9 @@ function fmtDate(s){ if(!s) return ''; var d=new Date(s+'T12:00:00'); return d.g
 function dLeft(s){ if(!s) return null; return Math.ceil((new Date(s+'T12:00:00')-new Date())/86400000); }
 function fmtFee(n){ if(!n||isNaN(n)) return '미정'; n=parseInt(n); if(n>=100000000) return (n/100000000).toFixed(1).replace(/\.0$/,'')+'억'; if(n>=10000) return Math.round(n/10000)+'만'; return n.toLocaleString(); }
 function tclass(t){ var m={'M&A':'MA','자금조달':'fund','부동산':'re','IPO·상장':'ipo','무역':'trade','엔터테인먼트':'ent','투자자문':'fund','법적분쟁':'MA','전략기획':'ipo','마케팅':'ent','의료밸류체인':'re','기타':'etc'}; return 't-'+(m[t]||'etc'); }
+var CATS=['important','normal','hold','drop','closing'];
+var CATN={important:'⭐ 중요',normal:'일반',hold:'보류',drop:'폐기',closing:'✅ 클로징'};
+function catColor(c){ return {important:'#d4a84b',normal:'#60b8f8',hold:'#9098b0',drop:'#e06868',closing:'#40c888'}[c||'important']||'#6070a0'; }
 function sdotColor(s){ var m={'발굴':'#9898e8','검토':'#60b8f8','협의':'#d8b848','구조화':'#c868e8','실행':'#40c888','클로징':'#d4a84b','완료':'#50c080','중단':'#e06868'}; return m[s]||'#6070a0'; }
 
 function checkAndUpdate(){
@@ -602,7 +611,7 @@ function doSearch(q){
   var out='';
   // Deals
   var deals=DB.deals.filter(function(d){
-    return (d.name||'').toLowerCase().includes(ql)||(d.type||'').toLowerCase().includes(ql)||(d.desc||'').toLowerCase().includes(ql)||(d.memo||'').toLowerCase().includes(ql)||(d.contact||'').toLowerCase().includes(ql);
+    return ql.split(/\s+/).every(function(w){ return dealHay(d).includes(w); });
   });
   if(deals.length){
     out+='<div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.4);letter-spacing:1px;padding:16px 0 8px">딜 ('+deals.length+')</div>';
@@ -646,18 +655,23 @@ function doSearch(q){
   if(!out) out='<div style="color:rgba(255,255,255,0.4);text-align:center;padding:40px 0;font-size:15px">"'+q+'" 검색 결과 없음</div>';
   res.innerHTML=out;
 }
+function dealHay(d){
+  var pn=(d.personIds||[]).map(function(pid){ var p=DB.people.find(function(x){return x.id===pid;}); return p?[p.name,p.org].join(' '):''; }).join(' ');
+  var pr=(d.progress||[]).map(function(x){ return (x.content||'')+' '+(x.next||''); }).join(' ');
+  var tl=(d.timeline||[]).map(function(x){ return (x.who||'')+' '+(x.content||''); }).join(' ');
+  var ac=(d.actions||[]).map(function(x){ return x.title||''; }).join(' ');
+  return [d.name,d.type,d.desc,d.memo,d.contact,d.country,CATN[d.category||'important'],pn,pr,tl,ac].join(' ').toLowerCase();
+}
 function renderDeals(){
   var filterCat = curCat==='process' ? curProcCat : curCat;
-  var dealQ=(window._dealSearchQ||'').toLowerCase();
+  var dealQ=(window._dealSearchQ||'').trim().toLowerCase();
   var deals=DB.deals.filter(function(d){
-    if((d.category||'important')!==filterCat) return false;
-    if(!dealQ) return true;
-    var pnames=(d.personIds||[]).map(function(pid){ var p=DB.people.find(function(x){return x.id===pid;}); return p?p.name:''; }).join(' ');
-    return (d.name||'').toLowerCase().includes(dealQ)||(d.type||'').toLowerCase().includes(dealQ)||(d.desc||'').toLowerCase().includes(dealQ)||(d.memo||'').toLowerCase().includes(dealQ)||pnames.toLowerCase().includes(dealQ);
+    if(!dealQ) return (d.category||'important')===filterCat;
+    return dealQ.split(/\s+/).every(function(w){ return dealHay(d).includes(w); });
   });
-  deals.sort(function(a,b){ var si=function(d){ return STAGES.indexOf(d.stage); }; if(si(a)!==si(b)) return si(a)-si(b); return (b.updatedAt||'')>(a.updatedAt||'')?1:-1; });
+  deals.sort(function(a,b){ if(dealQ){ var ci=CATS.indexOf(a.category||'important')-CATS.indexOf(b.category||'important'); if(ci) return ci; } return (b.updatedAt||'')>(a.updatedAt||'')?1:(b.updatedAt||'')<(a.updatedAt||'')?-1:0; });
   var _ico=filterCat==='important'?'⭐':filterCat==='normal'?'📋':filterCat==='hold'?'⏸':filterCat==='closing'?'✅':'🗑';
-  var searchBar='<div style="padding:10px 14px 4px"><div style="display:flex;align-items:center;background:#fff;border-radius:12px;border:1px solid #dce4f0;padding:8px 12px;gap:8px"><span style="color:#8090b0;font-size:16px">🔍</span><input id="deal-search-bar" value="'+(window._dealSearchQ||'')+'" placeholder="딜 검색..." oninput="window._dealSearchQ=this.value;renderDeals()" style="border:none;outline:none;flex:1;font-size:15px;color:#1a2340;background:transparent">'+(window._dealSearchQ?'<button onclick="window._dealSearchQ=\'\';renderDeals()" style="background:none;border:none;color:#8090b0;font-size:18px;cursor:pointer;padding:0">✕</button>':'')+'</div></div>';
+  var searchBar='<div style="padding:10px 14px 4px"><div style="display:flex;align-items:center;background:#fff;border-radius:12px;border:1px solid #dce4f0;padding:8px 12px;gap:8px"><span style="color:#8090b0;font-size:16px">🔍</span><input id="deal-search-bar" value="'+(window._dealSearchQ||'')+'" placeholder="전체 딜 검색 (이름·메모·기록·관련자)" oninput="window._dealSearchQ=this.value;renderDeals();var e=document.getElementById(\'deal-search-bar\');if(e){e.focus();e.setSelectionRange(e.value.length,e.value.length);}" style="border:none;outline:none;flex:1;font-size:15px;color:#1a2340;background:transparent">'+(window._dealSearchQ?'<button onclick="window._dealSearchQ=\'\';renderDeals()" style="background:none;border:none;color:#8090b0;font-size:18px;cursor:pointer;padding:0">✕</button>':'')+'</div></div>';
   if(!deals.length){
     document.getElementById('page-deals').innerHTML=searchBar+'<div class="empty"><div class="empty-icon">'+_ico+'</div><p>'+(window._dealSearchQ?'"'+window._dealSearchQ+'" 검색 결과 없음':'딜이 없습니다<br>+ 버튼으로 추가하세요')+'</p></div>';
     return;
@@ -674,10 +688,10 @@ function renderDeals(){
     if(pplNames) subParts.push(esc(pplNames));
     if(d.country) subParts.push('📍'+esc(d.country));
 
-    html+='<div class="dcard" onclick="openDeal(\''+d.id+'\')" style="border-left-color:'+sdotColor(d.stage)+'">';
+    html+='<div class="dcard" onclick="openDeal(\''+d.id+'\')" style="border-left-color:'+catColor(d.category)+'">';
     html+='<div class="dc-main">';
     html+='<div class="dc-top"><div class="dc-name">'+esc(d.name)+'</div>'+(feeStr?'<div class="dc-fee">'+feeStr+'</div>':'')+'</div>';
-    html+='<div class="dc-sub"><span class="dc-stage">'+esc(d.stage||'')+'</span>'+(subParts.length?' · '+subParts.join(' · '):'')+'</div>';
+    html+='<div class="dc-sub">'+(dealQ?'<span class="dc-cat" style="color:'+catColor(d.category)+'">'+CATN[d.category||'important']+'</span>'+(subParts.length?' · ':''):'')+subParts.join(' · ')+'</div>';
     if(d.memo) html+='<div class="dc-line dc-memo">📌 '+esc(d.memo.split('\n')[0])+'</div>';
     if(nextAct) html+='<div class="dc-line">→ '+esc(nextAct.title)+'</div>';
     html+='</div>';
@@ -1087,7 +1101,7 @@ function normDeals(){
 /* 구글 드라이브 연동: 진행 중인 딜의 폴더 바로가기를 「01_현재 검토 중 프로젝트」에 자동으로 넣고 뺀다
    (Apps Script 웹 앱 호출, 폴더 자체는 옮기지 않음) */
 function folderIdOf(link){ var g=/folders\/([\w-]+)/.exec(link||'')||/[?&]id=([\w-]+)/.exec(link||''); return g?g[1]:null; }
-function isActiveDeal(d){ return (d.category==='important'||d.category==='normal')&&d.stage!=='완료'&&d.stage!=='중단'; }
+function isActiveDeal(d){ return d.category==='important'||d.category==='normal'; }
 var _driveQ={}, _driveTimer=null;
 function queueDrive(d){
   if(!SETS.driveSyncUrl||!d) return;
@@ -1206,15 +1220,13 @@ function renderDetail(){
   var d=DB.deals.find(function(x){ return x.id===curDeal; }); if(!d) return;
   document.getElementById('detail-title').textContent=d.name;
   var sec=openSec[curDeal];
-  var si=ASTAGES.indexOf(d.stage);
-  var sdots=''; for(var i=0;i<ASTAGES.length;i++) sdots+='<div class="sdot'+(i<si?' done':i===si?' cur':'')+'"></div>';
   var ppl=(d.personIds||[]).map(function(pid){ return DB.people.find(function(p){ return p.id===pid; }); }).filter(Boolean);
   var acts=d.actions||[], tl=d.timeline||[], docs=d.docs||[], res=d.research||[];
 
   var html='<div class="hero"><div class="hero-name">'+d.name+'</div>';
-  html+='<div class="hero-row"><span class="badge '+tclass(d.type)+'">'+d.type+'</span><span class="badge s-'+d.stage+'">'+d.stage+'</span>';
+  html+='<div class="hero-row"><span class="badge '+tclass(d.type)+'">'+d.type+'</span>';
   if(d.country) html+='<span style="font-size:13px;color:var(--t3)">📍'+d.country+'</span>';
-  html+='</div><div class="sdots">'+sdots+'</div>';
+  html+='</div><div class="cat-seg">'+CATS.map(function(c){ return '<button class="'+((d.category||'important')===c?'cur':'')+'" onclick="chCat(\''+c+'\')">'+CATN[c]+'</button>'; }).join('')+'</div>';
   if(d.fee) html+='<div class="hero-fee">'+fmtFee(parseInt(d.fee),d.currency)+'</div>';
   if(d.link) html+='<a href="'+d.link+'" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.15);border-radius:8px;padding:6px 12px;margin-top:6px;margin-bottom:2px;text-decoration:none;color:#fff;font-size:13px">🔗 '+(d.linkLabel||d.link)+'</a>';
   if(d.driveLink) html+='<a class="hero-btn" href="'+esc(d.driveLink)+'" target="_blank">📁 '+esc(d.driveLinkLabel||'드라이브 폴더')+'</a><button class="hero-btn dashed" onclick="openDriveLink()" title="드라이브 폴더 주소 바꾸기">✏️</button>';
@@ -1245,14 +1257,6 @@ function renderDetail(){
       s+='</tbody></table>';
     } else s+='<div class="ov-empty" style="padding-top:4px">진행할 때마다 한 줄씩 기록해 두세요</div>';
     s+='<button class="add-btn" onclick="openAddProg()">+ 진행 기록 추가</button>';
-    return s;
-  });
-
-  html+=makeSec('stage','🚦','단계 변경','',sec.stage,function(){
-    var s='<div class="stage-btns">';
-    for(var i=0;i<STAGES.length;i++) s+='<button class="sbtn '+(d.stage===STAGES[i]?'cur':'')+'" onclick="chStage(\''+STAGES[i]+'\')">'+STAGES[i]+'</button>';
-    s+='</div>';
-    if(d.stageHistory&&d.stageHistory.length){ var hist=[].concat(d.stageHistory).reverse().slice(0,3); s+='<div style="font-size:13px;color:var(--t3);margin-top:4px">'; for(var i=0;i<hist.length;i++) s+=fmtDate(hist[i].date)+' '+hist[i].from+' → '+hist[i].to+'<br>'; s+='</div>'; }
     return s;
   });
 
@@ -1309,6 +1313,12 @@ function makeSec(key,icon,title,cnt,isOpen,bodyFn){
   return h;
 }
 function toggleSec(k){ if(!openSec[curDeal]) openSec[curDeal]={}; openSec[curDeal][k]=!openSec[curDeal][k]; renderDetail(); }
+var _catUndo=null,_catToastT=null;
+function chCat(c){ var d=DB.deals.find(function(x){ return x.id===curDeal; }); if(!d||(d.category||'important')===c) return; _catUndo={id:d.id,cat:d.category||'important',upd:d.updatedAt}; d.category=c; d.updatedAt=today(); queueDrive(d); save(); renderDetail();
+  var t=document.getElementById('cat-toast'); if(!t){ t=document.createElement('div'); t.id='cat-toast'; document.body.appendChild(t); }
+  t.innerHTML='<span>'+CATN[c]+'(으)로 옮김</span><button onclick="undoCat()">되돌리기</button>'; t.style.display='flex';
+  if(_catToastT) clearTimeout(_catToastT); _catToastT=setTimeout(function(){ t.style.display='none'; _catUndo=null; },4000); }
+function undoCat(){ if(!_catUndo) return; var d=DB.deals.find(function(x){ return x.id===_catUndo.id; }); if(d){ d.category=_catUndo.cat; d.updatedAt=_catUndo.upd||today(); queueDrive(d); save(); if(curDeal===d.id) renderDetail(); } _catUndo=null; var t=document.getElementById('cat-toast'); if(t) t.style.display='none'; }
 function chStage(s){ var d=DB.deals.find(function(x){ return x.id===curDeal; }); if(!d||d.stage===s) return; if(!d.stageHistory) d.stageHistory=[]; d.stageHistory.push({from:d.stage,to:s,date:today()}); d.stage=s; if(s==='클로징') d.category='closing'; else if(s==='완료') d.category='closing'; else if(s==='중단') d.category='drop'; else if(d.category==='closing'||d.category==='drop') d.category='important'; d.updatedAt=today(); queueDrive(d); save(); renderDetail(); }
 function delDeal(){ if(!confirm('딜을 삭제합니까?')) return; if(!DB.deleted) DB.deleted=[]; DB.deleted.push(curDeal); DB.deals=DB.deals.filter(function(d){ return d.id!==curDeal; }); save(); closeDetail(); }
 function togAct(i){ var d=DB.deals.find(function(x){ return x.id===curDeal; }); if(!d) return; var a=d.actions[i]; a.done=!a.done; if(a.done) a.doneAt=today(); else delete a.doneAt; d.updatedAt=today(); save(); renderDetail(); }
@@ -1435,7 +1445,7 @@ function renderPersonDetail(){
   html+='<button class="add-btn" onclick="openAddPLog()">+ 대화 로그</button></div></div>';
   if(deals.length){
     html+='<div style="border-top:1px solid var(--bd);padding:14px 16px 4px;font-size:12px;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;font-weight:600">참여 딜</div>';
-    for(var i=0;i<deals.length;i++){ var d=deals[i]; html+='<div class="person-row" onclick="openDealFromPerson(\''+d.id+'\')"><div style="width:10px;height:10px;border-radius:50%;background:'+sdotColor(d.stage)+';flex-shrink:0"></div><div style="flex:1"><div style="font-size:16px;font-weight:500">'+d.name+'</div><div style="font-size:13px;color:var(--t2);margin-top:3px">'+d.type+' · '+d.stage+'</div></div><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--t3)"><path d="M9 18l6-6-6-6"/></svg></div>'; }
+    for(var i=0;i<deals.length;i++){ var d=deals[i]; html+='<div class="person-row" onclick="openDealFromPerson(\''+d.id+'\')"><div style="width:10px;height:10px;border-radius:50%;background:'+catColor(d.category)+';flex-shrink:0"></div><div style="flex:1"><div style="font-size:16px;font-weight:500">'+d.name+'</div><div style="font-size:13px;color:var(--t2);margin-top:3px">'+d.type+' · '+CATN[d.category||'important']+'</div></div><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--t3)"><path d="M9 18l6-6-6-6"/></svg></div>'; }
   }
   html+='<div style="padding:16px 16px 30px"><button class="delbtn" onclick="delPerson()">관련자 삭제</button></div>';
   document.getElementById('person-body').innerHTML=html;
@@ -1471,7 +1481,6 @@ function dealFormHTML(d){
   return '<label>딜명 *</label><input id="fn" value="'+(d?d.name:'')+'" placeholder="딜 이름">'+
     '<label>분류</label><select id="fcat">'+co+'</select>'+
     '<label>타입</label><select id="ft">'+to+'</select>'+
-    '<label>단계</label><select id="fs">'+so+'</select>'+
     '<label>예상 성공보수</label>'+'<div style="display:flex;gap:8px;margin-bottom:14px">'+'<select id="fcur" style="width:95px;flex-shrink:0">'+'<option value="KRW"'+(d&&d.currency==="KRW"?" selected":(!d||!d.currency)?" selected":"")+'>\u20a9 \uc6d0</option>'+'<option value="CNY"'+(d&&d.currency==="CNY"?" selected":"")+'>\u00a5 \uc704\uc548</option>'+'<option value="USD"'+(d&&d.currency==="USD"?" selected":"")+'>$ \ub2ec\ub7ec</option>'+'</select>'+'<input id="ff" type="text" inputmode="numeric" value="'+(d&&d.fee?parseInt(d.fee).toLocaleString():"")+' " placeholder="1,000,000" oninput="fmtInput(this)">'+'</div>'+
     '<label>국가/지역</label><input id="fc" value="'+(d&&d.country?d.country:'')+'" placeholder="한국, 중국...">'+
     '<label>프로젝트 설명</label><textarea id="fd" rows="3">'+(d&&d.desc?esc(d.desc):'')+'</textarea>'+
@@ -1485,8 +1494,8 @@ function showAddDealForm(){ showModal('새 딜 추가',dealFormHTML(null),[{labe
 function openEditDeal(){ var d=DB.deals.find(function(x){ return x.id===curDeal; }); if(!d) return; showModal('딜 수정',dealFormHTML(d),[{label:'저장',fn:'saveDeal(true)'},{label:'취소',fn:'closeModal()',g:true}]); }
 function saveDeal(isEdit){
   var el=document.getElementById('fn'); var name=el?el.value.trim():''; if(!name||name==='딜 이름'){ alert('딜명을 입력하세요'); return; }
-  if(isEdit){ var d=DB.deals.find(function(x){ return x.id===curDeal; }); if(!d) return; var os=d.stage,ns=document.getElementById('fs').value; d.name=name; d.category=document.getElementById('fcat').value; d.type=document.getElementById('ft').value; d.stage=ns; d.fee=document.getElementById('ff').value.replace(/[^0-9]/g,''); d.currency=document.getElementById('fcur').value; d.country=document.getElementById('fc').value; d.desc=document.getElementById('fd').value; d.memo=(document.getElementById('fdmemo').value||'').trim(); d.link=(document.getElementById('fdlink').value||'').trim(); d.linkLabel=(document.getElementById('fdlinklabel').value||'').trim(); d.contact=(document.getElementById('fdcontact').value||'').trim(); d.driveLink=(document.getElementById('fddrive').value||'').trim(); d.updatedAt=today(); queueDrive(d); if(os!==ns){ if(!d.stageHistory) d.stageHistory=[]; d.stageHistory.push({from:os,to:ns,date:today()}); } }
-  else { DB.deals.push({id:uid(),name:name,category:document.getElementById('fcat').value,type:document.getElementById('ft').value,stage:document.getElementById('fs').value,fee:document.getElementById('ff').value.replace(/[^0-9]/g,''), currency:document.getElementById('fcur').value,country:document.getElementById('fc').value,desc:document.getElementById('fd').value,memo:(document.getElementById('fdmemo').value||'').trim(),progress:[],link:(document.getElementById('fdlink').value||'').trim(),linkLabel:(document.getElementById('fdlinklabel').value||'').trim(),contact:(document.getElementById('fdcontact').value||'').trim(),driveLink:(document.getElementById('fddrive').value||'').trim(),personIds:[],actions:[],timeline:[],docs:[],research:[],stageHistory:[],createdAt:today(),updatedAt:today()}); queueDrive(DB.deals[DB.deals.length-1]); }
+  if(isEdit){ var d=DB.deals.find(function(x){ return x.id===curDeal; }); if(!d) return; d.name=name; d.category=document.getElementById('fcat').value; d.type=document.getElementById('ft').value; d.fee=document.getElementById('ff').value.replace(/[^0-9]/g,''); d.currency=document.getElementById('fcur').value; d.country=document.getElementById('fc').value; d.desc=document.getElementById('fd').value; d.memo=(document.getElementById('fdmemo').value||'').trim(); d.link=(document.getElementById('fdlink').value||'').trim(); d.linkLabel=(document.getElementById('fdlinklabel').value||'').trim(); d.contact=(document.getElementById('fdcontact').value||'').trim(); d.driveLink=(document.getElementById('fddrive').value||'').trim(); d.updatedAt=today(); queueDrive(d); }
+  else { DB.deals.push({id:uid(),name:name,category:document.getElementById('fcat').value,type:document.getElementById('ft').value,stage:'',fee:document.getElementById('ff').value.replace(/[^0-9]/g,''), currency:document.getElementById('fcur').value,country:document.getElementById('fc').value,desc:document.getElementById('fd').value,memo:(document.getElementById('fdmemo').value||'').trim(),progress:[],link:(document.getElementById('fdlink').value||'').trim(),linkLabel:(document.getElementById('fdlinklabel').value||'').trim(),contact:(document.getElementById('fdcontact').value||'').trim(),driveLink:(document.getElementById('fddrive').value||'').trim(),personIds:[],actions:[],timeline:[],docs:[],research:[],stageHistory:[],createdAt:today(),updatedAt:today()}); queueDrive(DB.deals[DB.deals.length-1]); }
   save(); closeModal(); switchTab(curTab); if(isEdit) renderDetail();
 }
 

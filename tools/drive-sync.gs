@@ -5,7 +5,7 @@
  *          완료·중단·보류 등으로 바뀌면 그 바로가기를 뺀다.
  *          딜 폴더 자체는 당사자별·분야별 위치에 그대로 두고 옮기거나 이름을 바꾸지 않는다.
  *
- * 진행 중 = 앱의 중요·일반 탭(category important/normal)에 있고 단계가 완료·중단이 아닌 딜
+ * 진행 중 = 앱의 중요·일반 탭(category important/normal)에 있는 딜 (v9.8부터 단계는 보지 않음)
  *
  * 1) 즉시 반영: 앱에서 단계·분류·폴더 주소를 바꾸면 앱이 이 웹 앱을 불러 바로 반영한다.
  * 2) 주 1회 점검: 매주 월요일 새벽 3시 30분(상해 시간)에 data.json 전체와 다시 대조한다.
@@ -102,7 +102,7 @@ function syncAll() {
 /* ── 공통 ── */
 
 function isActive_(d) {
-  return (d.category === 'important' || d.category === 'normal') && d.stage !== '완료' && d.stage !== '중단';
+  return d.category === 'important' || d.category === 'normal';  // v9.8부터 단계(stage)는 쓰지 않고 분류만 기준
 }
 
 function folderIdOf_(link) {

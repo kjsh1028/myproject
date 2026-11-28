@@ -10,6 +10,7 @@
 
 ## data.json
 - 구조: `deals`, `people`, `deleted`(삭제한 딜 id 목록).
+- v9.8부터 딜의 상태는 **분류(`category`: important/normal/hold/drop/closing)만** 쓴다. `stage`는 화면에서 없앴고 기존 값만 남아 있다(새 딜은 빈 값). 진행 중 = 중요·일반.
 - 앱은 열 때 id 기준으로 합치며 `updatedAt`이 늦은 쪽을 쓴다 → 딜을 고치면 그 딜의 `updatedAt`을 오늘(YYYY-MM-DD)로 올린다. 다른 딜은 건드리지 않는다.
 - 저장은 `json.dump(..., ensure_ascii=False, indent=2)`, 파일 끝 줄바꿈 유지. 커밋 전 `git diff`로 의도한 줄만 바뀌었는지 확인.
 - 새 딜 id: `Date.now().toString(36)` + 무작위 3자. 필드는 work-baseline-rules 스킬 2-7장 참고.
